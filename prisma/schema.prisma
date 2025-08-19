@@ -1,0 +1,58 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+model User {
+  id         String   @id @default(cuid())
+  email      String   @unique
+  name       String
+  lastName   String   @map("last_name")
+  password   String
+  avatarUrl  String?  @map("avatar_url")
+  createdAt  DateTime @default(now()) @map("created_at")
+  updatedAt  DateTime @updatedAt @map("updated_at")
+  
+  // Relations
+  assignedTasks Task[] @relation("TaskAssignee")
+  
+  @@map("users")
+}
+
+model Component {
+  id        String   @id @default(cuid())
+  name      String
+  color     String
+  createdAt DateTime @default(now()) @map("created_at")
+  
+  // Relations
+  tasks     Task[]
+  
+  @@map("components")
+}
+
+model Task {
+  id          String   @id @default(cuid())
+  title       String
+  description String?
+  status      String   @default("Todo")
+  type        String   @default("Feature")
+  priority    String   @default("No priority")
+  progress    Int      @default(0)
+  targetDate  DateTime? @map("target_date")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+  
+  // Relations
+  leadId      String?    @map("lead_id")
+  assignee    User?      @relation("TaskAssignee", fields: [leadId], references: [id])
+  
+  componentId String?    @map("component_id")
+  component   Component? @relation(fields: [componentId], references: [id])
+  
+  @@map("tasks")
+}

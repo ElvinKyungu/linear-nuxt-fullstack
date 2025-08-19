@@ -1,0 +1,43 @@
+{
+  "name": "nuxt-app",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "build": "nuxt build",
+    "dev": "nuxt dev",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare",
+    "db:migrate": "prisma migrate dev",
+    "db:generate": "prisma generate",
+    "db:studio": "prisma studio",
+    "db:seed": "tsx prisma/seed.ts"
+  },
+  "dependencies": {
+    "@nuxt/content": "^2.7.2",
+    "@nuxt/eslint": "^1.9.0",
+    "@nuxt/image": "^1.11.0",
+    "@nuxt/scripts": "^0.11.10",
+    "@nuxt/test-utils": "^3.19.2",
+    "@nuxt/ui": "^3.3.2",
+    "@prisma/client": "^6.14.0",
+    "@unhead/vue": "^2.0.14",
+    "bcryptjs": "^3.0.2",
+    "eslint": "^9.33.0",
+    "gsap": "^3.13.0",
+    "h3-zod": "^0.5.3",
+    "jsonwebtoken": "^9.0.2",
+    "nuxt": "^4.0.3",
+    "nuxt-auth-utils": "^0.5.23",
+    "sqlite3": "^5.1.7",
+    "typescript": "^5.9.2",
+    "vue": "^3.5.18",
+    "vue-router": "^4.5.1",
+    "zod": "^3.25.76"
+  },
+  "devDependencies": {
+    "@types/bcryptjs": "^2.4.6",
+    "@types/jsonwebtoken": "^9.0.10",
+    "prisma": "^6.14.0"
+  }
+}
