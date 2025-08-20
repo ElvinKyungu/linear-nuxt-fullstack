@@ -23,7 +23,9 @@ const priorityMap = [
 ]
 
 const filtered = computed(() =>
-  priorityMap.filter((p) => p.name.toLowerCase().includes(search.value.toLowerCase()))
+  priorityMap.filter((p) =>
+    p.name.toLowerCase().includes(search.value.toLowerCase())
+  )
 )
 const selectLevel = (level: any) => {
   gsap.to(popup.value, {

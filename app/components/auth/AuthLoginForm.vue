@@ -29,7 +29,10 @@ const handleLogin = async () => {
     <div class="text-2xl font-semibold text-gray-800">Welcome back,</div>
     <UButton block size="lg" color="secondary" variant="outline">
       <template #leading>
-        <img src="https://www.svgrepo.com/show/475656/google-color.svg" class="w-5 h-5" />
+        <img
+          src="https://www.svgrepo.com/show/475656/google-color.svg"
+          class="w-5 h-5"
+        />
       </template>
       Sign in with Google
     </UButton>
@@ -71,7 +74,13 @@ const handleLogin = async () => {
         <a href="#" class="text-secondary hover:underline">Forgot Password?</a>
       </div>
 
-      <UButton type="submit" block size="lg" color="secondary" class="mt-5 text-white">
+      <UButton
+        type="submit"
+        block
+        size="lg"
+        color="secondary"
+        class="mt-5 text-white"
+      >
         Sign in
       </UButton>
 
@@ -82,7 +91,9 @@ const handleLogin = async () => {
 
     <p class="text-sm text-center">
       Don't have an account?
-      <NuxtLink to="/signup" class="hover:underline text-blue-500">Register now</NuxtLink>
+      <NuxtLink to="/signup" class="hover:underline text-blue-500"
+        >Register now</NuxtLink
+      >
     </p>
   </div>
 </template>

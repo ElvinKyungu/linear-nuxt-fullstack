@@ -11,17 +11,19 @@ onClickOutside(target, () => {
 const menuGroups = ref([
   {
     label: 'Home',
+    isOpen: true,
     items: [{ label: 'Dashboard', icon: 'uil:home', to: '/' }],
   },
   {
     label: 'Pages',
     icon: 'uil:briefcase',
-    to: '/pages',
+    isOpen: true,
     items: [
       { label: 'Landing', icon: 'uil:globe', to: '/' },
       {
         label: 'Auth',
         icon: 'uil:user',
+        isOpen: false,
         items: [
           { label: 'Login', icon: 'uil:sign-in-alt', to: '/' },
           { label: 'Profile', icon: 'uil:user', to: '/' },
@@ -37,6 +39,10 @@ const menuGroups = ref([
     ],
   },
 ])
+
+const toggleGroup = (group: any) => {
+  group.isOpen = !group.isOpen
+}
 </script>
 
 <template>
@@ -70,18 +76,28 @@ const menuGroups = ref([
     <div class="flex flex-col px-5 overflow-y-auto">
       <nav>
         <ul>
-          <li v-for="(group, i) in menuGroups" :key="i" class="mb-4">
-            <p class="text-sm font-semibold uppercase text-gray-400">
-              {{ group.label }}
-            </p>
-            <ul>
+          <li v-for="(group, i) in menuGroups" :key="i" class="mb-2">
+            <button
+              class="w-full flex items-center justify-between py-2 px-3 font-semibold uppercase text-gray-300 hover:text-white"
+              @click="toggleGroup(group)"
+            >
+              <span>{{ group.label }}</span>
+              <UIcon
+                name="uil:angle-down"
+                class="w-8 h-8 transition-transform duration-200"
+                :class="{ 'rotate-180': group.isOpen }"
+              />
+            </button>
+            <ul v-if="group.isOpen" class="pl-4">
               <li
                 v-for="(item, j) in group.items"
                 :key="j"
                 class="py-2 flex items-center gap-3 cursor-pointer hover:bg-gray-800 rounded px-3"
               >
                 <UIcon :name="item.icon" class="w-5 h-5" />
-                <NuxtLink :to="item.to" class="flex-1">{{ item.label }}</NuxtLink>
+                <NuxtLink :to="item.to" class="flex-1">{{
+                  item.label
+                }}</NuxtLink>
               </li>
             </ul>
           </li>
@@ -94,5 +110,22 @@ const menuGroups = ref([
 <style>
 .z-sidebar {
   z-index: 99;
+}
+
+/* petite animation */
+.slide-enter-active,
+.slide-leave-active {
+  transition: all 0.3s ease;
+}
+.slide-enter-from,
+.slide-leave-to {
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+}
+.slide-enter-to,
+.slide-leave-from {
+  max-height: 500px;
+  opacity: 1;
 }
 </style>

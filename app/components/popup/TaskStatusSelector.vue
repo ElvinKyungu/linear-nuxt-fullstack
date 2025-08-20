@@ -47,7 +47,9 @@ const priorities = [
 const selected = ref(priorities[1])
 
 const filtered = computed(() =>
-  priorities.filter((p) => p.name.toLowerCase().includes(search.value.toLowerCase()))
+  priorities.filter((p) =>
+    p.name.toLowerCase().includes(search.value.toLowerCase())
+  )
 )
 
 const selectLevel = (level: any) => {

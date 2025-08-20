@@ -11,7 +11,8 @@
     "db:migrate": "prisma migrate dev",
     "db:generate": "prisma generate",
     "db:studio": "prisma studio",
-    "db:seed": "tsx prisma/seed.ts"
+    "db:seed": "tsx prisma/seed.ts",
+    "format": "prettier --write ."
   },
   "dependencies": {
     "@nuxt/content": "^2.7.2",
@@ -44,6 +45,7 @@
   "devDependencies": {
     "@types/bcryptjs": "^2.4.6",
     "@types/jsonwebtoken": "^9.0.10",
+    "prettier": "^3.6.2",
     "prisma": "^6.14.0"
   }
 }

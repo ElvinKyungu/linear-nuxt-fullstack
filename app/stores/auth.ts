@@ -8,7 +8,12 @@ export const useAuthStore = defineStore('auth', () => {
   const error = ref<string | null>(null)
   const loading = ref(false)
 
-  async function signup(email: string, password: string, name: string, lastName: string) {
+  async function signup(
+    email: string,
+    password: string,
+    name: string,
+    lastName: string
+  ) {
     loading.value = true
     error.value = null
 

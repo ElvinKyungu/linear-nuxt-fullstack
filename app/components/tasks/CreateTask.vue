@@ -28,12 +28,10 @@ const form = reactive({
   progress: 0,
   target_date: '',
 })
-const { openPopup: openPopupAnimation, closePopup: closePopupAnimation } = usePopupAnimation(
-  popupRef,
-  () => {
+const { openPopup: openPopupAnimation, closePopup: closePopupAnimation } =
+  usePopupAnimation(popupRef, () => {
     emit('close')
-  }
-)
+  })
 
 const emit = defineEmits(['close'])
 
@@ -160,7 +158,9 @@ onMounted(() => {
             <TaskAssignSelect
               v-if="isAssigneePopupOpen"
               :users="props.users"
-              :trigger-element="assigneeTrigger ? { $el: assigneeTrigger } : undefined"
+              :trigger-element="
+                assigneeTrigger ? { $el: assigneeTrigger } : undefined
+              "
               @close="isAssigneePopupOpen = false"
             />
           </div>

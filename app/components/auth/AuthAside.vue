@@ -16,7 +16,8 @@
 
       <div class="bg-white text-gray-900 p-4 rounded-xl">
         <p class="text-sm">
-          “Project-Hub UI is surprisingly handy for keeping all my business stuff in one place”
+          “Project-Hub UI is surprisingly handy for keeping all my business
+          stuff in one place”
         </p>
         <div class="mt-2 flex items-center space-x-2">
           <UAvatar src="/images/gab.jpg" />

@@ -29,7 +29,8 @@ onMounted(async () => {
   if (usersStore.users.length === 0) {
     await usersStore.fetchUsers()
   }
-  selected.value = usersStore.users.find((u) => u.id === props.modelValue) || null
+  selected.value =
+    usersStore.users.find((u) => u.id === props.modelValue) || null
   gsap.from(popup.value, {
     opacity: 0,
     y: -10,
@@ -41,7 +42,9 @@ onMounted(async () => {
 onClickOutside(popup, () => emit('close'))
 
 const filteredUsers = computed(() =>
-  props.users.filter((u: User) => u.name.toLowerCase().includes(search.value.toLowerCase()))
+  props.users.filter((u: User) =>
+    u.name.toLowerCase().includes(search.value.toLowerCase())
+  )
 )
 
 const selectUser = (user: User) => {
@@ -76,7 +79,9 @@ const selectUser = (user: User) => {
     </div>
 
     <div class="space-y-1 max-h-64 overflow-y-auto">
-      <div v-if="usersStore.loading" class="text-gray-500 text-center py-2">Loading users...</div>
+      <div v-if="usersStore.loading" class="text-gray-500 text-center py-2">
+        Loading users...
+      </div>
       <button
         v-for="user in filteredUsers"
         v-else
@@ -96,7 +101,11 @@ const selectUser = (user: User) => {
           </UChip>
           <span>{{ user.name }} {{ user.last_name }}</span>
         </div>
-        <UIcon v-if="selected?.id === user.id" name="uil:check" class="text-green-500" />
+        <UIcon
+          v-if="selected?.id === user.id"
+          name="uil:check"
+          class="text-green-500"
+        />
       </button>
     </div>
   </div>

@@ -23,13 +23,23 @@ const handleSignup = async () => {
     return
   }
 
-  const validationError = validateSignup(email.value, password.value, name.value, lastName.value)
+  const validationError = validateSignup(
+    email.value,
+    password.value,
+    name.value,
+    lastName.value
+  )
   if (validationError) {
     errorMessage.value = validationError
     return
   }
 
-  const success = await auth.signup(email.value, password.value, name.value, lastName.value)
+  const success = await auth.signup(
+    email.value,
+    password.value,
+    name.value,
+    lastName.value
+  )
 
   if (success) {
     successMessage.value = 'Inscription réussie ! Vérifiez votre boîte mail.'
@@ -105,7 +115,13 @@ const handleSignup = async () => {
         </UFormGroup>
       </div>
 
-      <UButton type="submit" block size="lg" color="secondary" class="mt-5 text-white">
+      <UButton
+        type="submit"
+        block
+        size="lg"
+        color="secondary"
+        class="mt-5 text-white"
+      >
         Create Account
       </UButton>
 
@@ -119,7 +135,9 @@ const handleSignup = async () => {
 
     <p class="text-sm text-center">
       Already have an account?
-      <NuxtLink to="/login" class="text-blue-500 hover:underline">Sign in here</NuxtLink>
+      <NuxtLink to="/login" class="text-blue-500 hover:underline"
+        >Sign in here</NuxtLink
+      >
     </p>
   </div>
 </template>

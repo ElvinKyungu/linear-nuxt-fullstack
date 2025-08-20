@@ -31,16 +31,22 @@ const { components: storeComponents } = storeToRefs(componentsStore)
 const optimisticTasks = ref<Task[]>([])
 
 // Utiliser les tâches optimistes si disponibles, sinon le store
-const tasks = computed(() => optimisticTasks.value.length > 0 ? optimisticTasks.value : storeTasks.value)
+const tasks = computed(() =>
+  optimisticTasks.value.length > 0 ? optimisticTasks.value : storeTasks.value
+)
 const users = computed(() => storeUsers.value)
 const components = computed(() => storeComponents.value)
 
 // Synchroniser les tâches optimistes avec le store
-watch(storeTasks, (newTasks: Task[]) => {
-  if (!isDragging.value && newTasks.length > 0) {
-    optimisticTasks.value = [...newTasks]
-  }
-}, { immediate: true, deep: true })
+watch(
+  storeTasks,
+  (newTasks: Task[]) => {
+    if (!isDragging.value && newTasks.length > 0) {
+      optimisticTasks.value = [...newTasks]
+    }
+  },
+  { immediate: true, deep: true }
+)
 
 const taskStatuses = [
   { key: 'Todo', label: 'To Do', color: '#0ea5e9' },
@@ -61,22 +67,24 @@ const groupedTasks = computed(() =>
 
 // Fonction de mise à jour optimiste simple
 function updateTaskOptimistically(taskId: string, updates: Partial<Task>) {
-  const taskIndex = optimisticTasks.value.findIndex((t: Task) => t.id === taskId)
+  const taskIndex = optimisticTasks.value.findIndex(
+    (t: Task) => t.id === taskId
+  )
   if (taskIndex !== -1) {
     // Créer une nouvelle référence pour déclencher la réactivité
-    const updatedTask = { 
-      ...optimisticTasks.value[taskIndex], 
+    const updatedTask = {
+      ...optimisticTasks.value[taskIndex],
       ...updates,
       // Re-enrichir avec assignee si nécessaire
-      assignee: updates.lead_id 
-        ? users.value.find(u => u.id === updates.lead_id) || null
-        : optimisticTasks.value[taskIndex].assignee
+      assignee: updates.lead_id
+        ? users.value.find((u) => u.id === updates.lead_id) || null
+        : optimisticTasks.value[taskIndex].assignee,
     }
-    
+
     optimisticTasks.value = [
       ...optimisticTasks.value.slice(0, taskIndex),
       updatedTask,
-      ...optimisticTasks.value.slice(taskIndex + 1)
+      ...optimisticTasks.value.slice(taskIndex + 1),
     ]
   }
 }
@@ -111,14 +119,16 @@ function handleDragChange(evt: any, targetStatus: string) {
   if (evt.added) {
     const task = evt.added.element as Task
     const oldStatus = task.status
-    
+
     // Mise à jour optimiste immédiate
     updateTaskOptimistically(task.id, { status: targetStatus })
-    
+
     // Synchronisation en arrière-plan
     syncTaskUpdate(task.id, { status: targetStatus })
-    
-    console.log(`🔄 Task "${task.title}" moved from "${oldStatus}" to "${targetStatus}"`)
+
+    console.log(
+      `🔄 Task "${task.title}" moved from "${oldStatus}" to "${targetStatus}"`
+    )
   }
 }
 
@@ -135,59 +145,90 @@ function handleDragEnd() {
 const todoTasks = computed({
   get: () => tasks.value.filter((task: Task) => task.status === 'Todo'),
   set: (newTasks: Task[]) => {
-    const otherTasks = tasks.value.filter((task: Task) => task.status !== 'Todo')
-    optimisticTasks.value = [...otherTasks, ...newTasks.map(task => ({ ...task, status: 'Todo' }))]
-  }
+    const otherTasks = tasks.value.filter(
+      (task: Task) => task.status !== 'Todo'
+    )
+    optimisticTasks.value = [
+      ...otherTasks,
+      ...newTasks.map((task) => ({ ...task, status: 'Todo' })),
+    ]
+  },
 })
 
 const inProgressTasks = computed({
   get: () => tasks.value.filter((task: Task) => task.status === 'In progress'),
   set: (newTasks: Task[]) => {
-    const otherTasks = tasks.value.filter((task: Task) => task.status !== 'In progress')
-    optimisticTasks.value = [...otherTasks, ...newTasks.map(task => ({ ...task, status: 'In progress' }))]
-  }
+    const otherTasks = tasks.value.filter(
+      (task: Task) => task.status !== 'In progress'
+    )
+    optimisticTasks.value = [
+      ...otherTasks,
+      ...newTasks.map((task) => ({ ...task, status: 'In progress' })),
+    ]
+  },
 })
 
 const technicalReviewTasks = computed({
-  get: () => tasks.value.filter((task: Task) => task.status === 'Technical Review'),
+  get: () =>
+    tasks.value.filter((task: Task) => task.status === 'Technical Review'),
   set: (newTasks: Task[]) => {
-    const otherTasks = tasks.value.filter((task: Task) => task.status !== 'Technical Review')
-    optimisticTasks.value = [...otherTasks, ...newTasks.map(task => ({ ...task, status: 'Technical Review' }))]
-  }
+    const otherTasks = tasks.value.filter(
+      (task: Task) => task.status !== 'Technical Review'
+    )
+    optimisticTasks.value = [
+      ...otherTasks,
+      ...newTasks.map((task) => ({ ...task, status: 'Technical Review' })),
+    ]
+  },
 })
 
 const completedTasks = computed({
   get: () => tasks.value.filter((task: Task) => task.status === 'Completed'),
   set: (newTasks: Task[]) => {
-    const otherTasks = tasks.value.filter((task: Task) => task.status !== 'Completed')
-    optimisticTasks.value = [...otherTasks, ...newTasks.map(task => ({ ...task, status: 'Completed' }))]
-  }
+    const otherTasks = tasks.value.filter(
+      (task: Task) => task.status !== 'Completed'
+    )
+    optimisticTasks.value = [
+      ...otherTasks,
+      ...newTasks.map((task) => ({ ...task, status: 'Completed' })),
+    ]
+  },
 })
 
 const backlogTasks = computed({
   get: () => tasks.value.filter((task: Task) => task.status === 'Backlog'),
   set: (newTasks: Task[]) => {
-    const otherTasks = tasks.value.filter((task: Task) => task.status !== 'Backlog')
-    optimisticTasks.value = [...otherTasks, ...newTasks.map(task => ({ ...task, status: 'Backlog' }))]
-  }
+    const otherTasks = tasks.value.filter(
+      (task: Task) => task.status !== 'Backlog'
+    )
+    optimisticTasks.value = [
+      ...otherTasks,
+      ...newTasks.map((task) => ({ ...task, status: 'Backlog' })),
+    ]
+  },
 })
 
 const pausedTasks = computed({
   get: () => tasks.value.filter((task: Task) => task.status === 'Paused'),
   set: (newTasks: Task[]) => {
-    const otherTasks = tasks.value.filter((task: Task) => task.status !== 'Paused')
-    optimisticTasks.value = [...otherTasks, ...newTasks.map(task => ({ ...task, status: 'Paused' }))]
-  }
+    const otherTasks = tasks.value.filter(
+      (task: Task) => task.status !== 'Paused'
+    )
+    optimisticTasks.value = [
+      ...otherTasks,
+      ...newTasks.map((task) => ({ ...task, status: 'Paused' })),
+    ]
+  },
 })
 
 // Map pour accéder facilement aux listes
 const taskLists = {
-  'Todo': todoTasks,
+  Todo: todoTasks,
   'In progress': inProgressTasks,
   'Technical Review': technicalReviewTasks,
-  'Completed': completedTasks,
-  'Backlog': backlogTasks,
-  'Paused': pausedTasks,
+  Completed: completedTasks,
+  Backlog: backlogTasks,
+  Paused: pausedTasks,
 }
 
 function openAssigneeModal(task: Task) {
@@ -195,7 +236,10 @@ function openAssigneeModal(task: Task) {
   assigneeModalOpen.value = true
 }
 
-function openPrioritySelector(data: { task: Task; triggerElement: HTMLElement }) {
+function openPrioritySelector(data: {
+  task: Task
+  triggerElement: HTMLElement
+}) {
   popupTask.value = data.task
   priorityTriggerElement.value = data.triggerElement
   prioritySelectorOpen.value = true
@@ -232,7 +276,9 @@ onMounted(async () => {
 
 <template>
   <div class="task-management-app h-screen flex flex-col overflow-hidden">
-    <header class="flex justify-between items-center p-4 border-b border-bordercolor text-white flex-shrink-0">
+    <header
+      class="flex justify-between items-center p-4 border-b border-bordercolor text-white flex-shrink-0"
+    >
       <div class="flex items-center gap-4">
         <UButton
           class="flex gap-3 cursor-pointer items-center"
@@ -264,7 +310,10 @@ onMounted(async () => {
 
     <main class="flex-1 overflow-hidden">
       <!-- Loading uniquement au premier chargement -->
-      <div v-if="tasksLoading && !tasks.length" class="text-center text-gray-400 p-4">
+      <div
+        v-if="tasksLoading && !tasks.length"
+        class="text-center text-gray-400 p-4"
+      >
         Loading tasks and users...
       </div>
       <template v-else>
@@ -279,7 +328,7 @@ onMounted(async () => {
               <UIcon name="uil:plus" class="text-2xl" />
             </UButton>
           </div>
-          
+
           <!-- Mode liste avec drag and drop optimisé -->
           <div v-for="status in groupedTasks" :key="status.key">
             <h1
@@ -287,9 +336,12 @@ onMounted(async () => {
               :style="{ backgroundColor: status.color + '10' }"
             >
               <div class="flex items-center gap-4 relative">
-                <IconTaskStatus :stroke-color="status.color" transform-status="rotate(-90 7 7)" />
+                <IconTaskStatus
+                  :stroke-color="status.color"
+                  transform-status="rotate(-90 7 7)"
+                />
                 <span class="flex gap-4">
-                  <span>{{ status.label }}</span> 
+                  <span>{{ status.label }}</span>
                   <span>{{ status.tasks.length }}</span>
                 </span>
               </div>
@@ -344,9 +396,9 @@ onMounted(async () => {
           <!-- Conteneur des colonnes avec hauteur calculée -->
           <div class="flex-1 overflow-hidden px-4 pb-4">
             <div class="flex gap-4 overflow-x-auto h-full">
-              <div 
-                v-for="status in taskStatuses" 
-                :key="status.key" 
+              <div
+                v-for="status in taskStatuses"
+                :key="status.key"
                 class="min-w-80 flex-shrink-0 flex flex-col h-full"
               >
                 <!-- En-tête de colonne (hauteur fixe) -->
@@ -360,8 +412,12 @@ onMounted(async () => {
                         :stroke-color="status.color"
                         transform-status="rotate(-90 7 7)"
                       />
-                      <span class="text-white font-medium">{{ status.label }}</span>
-                      <span class="text-gray-400 text-sm">{{ taskLists[status.key].value.length }}</span>
+                      <span class="text-white font-medium">{{
+                        status.label
+                      }}</span>
+                      <span class="text-gray-400 text-sm">{{
+                        taskLists[status.key].value.length
+                      }}</span>
                     </div>
                     <UButton
                       variant="ghost"
@@ -405,13 +461,15 @@ onMounted(async () => {
                       </div>
                     </template>
                   </draggable>
-                  
+
                   <!-- Zone de drop vide -->
                   <div
                     v-if="taskLists[status.key].value.length === 0"
                     class="border-2 border-dashed border-gray-600 rounded-lg p-8 text-center text-gray-400 min-h-[200px] flex items-center justify-center"
                   >
-                    <span class="text-sm">Drop tasks here<br>{{ status.label }} is empty</span>
+                    <span class="text-sm"
+                      >Drop tasks here<br />{{ status.label }} is empty</span
+                    >
                   </div>
                 </div>
               </div>
@@ -420,11 +478,11 @@ onMounted(async () => {
         </div>
       </template>
     </main>
-    
-    <CreateTask 
-      v-if="showTaskPopup" 
-      :users="users" 
-      @close="showTaskPopup = false" 
+
+    <CreateTask
+      v-if="showTaskPopup"
+      :users="users"
+      @close="showTaskPopup = false"
     />
 
     <!-- Popups globaux -->
@@ -434,7 +492,7 @@ onMounted(async () => {
       :trigger-element="priorityTriggerElement"
       @close="closePrioritySelector"
     />
-    
+
     <StatusSelector
       v-if="statusSelectorOpen && popupTask"
       :task="popupTask"
@@ -535,7 +593,8 @@ onMounted(async () => {
 }
 
 /* Permettre la sélection du texte dans les inputs */
-input, textarea {
+input,
+textarea {
   -webkit-user-select: text;
   -moz-user-select: text;
   -ms-user-select: text;

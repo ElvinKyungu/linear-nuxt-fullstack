@@ -93,7 +93,10 @@ const toggleProfile = useToggle(isProfileOpen)
             class="absolute right-0 mt-2 w-48 bg-primary shadow-bordercolor/20 border border-bordercolor shadow-lg rounded-lg"
           >
             <template v-for="(item, index) in menuItems" :key="index">
-              <div v-if="item.separator" class="border-t border-gray-600 my-2" />
+              <div
+                v-if="item.separator"
+                class="border-t border-gray-600 my-2"
+              />
               <UButton
                 v-else
                 variant="ghost"

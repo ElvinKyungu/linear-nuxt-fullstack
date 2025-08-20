@@ -19,7 +19,8 @@ watch(
 )
 
 const close = () => {
-  if (modal.value) hideModal(modal.value, () => emit('update:modelValue', false))
+  if (modal.value)
+    hideModal(modal.value, () => emit('update:modelValue', false))
 }
 
 const themes = [
@@ -53,7 +54,12 @@ const chooseTheme = (theme: string) => {
         <p class="text-left font-semibold mb-2">Choisis un thème</p>
         <ul class="flex flex-col justify-start gap-2">
           <li v-for="theme in themes" :key="theme.name">
-            <UButton :icon="theme.icon" variant="ghost" block @click="chooseTheme(theme.name)">
+            <UButton
+              :icon="theme.icon"
+              variant="ghost"
+              block
+              @click="chooseTheme(theme.name)"
+            >
               {{ theme.name }}
             </UButton>
           </li>

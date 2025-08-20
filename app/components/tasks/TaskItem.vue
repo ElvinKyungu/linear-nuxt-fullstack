@@ -15,11 +15,17 @@ const emit = defineEmits(['open-assignee', 'update-assignee'])
 
 const assigneeUser = computed(() => {
   if (!props.users || !props.task?.lead_id) return null
-  return props.users.find((user: User) => user.id === props.task.lead_id) || null
+  return (
+    props.users.find((user: User) => user.id === props.task.lead_id) || null
+  )
 })
 
 const taskComponent = computed(() => {
-  return props.components.find((c: Components) => c.id === props.task.component_id) || null
+  return (
+    props.components.find(
+      (c: Components) => c.id === props.task.component_id
+    ) || null
+  )
 })
 
 const isAssigneePopupOpen = ref(false)
@@ -121,7 +127,10 @@ const getStatusColor = () => {
           class="hover:bg-white/10 p-2 cursor-pointer rounded-xl"
           @click="openStatusPopup"
         >
-          <IconTaskStatus :stroke-color="statusColor" transform-status="rotate(-90 7 7)" />
+          <IconTaskStatus
+            :stroke-color="statusColor"
+            transform-status="rotate(-90 7 7)"
+          />
         </UButton>
         <span>{{ task?.title }}</span>
         <TaskStatusSelector
@@ -140,7 +149,10 @@ const getStatusColor = () => {
           size="xs"
           class="border border-bordercolor bg-black flex items-center gap-2 px-3 text-xs py-1 rounded-full"
         >
-          <span class="w-2 h-2 rounded-full" :class="getTagBgClass(task.type)" />
+          <span
+            class="w-2 h-2 rounded-full"
+            :class="getTagBgClass(task.type)"
+          />
           {{ task.type }}
         </UBadge>
       </div>
@@ -152,7 +164,11 @@ const getStatusColor = () => {
           size="xs"
           class="border flex items-center gap-2 px-3 text-xs py-1 border-bordercolor rounded-full bg-black"
         >
-          <UIcon v-if="taskComponent?.name" name="i-heroicons-puzzle-piece" class="mr-1" />
+          <UIcon
+            v-if="taskComponent?.name"
+            name="i-heroicons-puzzle-piece"
+            class="mr-1"
+          />
           Elvin UI {{ taskComponent?.name }}
         </UBadge>
       </div>
@@ -191,7 +207,9 @@ const getStatusColor = () => {
           v-if="isAssigneePopupOpen"
           :users="props.users"
           :model-value="leadId"
-          :trigger-element="assigneeTrigger ? { $el: assigneeTrigger } : undefined"
+          :trigger-element="
+            assigneeTrigger ? { $el: assigneeTrigger } : undefined
+          "
           @update:model-value="handleAssigneeSelect"
           @close="isAssigneePopupOpen = false"
         />
@@ -213,7 +231,10 @@ const getStatusColor = () => {
           class="hover:bg-white/10 p-1 cursor-pointer rounded"
           @click="openStatusPopup"
         >
-          <IconTaskStatus :stroke-color="getStatusColor()" transform-status="rotate(-90 7 7)" />
+          <IconTaskStatus
+            :stroke-color="getStatusColor()"
+            transform-status="rotate(-90 7 7)"
+          />
         </UButton>
         <span class="text-gray-400 text-sm">{{ task.status }}</span>
         <TaskStatusSelector
@@ -223,14 +244,14 @@ const getStatusColor = () => {
         />
       </div>
 
-     <div class="relative">
+      <div class="relative">
         <UButton
           ref="triggerElementRef"
           variant="ghost"
           class="hover:bg-white/10 p-1 cursor-pointer rounded relative"
           @click="openLevelSelector"
         >
-        <component :is="priorityIcon" />
+          <component :is="priorityIcon" />
         </UButton>
         <TaskPrioritySelector
           v-if="isLevelSelectorOpen"
@@ -239,7 +260,7 @@ const getStatusColor = () => {
           @update:model-value="handleLevelSelect"
           @close="isLevelSelectorOpen = false"
         />
-     </div>
+      </div>
     </div>
     <h3 class="text-white font-medium mb-3 line-clamp-2">
       {{ task?.title }}
@@ -304,7 +325,9 @@ const getStatusColor = () => {
             v-if="isAssigneePopupOpen"
             :users="props.users"
             :model-value="leadId"
-            :trigger-element="assigneeTrigger ? { $el: assigneeTrigger } : undefined"
+            :trigger-element="
+              assigneeTrigger ? { $el: assigneeTrigger } : undefined
+            "
             @update:model-value="handleAssigneeSelect"
             @close="isAssigneePopupOpen = false"
           />
