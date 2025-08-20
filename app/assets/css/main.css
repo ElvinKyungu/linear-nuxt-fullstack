@@ -1,1 +1,70 @@
-@import "tailwindcss";
+@import './layout/layout.scss';
+@import 'tailwindcss';
+@import 'tailwindcss' theme(static);
+@import '@nuxt/ui';
+
+@theme {
+  --color-primary: #101828;
+  --color-secondary: #201828;
+  --color-bordercolor: #424347;
+}
+@layer base {
+  body {
+    @apply relative z-[1] text-base font-normal;
+  }
+}
+
+@layer components {
+  .u-input {
+    @apply w-full bg-transparent text-black placeholder:text-gray-400 border border-gray-300 rounded-lg
+      focus:border-blue-500 focus:ring-2 focus:ring-blue-500;
+  }
+  .tag-border {
+    @apply bg-black text-white border-[0.5px] shrink-0 border-bordercolor rounded-full px-3 py-1;
+  }
+}
+
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+::-webkit-scrollbar-track {
+  background: #252525;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--primary-color);
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--primary-color);
+}
+:deep(.u-input input) {
+  color: #000 !important;
+}
+
+.bg-testing {
+  background-color: #ef4444;
+}
+.bg-development {
+  background-color: #3b82f6;
+}
+.bg-design {
+  background-color: #a855f7;
+}
+.bg-deployment {
+  background-color: #f97316;
+}
+.bg-research {
+  background-color: #14b8a6;
+}
+.bg-marketing {
+  background-color: #ec4899;
+}
+.bg-review {
+  background-color: #eab308;
+}
+.bg-other {
+  background-color: #6b7280;
+}
