@@ -1,69 +1,52 @@
-// stores/auth.ts
 import { defineStore } from 'pinia'
 
 export const useAuthStore = defineStore('auth', () => {
-  const user = useSupabaseUser()
-  const client = useSupabaseClient()
-
+  const user = ref(null)
   const error = ref<string | null>(null)
   const loading = ref(false)
 
-  async function signup(
-    email: string,
-    password: string,
-    name: string,
-    lastName: string
-  ) {
+  async function signup(email: string, password: string, name: string, lastName: string) {
     loading.value = true
     error.value = null
 
-    const { data, error: signUpError } = await client.auth.signUp({
-      email,
-      password,
-    })
-
-    if (signUpError) {
-      error.value = signUpError.message
-      loading.value = false
-      return false
-    }
-
-    const userId = data.user?.id
-    if (userId) {
-      await client.from('users').insert({
-        id: userId,
-        email,
-        name,
-        last_name: lastName,
-        avatar_url: '',
+    try {
+      const data = await $fetch('/api/auth/signup', {
+        method: 'POST',
+        body: { email, password, name, lastName }
       })
+      user.value = data.user
+      return true
+    } catch (err: any) {
+      error.value = err.data?.message || 'Signup failed'
+      return false
+    } finally {
+      loading.value = false
     }
-
-    loading.value = false
-    return true
   }
 
   async function login(email: string, password: string) {
     loading.value = true
     error.value = null
 
-    const { error: loginError } = await client.auth.signInWithPassword({
-      email,
-      password,
-    })
-
-    if (loginError) {
-      error.value = loginError.message
-      loading.value = false
+    try {
+      const data = await $fetch('/api/auth/login', {
+        method: 'POST',
+        body: { email, password }
+      })
+      user.value = data.user
+      return true
+    } catch (err: any) {
+      error.value = err.data?.message || 'Login failed'
       return false
+    } finally {
+      loading.value = false
     }
-
-    loading.value = false
-    return true
   }
 
   async function logout() {
-    await client.auth.signOut()
+    await $fetch('/api/auth/logout', { method: 'POST' })
+    user.value = null
+    await navigateTo('/login')
   }
 
   return {

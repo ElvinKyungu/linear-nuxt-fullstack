@@ -13,12 +13,14 @@ watch(
 
     if (extended) {
       // Fermer sidebar
-      gsap.timeline()
+      gsap
+        .timeline()
         .to(aside, { x: '-100%', duration: 0.3, ease: 'power2.inOut' }, 0)
         .to(wrap, { width: 0, duration: 0.35, ease: 'power2.inOut' }, 0)
     } else {
       // Réouvrir sidebar
-      gsap.timeline()
+      gsap
+        .timeline()
         .to(wrap, { width: '20rem', duration: 0.35, ease: 'power2.inOut' }, 0)
         .to(aside, { x: '0%', duration: 0.3, ease: 'power2.inOut' }, 0)
     }
@@ -33,10 +35,9 @@ watch(
     <div ref="sidebarWrapRef" class="w-80 shrink-0 overflow-hidden">
       <SidebarArea />
     </div>
-
-    <!-- Colonne principale -->
-    <div class="relative flex flex-1 flex-col overflow-hidden border border-bordercolor m-2 rounded-xl">
-      <!-- Header fixe -->
+    <div
+      class="relative flex flex-1 flex-col overflow-hidden border border-bordercolor m-2 rounded-xl"
+    >
       <header class="shrink-0">
         <HeaderArea />
       </header>

@@ -126,7 +126,9 @@ const toggleGroup = (group: any, key: string) => {
                 class="py-2 flex items-center gap-3 cursor-pointer hover:bg-gray-800 rounded px-3"
               >
                 <UIcon :name="item.icon" class="w-5 h-5" />
-                <NuxtLink :to="item.to" class="flex-1">{{ item.label }}</NuxtLink>
+                <NuxtLink :to="item.to" class="flex-1">{{
+                  item.label
+                }}</NuxtLink>
               </li>
             </ul>
           </li>
