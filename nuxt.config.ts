@@ -11,6 +11,8 @@ export default defineNuxtConfig({
     '@nuxt/test-utils',
     '@nuxt/ui',
     '@nuxt/scripts',
+    '@vueuse/nuxt',
+    '@pinia/nuxt',
   ],
   css: ['~/assets/css/main.css'],
   vite: {

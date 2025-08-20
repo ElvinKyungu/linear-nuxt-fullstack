@@ -8,25 +8,6 @@ onClickOutside(target, () => {
   sidebarStore.isSidebarOpen = false
 })
 
-const themeIcon = computed(() => {
-  switch (theme.value) {
-    case 'light':
-      return 'uil:sun'
-    case 'dark':
-      return 'uil:moon'
-    case 'ghibli':
-      return 'uil:film'
-    default:
-      return 'uil:desktop'
-  }
-})
-
-function setTheme(value: 'light' | 'dark' | 'system' | 'ghibli') {
-  theme.value = value
-  isThemeModalOpen.value = false
-  // ici tu peux aussi persister ce choix dans localStorage ou useColorMode
-}
-
 const menuGroups = ref([
   {
     label: 'Home',

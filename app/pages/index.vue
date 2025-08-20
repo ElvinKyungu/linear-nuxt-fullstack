@@ -1,3 +1,8 @@
+<script setup lang="ts">
+</script>
+
 <template>
-  <h1>Hello </h1>
+  <NuxtLayout>
+    <h1>Hello</h1>
+  </NuxtLayout>
 </template>
