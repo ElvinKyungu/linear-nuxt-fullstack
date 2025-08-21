@@ -1,18 +1,17 @@
-import { z } from 'zod'
 import { prisma } from '~/lib/prisma'
 import { hashPassword, generateToken } from '~/utils/auth'
-
-const signupSchema = z.object({
-  email: z.string().email(),
-  password: z.string().min(6),
-  name: z.string().min(1),
-  lastName: z.string().min(1)
-})
 
 export default defineEventHandler(async (event) => {
   try {
     const body = await readBody(event)
-    const { email, password, name, lastName } = signupSchema.parse(body)
+    const { email, password, name, lastName } = body
+    
+    if (!email || !password || !name || !lastName) {
+      throw createError({
+        statusCode: 400,
+        statusMessage: 'All fields are required'
+      })
+    }
     
     // Vérifier si l'utilisateur existe déjà
     const existingUser = await prisma.user.findUnique({
@@ -61,9 +60,12 @@ export default defineEventHandler(async (event) => {
       }
     }
   } catch (error) {
+    if (error.statusCode) {
+      throw error
+    }
     throw createError({
-      statusCode: 400,
-      statusMessage: error instanceof Error ? error.message : 'Signup failed'
+      statusCode: 500,
+      statusMessage: 'Internal server error'
     })
   }
 })

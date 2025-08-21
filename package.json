@@ -30,16 +30,15 @@
     "bcryptjs": "^3.0.2",
     "eslint": "^9.33.0",
     "gsap": "^3.13.0",
-    "h3-zod": "^0.5.3",
     "jsonwebtoken": "^9.0.2",
     "nuxt": "^4.0.3",
-    "nuxt-auth-utils": "^0.5.23",
     "pinia": "^3.0.3",
     "sqlite3": "^5.1.7",
     "tailwindcss": "^4.1.12",
     "typescript": "^5.9.2",
     "vue": "^3.5.18",
     "vue-router": "^4.5.1",
+    "vuedraggable": "^4.1.0",
     "zod": "^3.25.76"
   },
   "devDependencies": {

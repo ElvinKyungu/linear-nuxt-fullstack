@@ -1,5 +1,4 @@
 <script setup lang="ts">
-const { signIn, data: sessionData } = useAuth()
 const authStore = useAuthStore()
 
 const email = ref('')
@@ -26,22 +25,26 @@ const handleLogin = async () => {
   }
 }
 
-// Connexion GitHub
+// Connexion GitHub (si tu as prévu une route API côté serveur)
 const handleGithubLogin = async () => {
   try {
-    await signIn('github', { callbackUrl: '/' })
+    await authStore.oauthLogin('github') // <-- méthode à implémenter dans ton store
   } catch (error) {
     errorMessage.value = 'Erreur lors de la connexion GitHub'
   }
 }
 
 // Redirection si déjà connecté
-watch(sessionData, (session) => {
-  if (session) {
-    navigateTo('/')
+watch(
+  () => authStore.session,
+  (session) => {
+    if (session) {
+      navigateTo('/')
+    }
   }
-})
+)
 </script>
+
 
 <template>
   <div class="w-full max-w-md space-y-6">
@@ -53,7 +56,7 @@ watch(sessionData, (session) => {
       size="lg" 
       color="primary" 
       variant="outline" 
-      class="cursor-pointer"
+      class="cursor-pointer border border-bordercolor rounded-full"
       @click="handleGithubLogin"
     >
       <template #leading>
@@ -64,10 +67,12 @@ watch(sessionData, (session) => {
       </template>
       <span class="text-white">Sign in with GitHub</span>
     </UButton>
-    
-    <p>Or enter your details</p>
 
-    <!-- Formulaire email/password -->
+    <div class="grid w-full grid-cols-3 items-center text-gray-300 text-sm">
+      <span class="col-span-1 w-full h-[2px] bg-bordercolor" />
+      <p class="text-center col-span-1 w-full">Or enter your details</p>
+      <span class="col-span-1 w-full h-[2px] bg-bordercolor" />
+    </div>
     <form @submit.prevent="handleLogin">
       <div class="space-y-4 flex flex-col w-full relative">
         <UFormGroup label="Email">
@@ -108,8 +113,7 @@ watch(sessionData, (session) => {
         type="submit"
         block
         size="lg"
-        color="primary"
-        class="mt-5 text-white cursor-pointer"
+        class="mt-5 text-black bg-white cursor-pointer"
         :loading="loading"
         :disabled="loading"
       >

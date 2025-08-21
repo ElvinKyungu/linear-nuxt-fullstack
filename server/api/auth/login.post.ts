@@ -1,22 +1,22 @@
-import { z } from 'zod'
 import { prisma } from '~/lib/prisma'
 import { comparePassword, generateToken } from '~/utils/auth'
-
-const loginSchema = z.object({
-  email: z.string().email(),
-  password: z.string().min(6)
-})
 
 export default defineEventHandler(async (event) => {
   try {
     const body = await readBody(event)
-    const { email, password } = loginSchema.parse(body)
-
+    const { email, password } = body
+    if (!email || !password) {
+      throw createError({
+        statusCode: 400,
+        statusMessage: 'Email and password are required'
+      })
+    }
+    
     const user = await prisma.user.findUnique({
       where: { email }
     })
-
-    if (!user || !(await comparePassword(password, user.password))) {
+    
+    if (!user || !user.password || !(await comparePassword(password, user.password))) {
       throw createError({
         statusCode: 401,
         statusMessage: 'Invalid credentials'
@@ -28,12 +28,11 @@ export default defineEventHandler(async (event) => {
       email: user.email
     })
     
-    // Définir le cookie
     setCookie(event, 'auth-token', token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'lax',
-      maxAge: 60 * 60 * 24 * 7 // 7 jours
+      maxAge: 60 * 60 * 24 * 7
     })
     
     return {
@@ -46,9 +45,12 @@ export default defineEventHandler(async (event) => {
       }
     }
   } catch (error) {
+    if (error.statusCode) {
+      throw error
+    }
     throw createError({
-      statusCode: 400,
-      statusMessage: error instanceof Error ? error.message : 'Login failed'
+      statusCode: 500,
+      statusMessage: 'Internal server error'
     })
   }
 })
