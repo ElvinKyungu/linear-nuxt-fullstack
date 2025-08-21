@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { useAuthStore } from '@/stores/auth'
-import { validateSignup } from '@/utils/authFormValidation'
 
 const auth = useAuthStore()
 
@@ -20,17 +19,6 @@ const handleSignup = async () => {
   // Vérifie la correspondance des mots de passe
   if (password.value !== confirmPassword.value) {
     errorMessage.value = 'Les mots de passe ne correspondent pas.'
-    return
-  }
-
-  const validationError = validateSignup(
-    email.value,
-    password.value,
-    name.value,
-    lastName.value
-  )
-  if (validationError) {
-    errorMessage.value = validationError
     return
   }
 

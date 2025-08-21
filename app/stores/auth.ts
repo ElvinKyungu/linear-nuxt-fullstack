@@ -1,28 +1,12 @@
+// stores/auth.ts
 import { defineStore } from 'pinia'
 
 export const useAuthStore = defineStore('auth', () => {
-  const user = ref(null)
+  const { data: sessionData } = useAuth()
+  
+  const user = computed(() => sessionData.value?.user || null)
   const error = ref<string | null>(null)
   const loading = ref(false)
-
-  async function signup(email: string, password: string, name: string, lastName: string) {
-    loading.value = true
-    error.value = null
-
-    try {
-      const data = await $fetch('/api/auth/signup', {
-        method: 'POST',
-        body: { email, password, name, lastName }
-      })
-      user.value = data.user
-      return true
-    } catch (err: any) {
-      error.value = err.data?.message || 'Signup failed'
-      return false
-    } finally {
-      loading.value = false
-    }
-  }
 
   async function login(email: string, password: string) {
     loading.value = true
@@ -33,7 +17,7 @@ export const useAuthStore = defineStore('auth', () => {
         method: 'POST',
         body: { email, password }
       })
-      user.value = data.user
+      await refreshSession()
       return true
     } catch (err: any) {
       error.value = err.data?.message || 'Login failed'
@@ -44,9 +28,8 @@ export const useAuthStore = defineStore('auth', () => {
   }
 
   async function logout() {
-    await $fetch('/api/auth/logout', { method: 'POST' })
-    user.value = null
-    await navigateTo('/login')
+    const { signOut } = useAuth()
+    await signOut({ callbackUrl: '/login' })
   }
 
   return {
@@ -54,7 +37,6 @@ export const useAuthStore = defineStore('auth', () => {
     error,
     loading,
     login,
-    signup,
     logout,
   }
 })
