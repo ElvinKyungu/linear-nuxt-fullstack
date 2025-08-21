@@ -1,4 +1,6 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+console.log("📍 Home page mounted")
+</script>
 
 <template>
   <NuxtLayout>

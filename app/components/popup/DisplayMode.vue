@@ -37,21 +37,14 @@ onClickOutside(popup, () => {
       <UButton
         class="text-gray-400 flex flex-col bg-gray-400/20 justify-center hover:text-white col-span-1"
         variant="ghost"
-        @click="
-          emit('update:modelValue', 'grid')
-          emit('close')
-        "
+        @click="emit('update:modelValue', 'grid'); emit('close')"
       >
         <UIcon name="uil:grid" class="text-2xl cursor-pointer text-gray-400" />
         <span class="text-sm text-white">Grid</span>
       </UButton>
       <UButton
         class="text-gray-400 flex flex-col justify-center bg-gray-400/20 hover:text-white col-span-1"
-        variant=""
-        @click="
-          emit('update:modelValue', 'list')
-          emit('close')
-        "
+        @click="emit('update:modelValue', 'list'); emit('close')"
       >
         <UIcon
           name="uil:list-ul"

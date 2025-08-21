@@ -1,4 +1,6 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+console.log("📍 Login page mounted")
+</script>
 <template>
   <AuthLayout>
     <AuthLoginForm />

@@ -12,6 +12,7 @@
     "db:generate": "prisma generate",
     "db:studio": "prisma studio",
     "db:seed": "tsx prisma/seed.ts",
+    "seed:tasks": "tsx prisma/seed-tasks.ts",
     "format": "prettier --write ."
   },
   "dependencies": {
