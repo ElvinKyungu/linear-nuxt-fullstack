@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { useAuthStore } from '@/stores/auth'
 
 const auth = useAuthStore()
 
@@ -8,32 +7,35 @@ const lastName = ref('')
 const email = ref('')
 const password = ref('')
 const confirmPassword = ref('')
-
+const loading = ref(false)
 const errorMessage = ref<string | null>(null)
 const successMessage = ref<string | null>(null)
 
 const handleSignup = async () => {
+  loading.value = true
   errorMessage.value = null
   successMessage.value = null
-
-  // Vérifie la correspondance des mots de passe
+  
   if (password.value !== confirmPassword.value) {
     errorMessage.value = 'Les mots de passe ne correspondent pas.'
     return
   }
+  try{
+    const success = await auth.signup(
+      email.value,
+      password.value,
+      name.value,
+      lastName.value
+    )
 
-  const success = await auth.signup(
-    email.value,
-    password.value,
-    name.value,
-    lastName.value
-  )
-
-  if (success) {
-    successMessage.value = 'Inscription réussie ! Vérifiez votre boîte mail.'
-    await navigateTo('/login')
-  } else {
+    if (success) {
+      successMessage.value = 'Inscription réussie ! Vérifiez votre boîte mail.'
+      await navigateTo('/login')
+    }
+  } catch(error){
     errorMessage.value = auth.error
+  } finally{
+    loading.value = false
   }
 }
 </script>
@@ -41,7 +43,7 @@ const handleSignup = async () => {
 <template>
   <div class="w-full max-w-md space-y-6">
     <div class="text-2xl font-semibold text-gray-800">Create your account</div>
-    <p class="text-gray-500">Please fill in the form to sign up</p>
+    <p class="text-gray-300">Please fill in the form to sign up</p>
 
     <form @submit.prevent="handleSignup">
       <div class="space-y-4 flex flex-col">
@@ -52,7 +54,7 @@ const handleSignup = async () => {
             placeholder="John"
             icon="uil:user"
             variant="none"
-            class="u-input"
+            class="u-input border border-bordercolor text-white"
           />
         </UFormGroup>
 
@@ -63,7 +65,7 @@ const handleSignup = async () => {
             placeholder="Doe"
             icon="uil:user"
             variant="none"
-            class="u-input"
+            class="u-input border border-bordercolor"
           />
         </UFormGroup>
 
@@ -74,7 +76,7 @@ const handleSignup = async () => {
             placeholder="example@email.com"
             icon="uil:envelope"
             variant="none"
-            class="u-input"
+            class="u-input border border-bordercolor"
           />
         </UFormGroup>
 
@@ -86,7 +88,7 @@ const handleSignup = async () => {
             placeholder="******"
             icon="uil:lock"
             variant="none"
-            class="u-input"
+            class="u-input border border-bordercolor"
           />
         </UFormGroup>
 
@@ -98,7 +100,7 @@ const handleSignup = async () => {
             placeholder="******"
             icon="uil:lock"
             variant="none"
-            class="u-input"
+            class="u-input border border-bordercolor"
           />
         </UFormGroup>
       </div>
@@ -107,10 +109,11 @@ const handleSignup = async () => {
         type="submit"
         block
         size="lg"
-        color="secondary"
-        class="mt-5 text-white"
+        class="mt-5 text-black bg-white cursor-pointer"
+        :loading="loading"
+        :disabled="loading"
       >
-        Create Account
+        {{ loading ? 'Creating account in...' : 'Create Account' }}
       </UButton>
 
       <p v-if="errorMessage" class="text-sm text-red-500 mt-2 text-center">
@@ -131,7 +134,5 @@ const handleSignup = async () => {
 </template>
 
 <style scoped>
-:deep(.u-input input) {
-  color: #000 !important;
-}
+
 </style>

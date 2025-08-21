@@ -14,7 +14,9 @@ const handleLogin = async () => {
   try {
     const success = await authStore.login(email.value, password.value)
     if (success) {
-      await navigateTo('/')
+      console.log('success');
+       await authStore.checkAuth()
+      await navigateTo('/', { replace: true })
     } else {
       errorMessage.value = authStore.error
     }
@@ -34,15 +36,12 @@ const handleGithubLogin = async () => {
   }
 }
 
-// Redirection si déjà connecté
-watch(
-  () => authStore.session,
-  (session) => {
-    if (session) {
-      navigateTo('/')
-    }
+onMounted(async () => {
+  const ok = await authStore.checkAuth()
+  if (ok) {
+    await navigateTo('/')
   }
-)
+})
 </script>
 
 

@@ -1,4 +1,3 @@
-// server/api/tasks/index.get.ts
 import { prisma } from '~/lib/prisma'
 import { verifyToken } from '~/utils/auth'
 
@@ -12,8 +11,23 @@ export default defineEventHandler(async (event) => {
     })
   }
 
+  const taskId = getRouterParam(event, 'id')
+  const body = await readBody(event)
+
+  if (!taskId) {
+    throw createError({
+      statusCode: 400,
+      statusMessage: 'Task ID is required'
+    })
+  }
+
   try {
-    const tasks = await prisma.task.findMany({
+    const task = await prisma.task.update({
+      where: { id: taskId },
+      data: {
+        ...body,
+        updatedAt: new Date(),
+      },
       include: {
         assignee: {
           select: {
@@ -25,19 +39,15 @@ export default defineEventHandler(async (event) => {
           }
         },
         component: true
-      },
-      orderBy: {
-        createdAt: 'desc'
       }
     })
 
-    // Retourner dans le format attendu par le store
-    return { data: tasks }
+    return { data: task }
   } catch (error) {
-    console.error('Error fetching tasks:', error)
+    console.error('Error updating task:', error)
     throw createError({
       statusCode: 500,
-      statusMessage: 'Failed to fetch tasks'
+      statusMessage: 'Failed to update task'
     })
   }
 })

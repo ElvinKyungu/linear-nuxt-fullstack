@@ -1,15 +1,15 @@
 export default defineNuxtRouteMiddleware(async (to) => {
   // Routes publiques
   if (['/login', '/signup'].includes(to.path)) return
-  
-  // Côté serveur, on fait confiance au token
-  if (import.meta.server) return
-  
-  // Côté client, vérifier si l'utilisateur est connecté
-  const { $fetch } = useNuxtApp()
-  
+
+  const authStore = useAuthStore()
+
+  // Si déjà en mémoire → pas besoin de refetch
+  if (authStore.user) return
+
   try {
-    await $fetch('/api/auth/me')
+    const { user } = await $fetch('/api/auth/me')
+    authStore.user = user
   } catch {
     return navigateTo('/login')
   }

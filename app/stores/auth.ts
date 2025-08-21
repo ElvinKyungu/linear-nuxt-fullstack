@@ -4,7 +4,7 @@ export const useAuthStore = defineStore('auth', () => {
   const user = ref(null)
   const error = ref<string | null>(null)
   const loading = ref(false)
-
+  const session = computed(() => user.value)
   // Vérifier si l'utilisateur est connecté
   const checkAuth = async () => {
     try {
@@ -26,7 +26,6 @@ export const useAuthStore = defineStore('auth', () => {
         method: 'POST',
         body: { email, password, name, lastName }
       })
-      
       user.value = data.user
       return true
     } catch (err: any) {
@@ -46,7 +45,6 @@ export const useAuthStore = defineStore('auth', () => {
         method: 'POST',
         body: { email, password }
       })
-      
       user.value = data.user
       return true
     } catch (err: any) {
@@ -71,5 +69,6 @@ export const useAuthStore = defineStore('auth', () => {
     login,
     signup,
     logout,
+    session
   }
 })

@@ -2,6 +2,6 @@
 
 <template>
   <NuxtLayout>
-    <h1>Hello</h1>
+    <Tasks />
   </NuxtLayout>
 </template>
