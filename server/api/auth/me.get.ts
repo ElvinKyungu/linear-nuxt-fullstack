@@ -2,7 +2,8 @@
 import { users } from '~/data/users'
 import jwt from 'jsonwebtoken'
 
-const JWT_SECRET = process.env.JWT_SECRET || 'your-super-secret-key-change-in-production'
+const JWT_SECRET =
+  process.env.JWT_SECRET || 'your-super-secret-key-change-in-production'
 
 export default defineEventHandler(async (event) => {
   const token = getCookie(event, 'auth-token')
@@ -10,18 +11,21 @@ export default defineEventHandler(async (event) => {
   if (!token) {
     throw createError({
       statusCode: 401,
-      statusMessage: 'No token provided'
+      statusMessage: 'No token provided',
     })
   }
 
   try {
-    const decoded = jwt.verify(token, JWT_SECRET) as { userId: string, email: string }
-    const user = users.find(u => u.id === decoded.userId)
+    const decoded = jwt.verify(token, JWT_SECRET) as {
+      userId: string
+      email: string
+    }
+    const user = users.find((u) => u.id === decoded.userId)
 
     if (!user) {
       throw createError({
         statusCode: 401,
-        statusMessage: 'User not found'
+        statusMessage: 'User not found',
       })
     }
 
@@ -31,13 +35,13 @@ export default defineEventHandler(async (event) => {
         name: user.name,
         lastName: user.lastName,
         email: user.email,
-        avatarUrl: user.avatarUrl
-      }
+        avatarUrl: user.avatarUrl,
+      },
     }
   } catch (error: any) {
     throw createError({
       statusCode: 401,
-      statusMessage: 'Invalid token'
+      statusMessage: 'Invalid token',
     })
   }
 })

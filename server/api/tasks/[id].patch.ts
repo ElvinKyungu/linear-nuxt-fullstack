@@ -3,23 +3,23 @@ import { tasks, enrichTasks } from '~/data/tasks'
 
 export default defineEventHandler(async (event) => {
   const token = getCookie(event, 'auth-token')
-  
+
   if (!token) {
     throw createError({
       statusCode: 401,
-      statusMessage: 'Unauthorized'
+      statusMessage: 'Unauthorized',
     })
   }
 
   const taskId = getRouterParam(event, 'id')
   const updates = await readBody(event)
 
-  const taskIndex = tasks.findIndex(t => t.id === taskId)
-  
+  const taskIndex = tasks.findIndex((t) => t.id === taskId)
+
   if (taskIndex === -1) {
     throw createError({
       statusCode: 404,
-      statusMessage: 'Task not found'
+      statusMessage: 'Task not found',
     })
   }
 
@@ -27,14 +27,14 @@ export default defineEventHandler(async (event) => {
   tasks[taskIndex] = {
     ...tasks[taskIndex],
     ...updates,
-    updatedAt: new Date()
+    updatedAt: new Date(),
   }
 
   // Retourner la tâche enrichie
   const enrichedTasks = enrichTasks()
-  const updatedTask = enrichedTasks.find(t => t.id === taskId)
+  const updatedTask = enrichedTasks.find((t) => t.id === taskId)
 
   return {
-    data: updatedTask
+    data: updatedTask,
   }
 })

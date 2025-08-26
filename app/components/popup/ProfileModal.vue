@@ -14,7 +14,7 @@ const { showModal, hideModal } = useGsapModal()
 const form = reactive({
   name: '',
   lastName: '',
-  email: ''
+  email: '',
 })
 
 const loading = ref(false)
@@ -22,16 +22,19 @@ const error = ref('')
 const success = ref('')
 
 // Initialiser le formulaire avec les données utilisateur
-watch(() => props.modelValue, (val) => {
-  if (val) {
-    if (authStore.user) {
-      form.name = authStore.user.name
-      form.lastName = authStore.user.lastName
-      form.email = authStore.user.email
+watch(
+  () => props.modelValue,
+  (val) => {
+    if (val) {
+      if (authStore.user) {
+        form.name = authStore.user.name
+        form.lastName = authStore.user.lastName
+        form.email = authStore.user.email
+      }
+      if (modal.value) showModal(modal.value)
     }
-    if (modal.value) showModal(modal.value)
   }
-})
+)
 
 const close = () => {
   if (modal.value) {
@@ -47,7 +50,7 @@ const handleSubmit = async () => {
   loading.value = true
   error.value = ''
   success.value = ''
-  
+
   try {
     await authStore.updateProfile(form)
     success.value = 'Profil mis à jour avec succès!'
@@ -62,13 +65,13 @@ const handleSubmit = async () => {
 const handleAvatarChange = async () => {
   loading.value = true
   error.value = ''
-  
+
   try {
     // Pour cette démo, on change juste l'avatar aléatoirement
     await authStore.uploadAvatar(new File([], 'avatar'))
     success.value = 'Avatar mis à jour!'
   } catch (err) {
-    error.value = authStore.error || 'Erreur lors de la mise à jour de l\'avatar'
+    error.value = authStore.error || "Erreur lors de la mise à jour de l'avatar"
   } finally {
     loading.value = false
   }
@@ -153,7 +156,7 @@ const handleAvatarChange = async () => {
           <div v-if="error" class="text-red-500 text-sm text-center">
             {{ error }}
           </div>
-          
+
           <div v-if="success" class="text-green-500 text-sm text-center">
             {{ success }}
           </div>

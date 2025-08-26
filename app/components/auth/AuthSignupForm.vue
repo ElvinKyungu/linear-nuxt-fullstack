@@ -1,5 +1,4 @@
 <script setup lang="ts">
-
 const auth = useAuthStore()
 
 const name = ref('')
@@ -15,12 +14,12 @@ const handleSignup = async () => {
   loading.value = true
   errorMessage.value = null
   successMessage.value = null
-  
+
   if (password.value !== confirmPassword.value) {
     errorMessage.value = 'Les mots de passe ne correspondent pas.'
     return
   }
-  try{
+  try {
     const success = await auth.signup(
       email.value,
       password.value,
@@ -32,9 +31,9 @@ const handleSignup = async () => {
       successMessage.value = 'Inscription réussie ! Vérifiez votre boîte mail.'
       await navigateTo('/login')
     }
-  } catch(error){
+  } catch (error) {
     errorMessage.value = auth.error
-  } finally{
+  } finally {
     loading.value = false
   }
 }
@@ -133,6 +132,4 @@ const handleSignup = async () => {
   </div>
 </template>
 
-<style scoped>
-
-</style>
+<style scoped></style>

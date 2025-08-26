@@ -2,7 +2,8 @@
 import { users } from '~/data/users'
 import jwt from 'jsonwebtoken'
 
-const JWT_SECRET = process.env.JWT_SECRET || 'your-super-secret-key-change-in-production'
+const JWT_SECRET =
+  process.env.JWT_SECRET || 'your-super-secret-key-change-in-production'
 
 export default defineEventHandler(async (event) => {
   const token = getCookie(event, 'auth-token')
@@ -10,18 +11,21 @@ export default defineEventHandler(async (event) => {
   if (!token) {
     throw createError({
       statusCode: 401,
-      statusMessage: 'No token provided'
+      statusMessage: 'No token provided',
     })
   }
 
   try {
-    const decoded = jwt.verify(token, JWT_SECRET) as { userId: string, email: string }
-    const userIndex = users.findIndex(u => u.id === decoded.userId)
+    const decoded = jwt.verify(token, JWT_SECRET) as {
+      userId: string
+      email: string
+    }
+    const userIndex = users.findIndex((u) => u.id === decoded.userId)
 
     if (userIndex === -1) {
       throw createError({
         statusCode: 401,
-        statusMessage: 'User not found'
+        statusMessage: 'User not found',
       })
     }
 
@@ -30,8 +34,9 @@ export default defineEventHandler(async (event) => {
     const user = users[userIndex]
     const colors = ['6366f1', 'ec4899', '10b981', 'f59e0b', 'ef4444', '8b5cf6']
     const randomColor = colors[Math.floor(Math.random() * colors.length)]
-    
-    users[userIndex].avatarUrl = `https://ui-avatars.com/api/?name=${encodeURIComponent(user.name + ' ' + user.lastName)}&background=${randomColor}&color=ffffff`
+
+    users[userIndex].avatarUrl =
+      `https://ui-avatars.com/api/?name=${encodeURIComponent(user.name + ' ' + user.lastName)}&background=${randomColor}&color=ffffff`
 
     return {
       user: {
@@ -39,13 +44,13 @@ export default defineEventHandler(async (event) => {
         name: users[userIndex].name,
         lastName: users[userIndex].lastName,
         email: users[userIndex].email,
-        avatarUrl: users[userIndex].avatarUrl
-      }
+        avatarUrl: users[userIndex].avatarUrl,
+      },
     }
   } catch (error: any) {
     throw createError({
       statusCode: 401,
-      statusMessage: 'Invalid token'
+      statusMessage: 'Invalid token',
     })
   }
 })

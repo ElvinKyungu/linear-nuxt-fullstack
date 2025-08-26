@@ -12,7 +12,7 @@ export const useAuthStore = defineStore('auth', () => {
     try {
       const { user: loggedUser } = await $fetch('/api/auth/login', {
         method: 'POST',
-        body: { email, password }
+        body: { email, password },
       })
       user.value = loggedUser
       await navigateTo('/')
@@ -25,18 +25,23 @@ export const useAuthStore = defineStore('auth', () => {
     }
   }
 
-  const signup = async (email: string, password: string, name: string, lastName: string) => {
+  const signup = async (
+    email: string,
+    password: string,
+    name: string,
+    lastName: string
+  ) => {
     loading.value = true
     error.value = null
     try {
       const { user: newUser } = await $fetch('/api/auth/signup', {
         method: 'POST',
-        body: { email, password, name, lastName }
+        body: { email, password, name, lastName },
       })
       user.value = newUser
       return newUser
     } catch (err: any) {
-      error.value = err.data?.message || 'Erreur lors de l\'inscription'
+      error.value = err.data?.message || "Erreur lors de l'inscription"
       throw err
     } finally {
       loading.value = false
@@ -73,7 +78,7 @@ export const useAuthStore = defineStore('auth', () => {
     try {
       const { user: updatedUser } = await $fetch('/api/auth/profile', {
         method: 'PATCH',
-        body: updates
+        body: updates,
       })
       user.value = updatedUser
       return updatedUser
@@ -93,12 +98,12 @@ export const useAuthStore = defineStore('auth', () => {
       formData.append('avatar', file)
       const { user: updatedUser } = await $fetch('/api/auth/avatar', {
         method: 'POST',
-        body: formData
+        body: formData,
       })
       user.value = updatedUser
       return updatedUser
     } catch (err: any) {
-      error.value = err.data?.message || 'Erreur lors de l\'upload'
+      error.value = err.data?.message || "Erreur lors de l'upload"
       throw err
     } finally {
       loading.value = false
@@ -114,6 +119,6 @@ export const useAuthStore = defineStore('auth', () => {
     logout,
     checkAuth,
     updateProfile,
-    uploadAvatar
+    uploadAvatar,
   }
 })

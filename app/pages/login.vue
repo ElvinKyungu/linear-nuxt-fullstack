@@ -1,5 +1,5 @@
 <script setup lang="ts">
-console.log("📍 Login page mounted")
+console.log('📍 Login page mounted')
 </script>
 <template>
   <AuthLayout>

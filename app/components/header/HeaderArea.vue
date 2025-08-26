@@ -87,55 +87,53 @@ const currentUser = computed(() => authStore.user)
               </li>
             </ul>
           </NPopover>
-       </div>
-       
-       <div class="relative">
-        <div class="flex items-center gap-2">
-          <span v-if="currentUser" class="text-sm hidden md:block">
-            {{ currentUser.name }} {{ currentUser.lastName }}
-          </span>
-          <UAvatar 
-            :src="currentUser?.avatarUrl" 
-            :alt="currentUser?.name"
-            class="cursor-pointer hover:ring-2 hover:ring-primary" 
-            @click="toggleProfile" 
-          />
         </div>
-        
-        <NPopover
-          v-model:show="isProfileOpen"
-          placement="bottom-end"
-          trigger="click"
-          class="absolute"
-        >
-          <ul
-            v-if="isProfileOpen"
-            class="w-48 bg-gray-800 text-white rounded-lg shadow-lg overflow-hidden"
+
+        <div class="relative">
+          <div class="flex items-center gap-2">
+            <span v-if="currentUser" class="text-sm hidden md:block">
+              {{ currentUser.name }} {{ currentUser.lastName }}
+            </span>
+            <UAvatar
+              :src="currentUser?.avatarUrl"
+              :alt="currentUser?.name"
+              class="cursor-pointer hover:ring-2 hover:ring-primary"
+              @click="toggleProfile"
+            />
+          </div>
+
+          <NPopover
+            v-model:show="isProfileOpen"
+            placement="bottom-end"
+            trigger="click"
+            class="absolute"
           >
-            <li
-              v-for="(item, index) in menuItems"
-              :key="index"
-              class="cursor-pointer"
+            <ul
+              v-if="isProfileOpen"
+              class="w-48 bg-gray-800 text-white rounded-lg shadow-lg overflow-hidden"
             >
-              <div
-                v-if="item.separator"
-                class="border-t border-gray-600 my-1"
-              />
-              <div
-                v-else
-                class="flex items-center gap-2 px-4 py-2 hover:bg-gray-700"
-                @click="item.command"
+              <li
+                v-for="(item, index) in menuItems"
+                :key="index"
+                class="cursor-pointer"
               >
-                <i :class="item.icon"></i>
-                <span>{{ item.label }}</span>
-              </div>
-            </li>
-          </ul>
-        </NPopover>
-       </div>
-        
+                <div
+                  v-if="item.separator"
+                  class="border-t border-gray-600 my-1"
+                />
+                <div
+                  v-else
+                  class="flex items-center gap-2 px-4 py-2 hover:bg-gray-700"
+                  @click="item.command"
+                >
+                  <i :class="item.icon"></i>
+                  <span>{{ item.label }}</span>
+                </div>
+              </li>
+            </ul>
+          </NPopover>
+        </div>
       </div>
-      
     </div>
   </div>
 

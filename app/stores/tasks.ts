@@ -11,7 +11,7 @@ export const useTasksStore = defineStore('tasks', () => {
     loading.value = true
     try {
       const { data } = await $fetch<{ data: Task[] }>('/api/tasks', {
-        method: 'GET'
+        method: 'GET',
       })
       tasks.value = data || []
     } catch (err) {
@@ -27,9 +27,9 @@ export const useTasksStore = defineStore('tasks', () => {
     try {
       const { data } = await $fetch<{ data: Task }>('/api/tasks', {
         method: 'POST',
-        body: task
+        body: task,
       })
-      
+
       // Ajouter la nouvelle tâche à la liste
       if (data) {
         tasks.value.unshift(data)
@@ -47,9 +47,9 @@ export const useTasksStore = defineStore('tasks', () => {
     try {
       const { data } = await $fetch<{ data: Task }>(`/api/tasks/${id}`, {
         method: 'PATCH',
-        body: updates
+        body: updates,
       })
-      
+
       // Mettre à jour la tâche dans la liste
       if (data) {
         const index = tasks.value.findIndex((t: Task) => t.id === id)
@@ -69,9 +69,9 @@ export const useTasksStore = defineStore('tasks', () => {
     loading.value = true
     try {
       await $fetch(`/api/tasks/${id}`, {
-        method: 'DELETE'
+        method: 'DELETE',
       })
-      
+
       // Supprimer la tâche de la liste
       tasks.value = tasks.value.filter((t: Task) => t.id !== id)
     } catch (err) {
@@ -86,7 +86,7 @@ export const useTasksStore = defineStore('tasks', () => {
     try {
       await $fetch(`/api/tasks/${id}`, {
         method: 'PATCH',
-        body: updates
+        body: updates,
       })
       return true
     } catch (err) {

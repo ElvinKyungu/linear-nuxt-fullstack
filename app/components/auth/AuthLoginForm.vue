@@ -28,11 +28,11 @@ watchEffect(() => {
 <template>
   <div class="w-full max-w-md space-y-6">
     <div class="text-2xl font-semibold">Welcome back,</div>
-    <UButton 
-      block 
-      size="lg" 
-      color="primary" 
-      variant="outline" 
+    <UButton
+      block
+      size="lg"
+      color="primary"
+      variant="outline"
       class="cursor-pointer border border-bordercolor rounded-lg"
       disabled
     >
@@ -50,7 +50,7 @@ watchEffect(() => {
       <p class="text-center col-span-1 w-full">Or enter your details</p>
       <span class="col-span-1 w-full h-[2px] bg-bordercolor" />
     </div>
-    
+
     <form @submit.prevent="handleLogin">
       <div class="space-y-4 flex flex-col w-full relative">
         <UFormGroup label="Email">

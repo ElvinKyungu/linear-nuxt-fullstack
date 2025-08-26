@@ -3,7 +3,8 @@ import { users } from '~/data/users'
 import jwt from 'jsonwebtoken'
 import bcrypt from 'bcryptjs'
 
-const JWT_SECRET = process.env.JWT_SECRET || 'your-super-secret-key-change-in-production'
+const JWT_SECRET =
+  process.env.JWT_SECRET || 'your-super-secret-key-change-in-production'
 
 export default defineEventHandler(async (event) => {
   const { email, password, name, lastName } = await readBody(event)
@@ -12,23 +13,23 @@ export default defineEventHandler(async (event) => {
   if (!email || !password || !name || !lastName) {
     throw createError({
       statusCode: 400,
-      statusMessage: 'Tous les champs sont requis'
+      statusMessage: 'Tous les champs sont requis',
     })
   }
 
   if (password.length < 6) {
     throw createError({
       statusCode: 400,
-      statusMessage: 'Le mot de passe doit contenir au moins 6 caractères'
+      statusMessage: 'Le mot de passe doit contenir au moins 6 caractères',
     })
   }
 
   // Vérifier si l'utilisateur existe déjà
-  const existingUser = users.find(u => u.email === email)
+  const existingUser = users.find((u) => u.email === email)
   if (existingUser) {
     throw createError({
       statusCode: 400,
-      statusMessage: 'Cet email est déjà utilisé'
+      statusMessage: 'Cet email est déjà utilisé',
     })
   }
 
@@ -42,7 +43,7 @@ export default defineEventHandler(async (event) => {
     lastName,
     email,
     avatarUrl: `https://ui-avatars.com/api/?name=${encodeURIComponent(name + ' ' + lastName)}&background=6366f1&color=ffffff`,
-    createdAt: new Date()
+    createdAt: new Date(),
   }
 
   // Ajouter à notre "base de données" en mémoire
@@ -60,7 +61,7 @@ export default defineEventHandler(async (event) => {
     httpOnly: true,
     secure: process.env.NODE_ENV === 'production',
     sameSite: 'lax',
-    maxAge: 60 * 60 * 24 * 7 // 7 jours
+    maxAge: 60 * 60 * 24 * 7, // 7 jours
   })
 
   return {
@@ -69,7 +70,7 @@ export default defineEventHandler(async (event) => {
       name: newUser.name,
       lastName: newUser.lastName,
       email: newUser.email,
-      avatarUrl: newUser.avatarUrl
-    }
+      avatarUrl: newUser.avatarUrl,
+    },
   }
 })

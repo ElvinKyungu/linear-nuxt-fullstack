@@ -4,8 +4,22 @@ export interface Task {
   id: string
   title: string
   description?: string
-  status: 'Todo' | 'In progress' | 'Technical Review' | 'Completed' | 'Backlog' | 'Paused'
-  type: 'Feature' | 'Bug' | 'Design' | 'Documentation' | 'Performance' | 'Security' | 'Refactor' | 'Accessibility'
+  status:
+    | 'Todo'
+    | 'In progress'
+    | 'Technical Review'
+    | 'Completed'
+    | 'Backlog'
+    | 'Paused'
+  type:
+    | 'Feature'
+    | 'Bug'
+    | 'Design'
+    | 'Documentation'
+    | 'Performance'
+    | 'Security'
+    | 'Refactor'
+    | 'Accessibility'
   priority: 'No priority' | 'Low' | 'Medium' | 'High' | 'Urgent'
   leadId?: string
   assignee?: User | null

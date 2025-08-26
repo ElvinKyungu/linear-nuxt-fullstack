@@ -20,6 +20,6 @@ export const useComponentsStore = defineStore('components', () => {
   return {
     components,
     loading,
-    fetchComponents
+    fetchComponents,
   }
 })
