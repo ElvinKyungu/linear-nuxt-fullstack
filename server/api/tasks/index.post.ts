@@ -1,10 +1,10 @@
-import { prisma } from '~/lib/prisma'
-import { verifyToken } from '~/utils/auth'
+// server/api/tasks/index.post.ts
+import { tasks, enrichTasks } from '~/data/tasks'
 
 export default defineEventHandler(async (event) => {
   const token = getCookie(event, 'auth-token')
   
-  if (!token || !verifyToken(token)) {
+  if (!token) {
     throw createError({
       statusCode: 401,
       statusMessage: 'Unauthorized'
@@ -12,34 +12,23 @@ export default defineEventHandler(async (event) => {
   }
 
   const body = await readBody(event)
+  
+  const newTask = {
+    id: crypto.randomUUID(),
+    ...body,
+    progress: body.progress || 0,
+    createdAt: new Date(),
+    updatedAt: new Date()
+  }
 
-  try {
-    const task = await prisma.task.create({
-      data: {
-        ...body,
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      },
-      include: {
-        assignee: {
-          select: {
-            id: true,
-            name: true,
-            lastName: true,
-            email: true,
-            avatarUrl: true
-          }
-        },
-        component: true
-      }
-    })
+  // Ajouter à notre "base de données" en mémoire
+  tasks.push(newTask)
 
-    return { data: task }
-  } catch (error) {
-    console.error('Error creating task:', error)
-    throw createError({
-      statusCode: 500,
-      statusMessage: 'Failed to create task'
-    })
+  // Retourner la tâche enrichie
+  const enrichedTasks = enrichTasks()
+  const createdTask = enrichedTasks.find(t => t.id === newTask.id)
+
+  return {
+    data: createdTask
   }
 })

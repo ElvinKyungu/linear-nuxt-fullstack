@@ -1,31 +1,19 @@
-// stores/tasks.ts
+// stores/tasks.ts - Version simplifiée sans Prisma
 import { defineStore } from 'pinia'
-import type { Task } from '@/types/tasks'
+import type { Task } from '~/data/tasks'
 
 export const useTasksStore = defineStore('tasks', () => {
-  const usersStore = useUsersStore()
   const { handleError } = useErrorHandler('Tasks Store')
-
   const tasks = ref<Task[]>([])
   const loading = ref(false)
-
-  const enrichTasks = (rawTasks: any[]): Task[] =>
-    rawTasks.map((t) => ({
-      ...t,
-      // Adapter selon la structure de votre API
-      // Si votre API retourne déjà l'assignee, utilisez-le directement
-      assignee: t.assignee || usersStore.users.find((u) => u.id === t.lead_id) || null,
-    }))
 
   const fetchTasks = async () => {
     loading.value = true
     try {
-      const { data } = await $fetch<Task[]>('/api/tasks', {
-        method: 'GET',
-        credentials: 'include', // Important pour envoyer les cookies
+      const { data } = await $fetch<{ data: Task[] }>('/api/tasks', {
+        method: 'GET'
       })
-      
-      tasks.value = enrichTasks(data || [])
+      tasks.value = data || []
     } catch (err) {
       handleError(err)
       throw err
@@ -37,14 +25,15 @@ export const useTasksStore = defineStore('tasks', () => {
   const addTask = async (task: Partial<Task>) => {
     loading.value = true
     try {
-      await $fetch('/api/tasks', {
+      const { data } = await $fetch<{ data: Task }>('/api/tasks', {
         method: 'POST',
-        body: task,
-        credentials: 'include',
+        body: task
       })
       
-      // Recharger les tâches après ajout
-      await fetchTasks()
+      // Ajouter la nouvelle tâche à la liste
+      if (data) {
+        tasks.value.unshift(data)
+      }
     } catch (err) {
       handleError(err)
       throw err
@@ -56,14 +45,18 @@ export const useTasksStore = defineStore('tasks', () => {
   const updateTask = async (id: string, updates: Partial<Task>) => {
     loading.value = true
     try {
-      await $fetch(`/api/tasks/${id}`, {
-        method: 'PATCH', // ou PUT selon votre API
-        body: updates,
-        credentials: 'include',
+      const { data } = await $fetch<{ data: Task }>(`/api/tasks/${id}`, {
+        method: 'PATCH',
+        body: updates
       })
       
-      // Recharger les tâches après mise à jour
-      await fetchTasks()
+      // Mettre à jour la tâche dans la liste
+      if (data) {
+        const index = tasks.value.findIndex(t: => t.id === id)
+        if (index !== -1) {
+          tasks.value[index] = data
+        }
+      }
     } catch (err) {
       handleError(err)
       throw err
@@ -76,12 +69,11 @@ export const useTasksStore = defineStore('tasks', () => {
     loading.value = true
     try {
       await $fetch(`/api/tasks/${id}`, {
-        method: 'DELETE',
-        credentials: 'include',
+        method: 'DELETE'
       })
       
-      // Recharger les tâches après suppression
-      await fetchTasks()
+      // Supprimer la tâche de la liste
+      tasks.value = tasks.value.filter(t => t.id !== id)
     } catch (err) {
       handleError(err)
       throw err
@@ -90,20 +82,16 @@ export const useTasksStore = defineStore('tasks', () => {
     }
   }
 
-  // Version optimisée pour les optimistic updates
   const updateTaskOptimized = async (id: string, updates: Partial<Task>) => {
     try {
       await $fetch(`/api/tasks/${id}`, {
         method: 'PATCH',
-        body: updates,
-        credentials: 'include',
+        body: updates
       })
-
-      // Pas de fetchTasks() ici - les optimistic updates gèrent l'UI
       return true
     } catch (err) {
       handleError(err)
-      throw err // Important pour déclencher le rollback
+      throw err
     }
   }
 

@@ -1,5 +1,4 @@
-// server/api/tasks/index.get.ts
-import { enrichTasks } from '~/data/tasks'
+import { users } from '~/data/users'
 
 export default defineEventHandler(async (event) => {
   const token = getCookie(event, 'auth-token')
@@ -11,10 +10,7 @@ export default defineEventHandler(async (event) => {
     })
   }
 
-  // Simuler un délai pour ressembler à une vraie API
-  await new Promise(resolve => setTimeout(resolve, 100))
-
   return {
-    data: enrichTasks()
+    data: users
   }
 })

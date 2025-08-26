@@ -1,56 +1,45 @@
-import { prisma } from '~/lib/prisma'
-import { comparePassword, generateToken } from '~/utils/auth'
+
+// server/api/auth/login.post.ts
+import { users } from '~/data/users'
+import jwt from 'jsonwebtoken'
+
+const JWT_SECRET = process.env.JWT_SECRET || 'your-super-secret-key-change-in-production'
 
 export default defineEventHandler(async (event) => {
-  try {
-    const body = await readBody(event)
-    const { email, password } = body
-    if (!email || !password) {
-      throw createError({
-        statusCode: 400,
-        statusMessage: 'Email and password are required'
-      })
-    }
-    
-    const user = await prisma.user.findUnique({
-      where: { email }
-    })
-    
-    if (!user || !user.password || !(await comparePassword(password, user.password))) {
-      throw createError({
-        statusCode: 401,
-        statusMessage: 'Invalid credentials'
-      })
-    }
-    
-    const token = generateToken({
-      userId: user.id,
-      email: user.email
-    })
-    
-    setCookie(event, 'auth-token', token, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'lax',
-      maxAge: 60 * 60 * 24 * 7
-    })
-    
-    return {
-      user: {
-        id: user.id,
-        email: user.email,
-        name: user.name,
-        lastName: user.lastName,
-        avatarUrl: user.avatarUrl
-      }
-    }
-  } catch (error) {
-    if (error.statusCode) {
-      throw error
-    }
+  const { email, password } = await readBody(event)
+
+  // Simulation de validation simple (en prod, utilisez bcrypt)
+  const user = users.find(u => u.email === email)
+  
+  if (!user || password !== 'password123') {
     throw createError({
-      statusCode: 500,
-      statusMessage: 'Internal server error'
+      statusCode: 401,
+      statusMessage: 'Invalid credentials'
     })
+  }
+
+  // Créer le token JWT
+  const token = jwt.sign(
+    { userId: user.id, email: user.email },
+    JWT_SECRET,
+    { expiresIn: '7d' }
+  )
+
+  // Définir le cookie
+  setCookie(event, 'auth-token', token, {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: 'lax',
+    maxAge: 60 * 60 * 24 * 7 // 7 jours
+  })
+
+  return {
+    user: {
+      id: user.id,
+      name: user.name,
+      lastName: user.lastName,
+      email: user.email,
+      avatarUrl: user.avatarUrl
+    }
   }
 })

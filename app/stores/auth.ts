@@ -1,52 +1,55 @@
+// stores/auth.ts
 import { defineStore } from 'pinia'
 
 export const useAuthStore = defineStore('auth', () => {
-  const user = ref(null)
-  const error = ref<string | null>(null)
+  const user = ref<User | null>(null)
   const loading = ref(false)
-  const session = computed(() => user.value)
-  // Vérifier si l'utilisateur est connecté
 
-  async function signup(email: string, password: string, name: string, lastName: string) {
+  const login = async (email: string, password: string) => {
     loading.value = true
-    error.value = null
-
     try {
-      return true
-    } catch (err: any) {
-      error.value = err.data?.message || 'Signup failed'
-      return false
+      const { user: loggedUser } = await $fetch('/api/auth/login', {
+        method: 'POST',
+        body: { email, password }
+      })
+      user.value = loggedUser
+      await navigateTo('/')
+    } catch (error) {
+      throw error
     } finally {
       loading.value = false
     }
   }
 
-  async function login(email: string, password: string) {
+  const logout = async () => {
     loading.value = true
-    error.value = null
-
     try {
-      return true
-    } catch (err: any) {
-      error.value = err.data?.message || 'Login failed'
-      return false
+      await $fetch('/api/auth/logout', { method: 'POST' })
+      user.value = null
+      await navigateTo('/login')
+    } catch (error) {
+      console.error('Logout error:', error)
     } finally {
       loading.value = false
     }
   }
 
-  async function logout() {
-    await navigateTo('/login')
+  const checkAuth = async () => {
+    try {
+      const { user: authUser } = await $fetch('/api/auth/me')
+      user.value = authUser
+      return authUser
+    } catch (error) {
+      user.value = null
+      return null
+    }
   }
 
   return {
     user,
-    error,
     loading,
-    checkAuth,
     login,
-    signup,
     logout,
-    session
+    checkAuth
   }
 })

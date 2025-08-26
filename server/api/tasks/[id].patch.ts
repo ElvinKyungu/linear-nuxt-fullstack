@@ -1,10 +1,10 @@
-import { prisma } from '~/lib/prisma'
-import { verifyToken } from '~/utils/auth'
+// server/api/tasks/[id].patch.ts
+import { tasks, enrichTasks } from '~/data/tasks'
 
 export default defineEventHandler(async (event) => {
   const token = getCookie(event, 'auth-token')
   
-  if (!token || !verifyToken(token)) {
+  if (!token) {
     throw createError({
       statusCode: 401,
       statusMessage: 'Unauthorized'
@@ -12,42 +12,29 @@ export default defineEventHandler(async (event) => {
   }
 
   const taskId = getRouterParam(event, 'id')
-  const body = await readBody(event)
+  const updates = await readBody(event)
 
-  if (!taskId) {
+  const taskIndex = tasks.findIndex(t => t.id === taskId)
+  
+  if (taskIndex === -1) {
     throw createError({
-      statusCode: 400,
-      statusMessage: 'Task ID is required'
+      statusCode: 404,
+      statusMessage: 'Task not found'
     })
   }
 
-  try {
-    const task = await prisma.task.update({
-      where: { id: taskId },
-      data: {
-        ...body,
-        updatedAt: new Date(),
-      },
-      include: {
-        assignee: {
-          select: {
-            id: true,
-            name: true,
-            lastName: true,
-            email: true,
-            avatarUrl: true
-          }
-        },
-        component: true
-      }
-    })
+  // Mettre à jour la tâche
+  tasks[taskIndex] = {
+    ...tasks[taskIndex],
+    ...updates,
+    updatedAt: new Date()
+  }
 
-    return { data: task }
-  } catch (error) {
-    console.error('Error updating task:', error)
-    throw createError({
-      statusCode: 500,
-      statusMessage: 'Failed to update task'
-    })
+  // Retourner la tâche enrichie
+  const enrichedTasks = enrichTasks()
+  const updatedTask = enrichedTasks.find(t => t.id === taskId)
+
+  return {
+    data: updatedTask
   }
 })

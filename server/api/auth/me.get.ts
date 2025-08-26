@@ -1,15 +1,13 @@
 // server/api/auth/me.get.ts
-import { verifyToken } from '~/utils/auth'
-import { prisma } from '~/lib/prisma'
+import { users } from '~/data/users'
+import jwt from 'jsonwebtoken'
+
+const JWT_SECRET = process.env.JWT_SECRET || 'your-super-secret-key-change-in-production'
 
 export default defineEventHandler(async (event) => {
-  console.log('🔍 /api/auth/me appelé')
-  
   const token = getCookie(event, 'auth-token')
-  console.log('🔍 Token trouvé:', !!token)
 
   if (!token) {
-    console.log('❌ Pas de token dans le cookie')
     throw createError({
       statusCode: 401,
       statusMessage: 'No token provided'
@@ -17,42 +15,26 @@ export default defineEventHandler(async (event) => {
   }
 
   try {
-    const decoded = verifyToken(token)
-    console.log('✅ Token décodé:', decoded)
-
-    if (!decoded || !decoded.userId) {
-      console.log('❌ Token invalide ou pas d\'userId')
-      throw createError({
-        statusCode: 401,
-        statusMessage: 'Invalid token'
-      })
-    }
-
-    const user = await prisma.user.findUnique({
-      where: { id: decoded.userId },
-      select: {
-        id: true,
-        name: true,
-        lastName: true,
-        email: true,
-        avatarUrl: true,
-        // autres champs nécessaires
-      }
-    })
+    const decoded = jwt.verify(token, JWT_SECRET) as { userId: string, email: string }
+    const user = users.find(u => u.id === decoded.userId)
 
     if (!user) {
-      console.log('❌ Utilisateur non trouvé en DB')
       throw createError({
         statusCode: 401,
         statusMessage: 'User not found'
       })
     }
 
-    console.log('✅ Utilisateur trouvé et retourné:', user)
-    return { user }
-
-  } catch (error) {
-    console.log('❌ Erreur lors de la vérification:', error)
+    return {
+      user: {
+        id: user.id,
+        name: user.name,
+        lastName: user.lastName,
+        email: user.email,
+        avatarUrl: user.avatarUrl
+      }
+    }
+  } catch (error: any) {
     throw createError({
       statusCode: 401,
       statusMessage: 'Invalid token'

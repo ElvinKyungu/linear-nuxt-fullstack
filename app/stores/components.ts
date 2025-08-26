@@ -1,24 +1,17 @@
+// stores/components.ts
 import { defineStore } from 'pinia'
 
 export const useComponentsStore = defineStore('components', () => {
   const components = ref<Component[]>([])
   const loading = ref(false)
-  const error = ref<string | null>(null)
 
-  // 🔥 Fetch all components
-  async function fetchComponents() {
+  const fetchComponents = async () => {
     loading.value = true
-    error.value = null
     try {
-      const { data, error: fetchError } = await client
-        .from('component')
-        .select('id, name, color')
-        .order('name', { ascending: true })
-
-      if (fetchError) throw fetchError
+      const { data } = await $fetch<{ data: Component[] }>('/api/components')
       components.value = data || []
-    } catch (err: unknown) {
-      error.value = err instanceof Error ? err.message : 'Unknown error'
+    } catch (err) {
+      console.error('Error fetching components:', err)
     } finally {
       loading.value = false
     }
@@ -27,7 +20,6 @@ export const useComponentsStore = defineStore('components', () => {
   return {
     components,
     loading,
-    error,
-    fetchComponents,
+    fetchComponents
   }
 })
