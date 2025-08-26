@@ -3,13 +3,16 @@ const authStore = useAuthStore()
 const email = ref('linear@example.com') // Email de demo
 const password = ref('password123') // Mot de passe de demo
 const error = ref('')
-
+const loading = ref(false)
 const handleLogin = async () => {
   try {
     error.value = ''
+    loading.value = true
     await authStore.login(email.value, password.value)
   } catch (err: any) {
     error.value = err.data?.message || 'Erreur de connexion'
+  } finally {
+    loading.value = false
   }
 }
 
@@ -29,7 +32,7 @@ watchEffect(() => {
       size="lg" 
       color="primary" 
       variant="outline" 
-      class="cursor-pointer border border-bordercolor rounded-2xl"
+      class="cursor-pointer border border-bordercolor rounded-lg"
     >
       <template #leading>
         <img

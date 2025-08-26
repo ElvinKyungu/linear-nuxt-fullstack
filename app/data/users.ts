@@ -4,7 +4,7 @@ export const users: User[] = [
     id: 'cmel8da040000tx30rlt504pd',
     name: 'Elvin',
     lastName: 'Kyungu',
-    email: 'elvin.kyungu@example.com',
+    email: 'linear@example.com',
     avatarUrl: 'https://ui-avatars.com/api/?name=Elvin+Kyungu&background=6366f1&color=ffffff',
     createdAt: new Date('2024-01-15')
   },

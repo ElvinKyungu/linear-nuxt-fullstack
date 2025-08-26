@@ -14,8 +14,6 @@ export const useAuthStore = defineStore('auth', () => {
       })
       user.value = loggedUser
       await navigateTo('/')
-    } catch (error) {
-      throw error
     } finally {
       loading.value = false
     }
@@ -39,7 +37,7 @@ export const useAuthStore = defineStore('auth', () => {
       const { user: authUser } = await $fetch('/api/auth/me')
       user.value = authUser
       return authUser
-    } catch (error) {
+    } catch {
       user.value = null
       return null
     }
