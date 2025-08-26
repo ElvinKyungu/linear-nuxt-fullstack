@@ -1,11 +1,12 @@
 <script setup lang="ts">
 const layoutStore = useLayoutStore()
+const authStore = useAuthStore()
 
 const menuItems = [
   {
     label: 'Profile',
     icon: 'uil:user',
-    command: () => console.log('Profile Clicked'),
+    command: () => openProfileModal(),
   },
   {
     label: 'Settings',
@@ -16,7 +17,7 @@ const menuItems = [
   {
     label: 'Logout',
     icon: 'uil:sign-out-alt',
-    command: () => console.log('Logout Clicked'),
+    command: () => handleLogout(),
   },
 ]
 
@@ -28,9 +29,22 @@ const notifications = [
 
 const isNotifOpen = ref(false)
 const isProfileOpen = ref(false)
+const profileModalOpen = ref(false)
 
 const toggleNotif = useToggle(isNotifOpen)
 const toggleProfile = useToggle(isProfileOpen)
+
+const openProfileModal = () => {
+  isProfileOpen.value = false
+  profileModalOpen.value = true
+}
+
+const handleLogout = async () => {
+  isProfileOpen.value = false
+  await authStore.logout()
+}
+
+const currentUser = computed(() => authStore.user)
 </script>
 
 <template>
@@ -74,34 +88,57 @@ const toggleProfile = useToggle(isProfileOpen)
             </ul>
           </NPopover>
        </div>
+       
        <div class="relative">
-        <UAvatar class="cursor-pointer" @click="toggleProfile" />
+        <div class="flex items-center gap-2">
+          <span v-if="currentUser" class="text-sm hidden md:block">
+            {{ currentUser.name }} {{ currentUser.lastName }}
+          </span>
+          <UAvatar 
+            :src="currentUser?.avatarUrl" 
+            :alt="currentUser?.name"
+            class="cursor-pointer hover:ring-2 hover:ring-primary" 
+            @click="toggleProfile" 
+          />
+        </div>
+        
         <NPopover
-        v-model:show="isProfileOpen"
-        placement="bottom-end"
-        trigger="click"
-        class="absolute"
-      >
-        <ul
-          v-if="isProfileOpen"
-          class="w-48 bg-gray-800 text-white rounded-lg shadow-lg overflow-hidden"
+          v-model:show="isProfileOpen"
+          placement="bottom-end"
+          trigger="click"
+          class="absolute"
         >
-          <li
-            v-for="(item, index) in menuItems"
-            :key="index"
-            class="flex items-center gap-2 px-4 py-2 hover:bg-gray-700 cursor-pointer"
-            @click="item.command"
+          <ul
+            v-if="isProfileOpen"
+            class="w-48 bg-gray-800 text-white rounded-lg shadow-lg overflow-hidden"
           >
-            <i :class="item.icon"></i>
-            <span>{{ item.label }}</span>
-          </li>
-        </ul>
-      </NPopover>
+            <li
+              v-for="(item, index) in menuItems"
+              :key="index"
+              class="cursor-pointer"
+            >
+              <div
+                v-if="item.separator"
+                class="border-t border-gray-600 my-1"
+              />
+              <div
+                v-else
+                class="flex items-center gap-2 px-4 py-2 hover:bg-gray-700"
+                @click="item.command"
+              >
+                <i :class="item.icon"></i>
+                <span>{{ item.label }}</span>
+              </div>
+            </li>
+          </ul>
+        </NPopover>
        </div>
         
       </div>
       
-      
     </div>
   </div>
+
+  <!-- Profile Modal -->
+  <ProfileModal v-model="profileModalOpen" />
 </template>

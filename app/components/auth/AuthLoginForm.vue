@@ -4,18 +4,20 @@ const email = ref('linear@example.com') // Email de demo
 const password = ref('password123') // Mot de passe de demo
 const error = ref('')
 const loading = ref(false)
+
 const handleLogin = async () => {
   try {
     error.value = ''
     loading.value = true
     await authStore.login(email.value, password.value)
   } catch (err: any) {
-    error.value = err.data?.message || 'Erreur de connexion'
+    error.value = authStore.error || 'Erreur de connexion'
   } finally {
     loading.value = false
   }
 }
 
+// Redirection automatique si l'utilisateur est déjà connecté
 watchEffect(() => {
   if (authStore.user) {
     navigateTo('/')
@@ -26,13 +28,13 @@ watchEffect(() => {
 <template>
   <div class="w-full max-w-md space-y-6">
     <div class="text-2xl font-semibold">Welcome back,</div>
-    
     <UButton 
       block 
       size="lg" 
       color="primary" 
       variant="outline" 
       class="cursor-pointer border border-bordercolor rounded-lg"
+      disabled
     >
       <template #leading>
         <img
@@ -48,6 +50,7 @@ watchEffect(() => {
       <p class="text-center col-span-1 w-full">Or enter your details</p>
       <span class="col-span-1 w-full h-[2px] bg-bordercolor" />
     </div>
+    
     <form @submit.prevent="handleLogin">
       <div class="space-y-4 flex flex-col w-full relative">
         <UFormGroup label="Email">
@@ -59,6 +62,8 @@ watchEffect(() => {
             variant="none"
             class="u-input border border-bordercolor"
             :disabled="loading"
+            required
+            type="email"
           />
         </UFormGroup>
 
@@ -72,6 +77,7 @@ watchEffect(() => {
             variant="none"
             class="u-input border border-bordercolor"
             :disabled="loading"
+            required
           />
         </UFormGroup>
       </div>
@@ -108,3 +114,9 @@ watchEffect(() => {
     </p>
   </div>
 </template>
+
+<style scoped>
+:deep(.u-input input) {
+  color: #fff !important;
+}
+</style>

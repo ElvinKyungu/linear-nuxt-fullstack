@@ -1,12 +1,16 @@
-// middleware/auth.global.ts - Version simplifiée
+// middleware/auth.global.ts - Version corrigée
 export default defineNuxtRouteMiddleware(async (to) => {
+  // Ne pas exécuter le middleware côté serveur pour éviter les problèmes d'hydratation
+  if (import.meta.server) return
+
   const authStore = useAuthStore()
   
   console.log('➡️ Middleware triggered on', to.path)
   console.log('🔍 Current authStore.user:', authStore.user)
 
   // Routes publiques - sortir immédiatement
-  if (['/login', '/signup'].includes(to.path)) {
+  const publicRoutes = ['/login', '/signup']
+  if (publicRoutes.includes(to.path)) {
     console.log('🔓 Route publique → accès direct')
     return
   }
