@@ -1,6 +1,6 @@
 // stores/tasks.ts - Version simplifiée sans Prisma
 import { defineStore } from 'pinia'
-import type { Task } from '~/data/tasks'
+import type { Task } from '~/types/tasks'
 
 export const useTasksStore = defineStore('tasks', () => {
   const { handleError } = useErrorHandler('Tasks Store')
@@ -52,7 +52,7 @@ export const useTasksStore = defineStore('tasks', () => {
       
       // Mettre à jour la tâche dans la liste
       if (data) {
-        const index = tasks.value.findIndex(t: => t.id === id)
+        const index = tasks.value.findIndex((t: Task) => t.id === id)
         if (index !== -1) {
           tasks.value[index] = data
         }
@@ -73,7 +73,7 @@ export const useTasksStore = defineStore('tasks', () => {
       })
       
       // Supprimer la tâche de la liste
-      tasks.value = tasks.value.filter(t => t.id !== id)
+      tasks.value = tasks.value.filter((t: Task) => t.id !== id)
     } catch (err) {
       handleError(err)
       throw err
