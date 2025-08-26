@@ -1,62 +1,35 @@
 <script setup lang="ts">
 const authStore = useAuthStore()
+const email = ref('linear@example.com') // Email de demo
+const password = ref('password123') // Mot de passe de demo
+const error = ref('')
 
-const email = ref('')
-const password = ref('')
-const rememberMe = ref(false)
-const errorMessage = ref<string | null>(null)
-const loading = ref(false)
-
-// Connexion par email/mot de passe
 const handleLogin = async () => {
-  loading.value = true
-  errorMessage.value = null
   try {
-    const success = await authStore.login(email.value, password.value)
-    if (success) {
-      console.log('success');
-       await authStore.checkAuth()
-      await navigateTo('/', { replace: true })
-    } else {
-      errorMessage.value = authStore.error
-    }
-  } catch (error) {
-    errorMessage.value = 'Une erreur est survenue'
-  } finally {
-    loading.value = false
+    error.value = ''
+    await authStore.login(email.value, password.value)
+  } catch (err: any) {
+    error.value = err.data?.message || 'Erreur de connexion'
   }
 }
 
-// Connexion GitHub (si tu as prévu une route API côté serveur)
-const handleGithubLogin = async () => {
-  try {
-    await authStore.oauthLogin('github') // <-- méthode à implémenter dans ton store
-  } catch (error) {
-    errorMessage.value = 'Erreur lors de la connexion GitHub'
-  }
-}
-
-onMounted(async () => {
-  const ok = await authStore.checkAuth()
-  if (ok) {
-    await navigateTo('/')
+watchEffect(() => {
+  if (authStore.user) {
+    navigateTo('/')
   }
 })
 </script>
-
 
 <template>
   <div class="w-full max-w-md space-y-6">
     <div class="text-2xl font-semibold">Welcome back,</div>
     
-    <!-- Connexion GitHub -->
     <UButton 
       block 
       size="lg" 
       color="primary" 
       variant="outline" 
-      class="cursor-pointer border border-bordercolor rounded-full"
-      @click="handleGithubLogin"
+      class="cursor-pointer border border-bordercolor rounded-2xl"
     >
       <template #leading>
         <img
@@ -102,7 +75,7 @@ onMounted(async () => {
 
       <div class="flex items-center justify-between text-sm mt-5 text-gray-300">
         <label class="flex items-center space-x-2">
-          <UCheckbox v-model="rememberMe" color="secondary" />
+          <UCheckbox color="secondary" />
           <span>Remember me</span>
         </label>
         <a href="#" class="hover:underline">Forgot Password?</a>
@@ -112,15 +85,15 @@ onMounted(async () => {
         type="submit"
         block
         size="lg"
-        class="mt-5 text-black bg-white cursor-pointer"
+        class="mt-5 text-black hover:bg-amber-50 bg-white cursor-pointer"
         :loading="loading"
         :disabled="loading"
       >
         {{ loading ? 'Signing in...' : 'Sign in' }}
       </UButton>
 
-      <p v-if="errorMessage" class="text-sm text-red-500 mt-2 text-center">
-        {{ errorMessage }}
+      <p v-if="error" class="text-sm text-red-500 mt-2 text-center">
+        {{ error }}
       </p>
     </form>
 
