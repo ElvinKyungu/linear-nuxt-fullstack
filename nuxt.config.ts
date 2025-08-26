@@ -17,10 +17,6 @@ export default defineNuxtConfig({
     // Pas de modules d'authentification
   ],
   runtimeConfig: {
-    // Variables privées (côté serveur seulement)
-    jwtSecret: process.env.JWT_SECRET || 'your-super-secret-jwt-key',
-    githubClientId: process.env.GITHUB_CLIENT_ID,
-    githubClientSecret: process.env.GITHUB_CLIENT_SECRET,
     public: {
       // Variables publiques
     },

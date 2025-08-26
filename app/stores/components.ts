@@ -1,8 +1,6 @@
 import { defineStore } from 'pinia'
-import type { Component } from '@/types/components'
 
 export const useComponentsStore = defineStore('components', () => {
-  const client = useSupabaseClient()
   const components = ref<Component[]>([])
   const loading = ref(false)
   const error = ref<string | null>(null)
