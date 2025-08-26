@@ -51,7 +51,7 @@ const currentUser = computed(() => authStore.user)
   <div
     class="sticky top-0 z-50 text-white shadow-md w-full rounded-2xl transition-all duration-300 bg-gray-900"
   >
-    <div class="flex items-center justify-between py-4 px-6">
+    <div class="flex items-center justify-between pt-4 px-6">
       <div class="flex items-center gap-4">
         <NuxtLink to="/" class="flex items-center gap-2 text-white text-lg">
           <UButton

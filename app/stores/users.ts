@@ -1,5 +1,6 @@
 // stores/users.ts
 import { defineStore } from 'pinia'
+import type { User } from '~/types/users'
 
 export const useUsersStore = defineStore('users', () => {
   const users = ref<User[]>([])

@@ -1,11 +1,11 @@
 <template>
-  <div class="task-management-app h-screen flex flex-col overflow-hidden">
+  <div class="task-management-app flex flex-col overflow-hidden text-white">
     <header
       class="flex justify-between items-center p-4 border-b border-bordercolor text-white flex-shrink-0"
     >
       <div class="flex items-center gap-4">
         <UButton
-          class="flex gap-3 cursor-pointer items-center"
+          class="flex gap-3 cursor-pointer items-center text-white"
           variant="ghost"
         >
           <UIcon name="uil:filter" class="text-2xl" />
@@ -15,7 +15,7 @@
       <div class="flex gap-3 items-center relative">
         <UButton
           ref="displayTriggerElement"
-          class="flex gap-1a cursor-pointer items-center"
+          class="flex gap-1a cursor-pointer items-center text-white"
           variant="ghost"
         >
           <UIcon name="uil:sliders-v" class="text-xl" />

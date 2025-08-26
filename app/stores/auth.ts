@@ -91,7 +91,6 @@ export const useAuthStore = defineStore('auth', () => {
     try {
       const formData = new FormData()
       formData.append('avatar', file)
-      
       const { user: updatedUser } = await $fetch('/api/auth/avatar', {
         method: 'POST',
         body: formData
