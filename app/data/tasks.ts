@@ -1,4 +1,7 @@
 // data/tasks.ts
+import type { Task } from '~/types/tasks'
+import { users } from './users'
+import { components } from './components'
 
 export const tasks: Task[] = [
   {

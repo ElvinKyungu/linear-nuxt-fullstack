@@ -28,6 +28,7 @@ const form = reactive({
   progress: 0,
   target_date: '',
 })
+
 const { openPopup: openPopupAnimation, closePopup: closePopupAnimation } =
   usePopupAnimation(popupRef, () => {
     emit('close')
