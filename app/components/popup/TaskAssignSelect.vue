@@ -86,7 +86,7 @@ const selectUser = (user: User) => {
         v-for="user in filteredUsers"
         v-else
         :key="user.id"
-        class="w-full flex items-center justify-between px-2 py-1.5 rounded hover:bg-gray-100 cursor-pointer text-sm transition"
+        class="w-full flex items-center justify-between px-2 py-1.5 hover:bg-white/10 rounded cursor-pointer text-sm transition"
         @click="selectUser(user)"
       >
         <div class="flex items-center gap-3">
@@ -99,7 +99,7 @@ const selectUser = (user: User) => {
               class="cursor-pointer hover:ring-2 hover:ring-primary"
             />
           </UChip>
-          <span>{{ user.name }} {{ user.last_name }}</span>
+          <span>{{ user.name }} {{ user.lastName }}</span>
         </div>
         <UIcon
           v-if="selected?.id === user.id"

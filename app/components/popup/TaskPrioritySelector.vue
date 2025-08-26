@@ -79,7 +79,7 @@ onClickOutside(popup, () => {
         @click="selectLevel(item)"
       >
         <div class="flex items-center gap-3">
-          <UButton variant="ghost" class="cursor-pointer">
+          <UButton variant="ghost" class="cursor-pointer text-white">
             <component :is="item.icon" />
           </UButton>
           <span>{{ item.name }}</span>

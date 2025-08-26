@@ -106,7 +106,7 @@ const getStatusColor = () => {
         <UButton
           ref="triggerElementRef"
           variant="ghost"
-          class="hover:bg-white/10 p-2 cursor-pointer rounded-xl"
+          class="hover:bg-white/10 p-2 text-white cursor-pointer rounded-xl"
           @click="openLevelSelector"
         >
           <component :is="priorityIcon" />
