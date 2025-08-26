@@ -3,7 +3,7 @@ import type { Task } from '@/types/tasks'
 import draggable from 'vuedraggable'
 
 const tasksStore = useTasksStore()
-const usersStore = useUsersStore()
+// const usersStore = useUsersStore()
 const componentsStore = useComponentsStore()
 
 const isdisplayModalOpen = ref(false)
@@ -24,7 +24,7 @@ const popupTask = ref<Task | null>(null)
 const isDragging = ref(false)
 
 const { tasks: storeTasks, loading: tasksLoading } = storeToRefs(tasksStore)
-const { users: storeUsers } = storeToRefs(usersStore)
+// const { users: storeUsers } = storeToRefs(usersStore)
 const { components: storeComponents } = storeToRefs(componentsStore)
 
 // Cache local pour les optimistic updates
