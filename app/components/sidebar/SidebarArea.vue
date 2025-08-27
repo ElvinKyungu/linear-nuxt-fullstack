@@ -164,7 +164,7 @@ const toggleGroup = (group: any, key: string) => {
           NuxtUI.
         </div>
         <a target="_blank" rel="noreferrer" class="absolute inset-0" href="">
-          <span class="sr-only"> Square by lndev-ui</span>
+          <span class="sr-only"> Square by Elvin Code</span>
         </a>
         <button
           data-slot="button"

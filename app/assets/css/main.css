@@ -4,9 +4,10 @@
 @import '@nuxt/ui';
 
 @theme {
-  --color-primary: #101828;
+  --color-primary: #101011;
   --color-secondary: #201828;
   --color-bordercolor: #424347;
+  --color-background: oklch(.141 .005 285.823);
 }
 @layer base {
   body {

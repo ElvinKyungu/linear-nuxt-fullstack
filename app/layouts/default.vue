@@ -30,7 +30,7 @@ watch(
 </script>
 
 <template>
-  <div class="flex h-screen overflow-hidden bg-primary">
+  <div class="flex h-screen overflow-hidden bg-background">
     <!-- Sidebar -->
     <div ref="sidebarWrapRef" class="w-80 shrink-0 overflow-hidden">
       <SidebarArea />

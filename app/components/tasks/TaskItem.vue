@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import type { Task } from '@/types/tasks'
 import type { User } from '@/types/user'
-import type { Components } from '@/types/components'
 
 const props = defineProps<{
   task: Task
@@ -16,14 +15,14 @@ const emit = defineEmits(['open-assignee', 'update-assignee'])
 const assigneeUser = computed(() => {
   if (!props.users || !props.task?.lead_id) return null
   return (
-    props.users.find((user: User) => user.id === props.task.lead_id) || null
+    props.users.find((user: User) => user.id === props.task.leadId) || null
   )
 })
 
 const taskComponent = computed(() => {
   return (
     props.components.find(
-      (c: Components) => c.id === props.task.component_id
+      (c: Components) => c.id === props.task.componentId
     ) || null
   )
 })
@@ -118,7 +117,7 @@ const getStatusColor = () => {
           @update:model-value="handleLevelSelect"
           @close="isLevelSelectorOpen = false"
         />
-        <span class="text-gray-500 hidden md:block">{{ task?.status }}</span>
+        <span class="text-gray-400 font-medium hidden md:block">{{ task?.leadId }}</span>
       </div>
       <div class="flex items-center gap-2 font-medium relative">
         <UButton
@@ -167,13 +166,13 @@ const getStatusColor = () => {
           <UIcon
             v-if="taskComponent?.name"
             name="i-heroicons-puzzle-piece"
-            class="mr-1"
+            class="mr-1 text-white hover:cursor-pointer"
           />
-          Elvin UI {{ taskComponent?.name }}
+          Elvin UI - {{ taskComponent?.name }}
         </UBadge>
       </div>
 
-      <div class="hidden sm:block text-sm text-gray-500">
+      <div class="hidden sm:block text-sm text-gray-300">
         {{
           task.targetDate
             ? new Date(task.targetDate).toLocaleDateString('en-US', {
@@ -220,23 +219,26 @@ const getStatusColor = () => {
   <!-- Mode Grille -->
   <div
     v-else-if="displayMode === 'grid'"
-    class="bg-black/20 border border-gray-700 rounded-lg p-4 hover:bg-black/30 transition-colors cursor-pointer"
+    class="bg-background border rounded-lg p-4 hover:bg-black/30 transition-colors cursor-pointer"
   >
     <!-- En-tête de la carte avec icône de statut et ID -->
     <div class="flex items-center justify-between mb-3">
-      <div class="flex items-center gap-2 relative">
-        <UButton
-          ref="priorityTrigger"
-          variant="ghost"
-          class="hover:bg-white/10 p-1 cursor-pointer rounded"
-          @click="openStatusPopup"
-        >
-          <IconTaskStatus
-            :stroke-color="getStatusColor()"
-            transform-status="rotate(-90 7 7)"
-          />
-        </UButton>
-        <span class="text-gray-400 text-sm">{{ task.status }}</span>
+      <div class="flex items-center justify-between gap-2 relative w-full">
+        <div class="flex items-center gap-2 relative">
+          <UButton
+            ref="priorityTrigger"
+            variant="ghost"
+            class="hover:bg-white/10 p-1 cursor-pointer rounded text-white"
+            @click="openStatusPopup"
+          >
+            <IconTaskStatus
+              :stroke-color="statusColor"
+              transform-status="rotate(-90 7 7)"
+              class="text-white"
+            />
+          </UButton>
+          <span class="text-gray-400 text-sm">{{ task.status }}</span>
+        </div>
         <TaskStatusSelector
           v-if="isOpenStatusPopup"
           :trigger-element="priorityTrigger"
@@ -248,7 +250,7 @@ const getStatusColor = () => {
         <UButton
           ref="triggerElementRef"
           variant="ghost"
-          class="hover:bg-white/10 p-1 cursor-pointer rounded relative"
+          class="hover:bg-white/10 p-1 cursor-pointer rounded relative text-white"
           @click="openLevelSelector"
         >
           <component :is="priorityIcon" />
@@ -285,7 +287,7 @@ const getStatusColor = () => {
         size="xs"
         class="border flex items-center gap-1 px-2 text-xs py-1 border-bordercolor rounded-full bg-black"
       >
-        <UIcon name="i-heroicons-puzzle-piece" class="w-3 h-3" />
+        <IconComponent />
         {{ taskComponent?.name }}
       </UBadge>
     </div>

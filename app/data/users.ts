@@ -1,6 +1,7 @@
+import type { User } from '@/types/users'
 export const users: User[] = [
   {
-    id: 'cmel8da040000tx30rlt504pd',
+    id: 'ELVIN-CODE-001',
     name: 'Elvin',
     lastName: 'Kyungu',
     email: 'linear@example.com',
@@ -9,7 +10,7 @@ export const users: User[] = [
     createdAt: new Date('2024-01-15'),
   },
   {
-    id: '5c6f1682-c79e-4b56-8009-126eec0259f1',
+    id: 'ELVIN-CODE-401',
     name: 'Marie',
     lastName: 'Dubois',
     email: 'marie.dubois@example.com',
@@ -18,12 +19,30 @@ export const users: User[] = [
     createdAt: new Date('2024-01-10'),
   },
   {
-    id: '68b9d040-984c-4782-8c55-9dcaa31452d6',
+    id: 'ELVIN-CODE-671',
     name: 'Jean',
     lastName: 'Martin',
     email: 'jean.martin@example.com',
     avatarUrl:
       'https://ui-avatars.com/api/?name=Jean+Martin&background=10b981&color=ffffff',
+    createdAt: new Date('2024-01-12'),
+  },
+  {
+    id: 'ELVIN-CODE-101',
+    name: 'Gabriel',
+    lastName: 'Delattre',
+    email: 'gab.delattre@example.com',
+    avatarUrl:
+      'https://ui-avatars.com/api/?name=Gabriel+Delattre&background=10b981&color=ffffff',
+    createdAt: new Date('2024-01-12'),
+  },
+  {
+    id: 'ELVIN-CODE-910',
+    name: 'Deborah',
+    lastName: 'Yambenu',
+    email: 'deb.yambenu@example.com',
+    avatarUrl:
+      'https://ui-avatars.com/api/?name=Deb+Yambenu&background=10b981&color=ffffff',
     createdAt: new Date('2024-01-12'),
   },
 ]
