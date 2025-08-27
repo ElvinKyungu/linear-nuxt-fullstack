@@ -277,7 +277,7 @@ onMounted(async () => {
 <template>
   <div class="task-management-app h-screen flex flex-col overflow-hidden">
     <header
-      class="flex justify-between items-center p-4 border-b border-bordercolor text-white flex-shrink-0"
+      class="flex justify-between items-center p-1 border-b border-bordercolor text-white flex-shrink-0"
     >
       <div class="flex items-center gap-4">
         <UButton
@@ -319,33 +319,32 @@ onMounted(async () => {
       <template v-else>
         <!-- Mode Liste -->
         <div v-if="displayMode === 'list'" class="h-full overflow-y-auto p-4">
-          <div class="relative w-full flex flex-end justify-end mb-4">
-            <UButton
-              variant="ghost"
-              class="hover:bg-white/10 p-2 cursor-pointer rounded-xl mr-2 text-white"
-              @click="showTaskPopup = true"
-            >
-              <UIcon name="uil:plus" class="text-2xl" />
-            </UButton>
-          </div>
-
           <!-- Mode liste avec drag and drop optimisé -->
           <div v-for="status in groupedTasks" :key="status.key">
-            <h1
-              class="text-xl text-white flex items-center justify-between gap-2 my-5 py-3 px-5 rounded"
+            <div
+              class="flex items-center justify-between my-1 py-1 px-5 rounded"
               :style="{ backgroundColor: status.color + '10' }"
             >
-              <div class="flex items-center gap-4 relative">
-                <IconTaskStatus
-                  :stroke-color="status.color"
-                  transform-status="rotate(-90 7 7)"
-                />
-                <span class="flex gap-4">
-                  <span>{{ status.label }}</span>
-                  <span>{{ status.tasks.length }}</span>
-                </span>
-              </div>
-            </h1>
+              <h1 class="text-xl text-white flex items-center justify-between">
+                <div class="flex items-center gap-4 relative">
+                  <IconTaskStatus
+                    :stroke-color="status.color"
+                    transform-status="rotate(-90 7 7)"
+                  />
+                  <span class="flex gap-4">
+                    <span>{{ status.label }}</span>
+                    <span>{{ status.tasks.length }}</span>
+                  </span>
+                </div>
+              </h1>
+              <UButton
+                variant="ghost"
+                class="hover:bg-white/10 p-2 cursor-pointer rounded-xl mr-2 text-white"
+                @click="showTaskPopup = true"
+              >
+                <UIcon name="uil:plus" class="text-2xl" />
+              </UButton>
+            </div>
 
             <draggable
               v-model="taskLists[status.key].value"
@@ -363,7 +362,7 @@ onMounted(async () => {
               @change="(evt) => handleDragChange(evt, status.key)"
             >
               <template #item="{ element: task }">
-                <div class="mb-3 cursor-move">
+                <div class="cursor-move">
                   <TaskItem
                     :task="task"
                     :display-mode="displayMode"

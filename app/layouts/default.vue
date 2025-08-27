@@ -44,7 +44,7 @@ watch(
 
       <!-- Contenu scrollable -->
       <main class="flex-1 overflow-y-auto bg-primary">
-        <div class="mx-auto max-w-screen-4xl p-4 md:p-6 2xl:p-10">
+        <div class="mx-auto max-w-screen-4xl p-1 md:p-2 2xl:p-3">
           <slot />
         </div>
       </main>

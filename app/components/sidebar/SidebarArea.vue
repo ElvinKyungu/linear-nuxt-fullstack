@@ -17,25 +17,25 @@ const menuGroups = ref([
   {
     label: 'Pages',
     icon: 'uil:briefcase',
-    isOpen: false,
+    isOpen: true,
     items: [
       { label: 'Landing', icon: 'uil:globe', to: '/' },
-      {
-        label: 'Auth',
-        icon: 'uil:user',
-        isOpen: false,
-        items: [
-          { label: 'Login', icon: 'uil:sign-in-alt', to: '/' },
-          { label: 'Profile', icon: 'uil:user', to: '/' },
-          { label: 'Access Denied', icon: 'uil:lock', to: '/' },
-          { label: 'List', icon: 'uil:list-ul', to: '/' },
-        ],
-      },
       { label: 'Crud', icon: 'uil:edit', to: '/' },
       { label: 'Not Found', icon: 'uil:exclamation-circle', to: '/' },
       { label: 'Table', icon: 'uil:table', to: '/' },
       { label: 'Images', icon: 'uil:image', to: '/' },
       { label: 'File', icon: 'uil:file-alt', to: '/' },
+    ],
+  },
+  {
+    label: 'Auth',
+    icon: 'uil:user',
+    isOpen: true,
+    items: [
+      { label: 'Login', icon: 'uil:sign-in-alt', to: '/' },
+      { label: 'Profile', icon: 'uil:user', to: '/' },
+      { label: 'Access Denied', icon: 'uil:lock', to: '/' },
+      { label: 'List', icon: 'uil:list-ul', to: '/' },
     ],
   },
 ])
@@ -134,6 +134,64 @@ const toggleGroup = (group: any, key: string) => {
           </li>
         </ul>
       </nav>
+      <div
+        class="group/sidebar relative flex flex-col gap-2 rounded-lg border border-bordercolor p-4 text-sm w-full"
+      >
+        <div class="absolute top-2.5 right-2 z-10 cursor-pointer" role="button">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            class="lucide lucide-x size-4"
+          >
+            <path d="M18 6 6 18"></path>
+            <path d="m6 6 12 12"></path>
+          </svg>
+        </div>
+        <div
+          class="text-balance text-lg font-semibold leading-tight group-hover/sidebar:underline"
+        >
+          Open-source layouts by Elvin Code
+        </div>
+        <div>
+          Collection of beautifully crafted open-source layouts UI built with
+          NuxtUI.
+        </div>
+        <a target="_blank" rel="noreferrer" class="absolute inset-0" href="">
+          <span class="sr-only"> Square by lndev-ui</span>
+        </a>
+        <button
+          data-slot="button"
+          class="inline-flex items-center bg-white justify-center whitespace-nowrap text-sm font-medium transition-[color,box-shadow] disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg:not([class*='size-'])]:size-4 [&amp;_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive text-black shadow-xs hover:bg-primary/90 h-8 rounded-md gap-1.5 px-3 has-[&gt;svg]:px-2.5 w-full"
+        >
+          <a target="_blank" rel="noopener noreferrer" href="">elvincode.com</a>
+        </button>
+      </div>
+      <div class="w-full flex absolute bottom-5 px-5 left-0 items-center justify-between">
+        <UButton
+          class="text-gray-400 bg-gray-400/20 hover:text-white col-span-1"
+        >
+        <!-- icon for information/question -->
+          <UIcon
+            name="uil:question-circle"
+            class="text-2xl cursor-pointer text-gray-400"
+          />
+        </UButton>
+        <UButton
+          class="text-gray-400 bg-gray-400/20 hover:text-white col-span-1"
+        >
+          <UIcon
+            name="uil:github"
+            class="text-2xl cursor-pointer text-gray-400"
+          />
+        </UButton>
+      </div>
     </div>
   </aside>
 </template>

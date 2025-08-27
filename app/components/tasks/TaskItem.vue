@@ -175,8 +175,8 @@ const getStatusColor = () => {
 
       <div class="hidden sm:block text-sm text-gray-500">
         {{
-          task.target_date
-            ? new Date(task.target_date).toLocaleDateString('en-US', {
+          task.targetDate
+            ? new Date(task.targetDate).toLocaleDateString('en-US', {
                 month: 'short',
                 day: 'numeric',
               })
