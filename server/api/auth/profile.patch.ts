@@ -1,6 +1,6 @@
 // server/api/auth/profile.patch.ts
 import { users } from '@/data/users'
-import jwt from 'jsonwebtoken'
+import { jwtVerify } from 'jose'
 
 const config = useRuntimeConfig()
 const JWT_SECRET = config.jwtSecret
@@ -16,11 +16,9 @@ export default defineEventHandler(async (event) => {
   }
 
   try {
-    const decoded = jwt.verify(token, JWT_SECRET) as {
-      userId: string
-      email: string
-    }
-    const userIndex = users.findIndex((u) => u.id === decoded.userId)
+    const { payload } = await jwtVerify(token, new TextEncoder().encode(JWT_SECRET))
+    const userId = payload.userId as string
+    const userIndex = users.findIndex((u) => u.id === userId)
 
     if (userIndex === -1) {
       throw createError({
@@ -46,7 +44,7 @@ export default defineEventHandler(async (event) => {
       filteredUpdates.email !== users[userIndex].email
     ) {
       const emailExists = users.some(
-        (u) => u.email === filteredUpdates.email && u.id !== decoded.userId
+        (u) => u.email === filteredUpdates.email && u.id !== userId
       )
       if (emailExists) {
         throw createError({
