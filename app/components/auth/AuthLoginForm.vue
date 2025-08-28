@@ -37,9 +37,9 @@ watchEffect(() => {
       disabled
     >
       <template #leading>
-        <img
-          src="https://www.svgrepo.com/show/475656/google-color.svg"
-          class="w-5 h-5"
+        <UIcon
+          name="uil:github"
+          class="w-5 h-5 text-white"
         />
       </template>
       <span class="text-white">Sign in with GitHub</span>
