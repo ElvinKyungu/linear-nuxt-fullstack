@@ -17,9 +17,10 @@ export default defineNuxtConfig({
     // Pas de modules d'authentification
   ],
   runtimeConfig: {
+    jwtSecret: process.env.JWT_SECRET || 'fallback-secret-key-for-demo',
     public: {
       // Variables publiques
-    },
+    }
   },
   vite: {
     plugins: [tailwindcss()],
