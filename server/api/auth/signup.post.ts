@@ -1,6 +1,6 @@
 // server/api/auth/signup.post.ts
 import { users } from '@/data/users'
-import jwt from 'jsonwebtoken'
+import { SignJWT } from 'jose'
 
 const config = useRuntimeConfig()
 const JWT_SECRET = config.jwtSecret
@@ -32,9 +32,6 @@ export default defineEventHandler(async (event) => {
     })
   }
 
-  // Hasher le mot de passe (en production)
-  // const hashedPassword = await bcrypt.hash(password, 12)
-
   // Créer le nouvel utilisateur
   const newUser = {
     id: crypto.randomUUID(),
@@ -48,12 +45,11 @@ export default defineEventHandler(async (event) => {
   // Ajouter à notre "base de données" en mémoire
   users.push(newUser)
 
-  // Créer le token JWT
-  const token = jwt.sign(
-    { userId: newUser.id, email: newUser.email },
-    JWT_SECRET,
-    { expiresIn: '7d' }
-  )
+  // Créer le token JWT avec jose
+  const token = await new SignJWT({ userId: newUser.id, email: newUser.email })
+    .setProtectedHeader({ alg: 'HS256' })
+    .setExpirationTime('7d')
+    .sign(new TextEncoder().encode(JWT_SECRET))
 
   // Définir le cookie
   setCookie(event, 'auth-token', token, {
