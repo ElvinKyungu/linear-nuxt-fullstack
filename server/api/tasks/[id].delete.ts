@@ -1,4 +1,4 @@
-import { tasks } from '~/data/tasks'
+import { tasks } from '@/data/tasks'
 
 export default defineEventHandler(async (event) => {
   const token = getCookie(event, 'auth-token')

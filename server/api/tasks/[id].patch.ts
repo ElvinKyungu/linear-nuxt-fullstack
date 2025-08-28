@@ -1,5 +1,5 @@
 // server/api/tasks/[id].patch.ts
-import { tasks, enrichTasks } from '~/data/tasks'
+import { tasks, enrichTasks } from '@/data/tasks'
 
 export default defineEventHandler(async (event) => {
   const token = getCookie(event, 'auth-token')

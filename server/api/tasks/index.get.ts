@@ -1,5 +1,5 @@
 // server/api/tasks/index.get.ts
-import { enrichTasks } from '~/data/tasks'
+import { enrichTasks } from '@/data/tasks'
 
 export default defineEventHandler(async (event) => {
   const token = getCookie(event, 'auth-token')

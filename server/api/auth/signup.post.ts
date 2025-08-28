@@ -1,5 +1,5 @@
 // server/api/auth/signup.post.ts
-import { users } from '~/data/users'
+import { users } from '@/data/users'
 import jwt from 'jsonwebtoken'
 
 const config = useRuntimeConfig()
