@@ -1,14 +1,12 @@
-// server/api/auth/login.post.ts
-import { users } from '~/data/users'
-import jwt from 'jsonwebtoken'
+import { users } from '@/data/users'
+import { SignJWT } from 'jose'
 
 const config = useRuntimeConfig()
 const JWT_SECRET = config.jwtSecret
-console.log('JWT_SECRET:', JWT_SECRET)
+
 export default defineEventHandler(async (event) => {
   const { email, password } = await readBody(event)
 
-  // Simulation de validation simple (en prod, faudra bcrypt)
   const user = users.find((u) => u.email === email)
 
   if (!user || password !== 'password123') {
@@ -18,10 +16,12 @@ export default defineEventHandler(async (event) => {
     })
   }
 
-  // Créer le token JWT
-  const token = jwt.sign({ userId: user.id, email: user.email }, JWT_SECRET, {
-    expiresIn: '7d',
-  })
+  // Créer le token JWT compatible edge
+  const encoder = new TextEncoder()
+  const token = await new SignJWT({ userId: user.id, email: user.email })
+    .setProtectedHeader({ alg: 'HS256', typ: 'JWT' })
+    .setExpirationTime('7d')
+    .sign(encoder.encode(JWT_SECRET))
 
   // Définir le cookie
   setCookie(event, 'auth-token', token, {
