@@ -4,11 +4,11 @@ import jwt from 'jsonwebtoken'
 
 const config = useRuntimeConfig()
 const JWT_SECRET = config.jwtSecret
-
+console.log('JWT_SECRET:', JWT_SECRET)
 export default defineEventHandler(async (event) => {
   const { email, password } = await readBody(event)
 
-  // Simulation de validation simple (en prod, utilisez bcrypt)
+  // Simulation de validation simple (en prod, faudra bcrypt)
   const user = users.find((u) => u.email === email)
 
   if (!user || password !== 'password123') {
