@@ -2,8 +2,10 @@
 import { users } from '~/data/users'
 import jwt from 'jsonwebtoken'
 
-const JWT_SECRET =
-  process.env.JWT_SECRET || 'your-super-secret-key-change-in-production'
+const JWT_SECRET = process.env.JWT_SECRET
+if (!JWT_SECRET) {
+  throw new Error("JWT_SECRET is not defined in environment variables")
+}
 
 export default defineEventHandler(async (event) => {
   const { email, password } = await readBody(event)

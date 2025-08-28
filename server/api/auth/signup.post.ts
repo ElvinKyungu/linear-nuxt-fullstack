@@ -1,11 +1,11 @@
 // server/api/auth/signup.post.ts
 import { users } from '~/data/users'
 import jwt from 'jsonwebtoken'
-import bcrypt from 'bcryptjs'
 
-const JWT_SECRET =
-  process.env.JWT_SECRET || 'your-super-secret-key-change-in-production'
-
+const JWT_SECRET = process.env.JWT_SECRET
+if (!JWT_SECRET) {
+  throw new Error("JWT_SECRET is not defined in environment variables")
+}
 export default defineEventHandler(async (event) => {
   const { email, password, name, lastName } = await readBody(event)
 
