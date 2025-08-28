@@ -16,14 +16,13 @@
 
       <div class="bg-white text-gray-900 p-4 rounded-xl">
         <p class="text-sm">
-          “Project-Hub UI is surprisingly handy for keeping all my business
-          stuff in one place”
+          “Built with Nuxt & Nuxt UI, my Linear-inspired project makes task management fast, sleek, and fun — exactly how productivity should feel.”
         </p>
         <div class="mt-2 flex items-center space-x-2">
           <UAvatar src="/images/gab.jpg" />
           <div>
             <div class="text-xs font-semibold">Gabriel Delattre</div>
-            <div class="text-xs text-gray-500">VP Engineer</div>
+            <div class="text-xs text-gray-500">VP Engineer at Edumapper</div>
           </div>
         </div>
       </div>
