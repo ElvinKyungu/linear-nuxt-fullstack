@@ -25,7 +25,7 @@ export default defineNuxtConfig({
     plugins: [tailwindcss()],
   },
   nitro: {
-    preset: 'vercel',
+    preset: 'cloudflare',
   },
   components: [
     {
