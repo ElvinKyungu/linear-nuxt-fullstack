@@ -1,10 +1,5 @@
 <script setup lang="ts">
-
 const error = useError()
-
-const handleReload = () => {
-  clearError({ redirect: '/' }) // redirige vers la home
-}
 </script>
 
 <template>
