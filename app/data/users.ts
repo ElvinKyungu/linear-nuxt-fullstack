@@ -3,10 +3,10 @@ export const users: User[] = [
   {
     id: 'ELVIN-CODE-001',
     name: 'Elvin',
-    lastName: 'Kyungu',
+    lastName: 'Code',
     email: 'linear@example.com',
     avatarUrl:
-      'https://ui-avatars.com/api/?name=Elvin+Kyungu&background=6366f1&color=ffffff',
+      'https://ui-avatars.com/api/?name=Elvin+Code&background=6366f1&color=ffffff',
     createdAt: new Date('2024-01-15'),
   },
   {
