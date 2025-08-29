@@ -1,23 +1,33 @@
-<!-- app/error.vue -->
-<template>
-  <div class="min-h-screen flex flex-col items-center justify-center bg-gray-50 text-center p-6">
-    <h1 class="text-5xl font-bold text-red-600 mb-4">
-      Oups! {{ error.statusCode }}
-    </h1>
-    <p class="text-lg text-gray-700 mb-6">
-      {{ error.message || 'Une erreur est survenue.' }}
-    </p>
-    <NuxtLink to="/" class="px-6 py-3 bg-blue-600 text-white rounded-lg shadow hover:bg-blue-700 transition">
-      Retour à l’accueil
-    </NuxtLink>
-  </div>
-</template>
-
 <script setup lang="ts">
-defineProps<{
-  error: {
-    statusCode: number
-    message: string
-  }
-}>()
+
+const error = useError()
+
+const handleReload = () => {
+  clearError({ redirect: '/' }) // redirige vers la home
+}
 </script>
+
+<template>
+  <section class="bg-primary h-screen flex justify-center items-center">
+    <UContainer class="py-12 lg:py-20 text-center">
+      <div class="max-w-screen-sm mx-auto">
+        <h1 class="mb-4 text-7xl font-extrabold tracking-tight lg:text-9xl text-primary-600 dark:text-primary-500">
+          {{ error?.statusCode || 'Inconnu' }}
+        </h1>
+        <p class="mb-4 text-3xl font-bold tracking-tight text-gray-900 md:text-4xl dark:text-white">
+          Oops... An error occurred 😢
+        </p>
+        <p class="mb-6 text-lg md:text-xl font-light text-gray-500 dark:text-gray-400">
+          {{ error?.message || 'Try reloading the page or going back to the home page to explore our Nuxt UI components.' }}
+        </p>
+        <UButton
+          to="/"
+          size="lg"
+          class="my-4 px-5 bg-white hover:bg-white font-medium text-lg"
+        >
+          Back to Homepage
+        </UButton>
+      </div>
+    </UContainer>
+  </section>
+</template>
