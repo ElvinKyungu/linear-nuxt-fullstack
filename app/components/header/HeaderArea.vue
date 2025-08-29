@@ -137,6 +137,5 @@ const currentUser = computed(() => authStore.user)
     </div>
   </div>
 
-  <!-- Profile Modal -->
   <ProfileModal v-model="profileModalOpen" />
 </template>

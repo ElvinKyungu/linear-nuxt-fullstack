@@ -6,7 +6,7 @@ export const users: User[] = [
     lastName: 'Code',
     email: 'linear@example.com',
     avatarUrl:
-      'https://ui-avatars.com/api/?name=Elvin+Code&background=6366f1&color=ffffff',
+      'https://api.dicebear.com/9.x/glass/svg?seed=elvincode&backgroundColor=ff9f43,ff6b6b',
     createdAt: new Date('2024-01-15'),
   },
   {
@@ -15,7 +15,7 @@ export const users: User[] = [
     lastName: 'Dubois',
     email: 'marie.dubois@example.com',
     avatarUrl:
-      'https://ui-avatars.com/api/?name=Marie+Dubois&background=ec4899&color=ffffff',
+      'https://api.dicebear.com/9.x/glass/svg?seed=mariedubois&backgroundColor=48dbfb,1dd1a1',
     createdAt: new Date('2024-01-10'),
   },
   {
@@ -24,7 +24,7 @@ export const users: User[] = [
     lastName: 'Martin',
     email: 'jean.martin@example.com',
     avatarUrl:
-      'https://ui-avatars.com/api/?name=Jean+Martin&background=10b981&color=ffffff',
+      'https://api.dicebear.com/9.x/glass/svg?seed=deboryambenu&backgroundColor=ff4757,ff6b81',
     createdAt: new Date('2024-01-12'),
   },
   {
@@ -33,7 +33,7 @@ export const users: User[] = [
     lastName: 'Delattre',
     email: 'gab.delattre@example.com',
     avatarUrl:
-      'https://ui-avatars.com/api/?name=Gabriel+Delattre&background=10b981&color=ffffff',
+      'https://api.dicebear.com/9.x/glass/svg?seed=gabrieldelattre',
     createdAt: new Date('2024-01-12'),
   },
   {
@@ -42,7 +42,7 @@ export const users: User[] = [
     lastName: 'Yambenu',
     email: 'deb.yambenu@example.com',
     avatarUrl:
-      'https://ui-avatars.com/api/?name=Deb+Yambenu&background=10b981&color=ffffff',
+      'https://api.dicebear.com/9.x/glass/svg?backgroundColor=b6e3f4,d1d4f9',
     createdAt: new Date('2024-01-12'),
   },
 ]

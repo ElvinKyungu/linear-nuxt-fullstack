@@ -184,7 +184,7 @@ const getStatusColor = () => {
       </div>
 
       <div class="flex justify-end relative">
-        <UChip inset>
+        <UChip position="bottom-right">
           <UAvatar
             ref="assigneeTrigger"
             :src="assigneeUser?.avatarUrl"
@@ -192,15 +192,7 @@ const getStatusColor = () => {
             size="sm"
             class="cursor-pointer hover:ring-2 hover:ring-primary"
             @click="openAssigneePopup"
-          >
-            <template #badge>
-              <UIcon
-                v-if="task?.lead_id"
-                name="i-heroicons-check-circle-20-solid"
-                class="absolute -bottom-0.5 -right-0.5 w-4 h-4 text-primary"
-              />
-            </template>
-          </UAvatar>
+          />
         </UChip>
         <TaskAssignSelect
           v-if="isAssigneePopupOpen"
