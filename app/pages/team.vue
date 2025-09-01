@@ -4,13 +4,15 @@ import { storeToRefs } from 'pinia'
 import { useTeamsStore } from '@/stores/team'
 import { useComponentsStore } from '@/stores/components'
 import { users } from '@/data/users'
-import { gsap } from 'gsap'
 import type { Team } from '@/types/teams'
 
 const teamsStore = useTeamsStore()
 const componentsStore = useComponentsStore()
 const { teams, loading } = storeToRefs(teamsStore)
 const { components } = storeToRefs(componentsStore)
+
+// Utilisation du composable GSAP
+const { showModal, hideModal } = useGsapModal()
 
 onMounted(async () => {
   await Promise.all([
@@ -22,10 +24,10 @@ onMounted(async () => {
 const getDisplayedMembers = (team: Team) => team.members.slice(0, 4)
 const getRemainingCount = (team: Team) => team.members.length - 4
 
-// Refs pour gérer les tooltips
+// Refs pour gérer les tooltips - UN SEUL tooltip à la fois
 const activeTooltip = ref<string | null>(null)
-const tooltipPositions = ref<Record<string, 'top' | 'bottom'>>({})
-const isAnimating = ref<Record<string, boolean>>({})
+const tooltipPosition = ref<'top' | 'bottom'>('top')
+const isAnimating = ref(false)
 
 // Fonction pour obtenir le nom du composant par son ID
 const getComponentName = (componentId: string) => {
@@ -35,8 +37,8 @@ const getComponentName = (componentId: string) => {
 
 // Gestion du hover sur les avatars
 const handleAvatarHover = async (teamId: string, event: MouseEvent) => {
-  // Éviter les tooltips multiples
-  if (isAnimating.value[teamId] || activeTooltip.value === teamId) return
+  // Éviter les tooltips multiples et les animations en cours
+  if (isAnimating.value) return
   
   const target = event.currentTarget as HTMLElement
   
@@ -46,64 +48,66 @@ const handleAvatarHover = async (teamId: string, event: MouseEvent) => {
   const spaceBelow = window.innerHeight - rect.bottom
   
   // Par défaut en haut, mais en bas si pas assez de place
-  tooltipPositions.value[teamId] = (spaceAbove > 200) ? 'top' : 'bottom'
+  tooltipPosition.value = (spaceAbove > 200) ? 'top' : 'bottom'
+  
+  // Si c'est déjà le tooltip actif, ne rien faire
+  if (activeTooltip.value === teamId) return
   
   // Marquer comme en cours d'animation
-  isAnimating.value[teamId] = true
+  isAnimating.value = true
   
-  // Activer le tooltip
+  // Cacher le tooltip précédent s'il existe
+  if (activeTooltip.value) {
+    const prevTooltip = document.querySelector(`[data-tooltip="${activeTooltip.value}"]`) as HTMLElement
+    if (prevTooltip) {
+      hideModal(prevTooltip, () => {
+        // Après avoir caché l'ancien, afficher le nouveau
+        showNewTooltip(teamId)
+      })
+      return
+    }
+  }
+  
+  // Afficher directement le nouveau tooltip
+  showNewTooltip(teamId)
+}
+
+// Fonction pour afficher un nouveau tooltip
+const showNewTooltip = async (teamId: string) => {
+  // Activer le nouveau tooltip
   activeTooltip.value = teamId
   
   // Attendre le rendu puis animer
   await nextTick()
   
-  const tooltipElement = document.querySelector(`[data-tooltip="${teamId}"]`)
+  const tooltipElement = document.querySelector(`[data-tooltip="${teamId}"]`) as HTMLElement
   if (tooltipElement) {
-    gsap.fromTo(tooltipElement, 
-      { 
-        opacity: 0, 
-        scale: 0.8,
-        y: tooltipPositions.value[teamId] === 'top' ? 10 : -10
-      },
-      { 
-        opacity: 1, 
-        scale: 1,
-        y: 0,
-        duration: 0.2,
-        ease: "back.out(1.7)",
-        onComplete: () => {
-          isAnimating.value[teamId] = false
-        }
-      }
-    )
-  } else {
-    isAnimating.value[teamId] = false
+    showModal(tooltipElement)
   }
+  
+  // Débloquer les animations
+  setTimeout(() => {
+    isAnimating.value = false
+  }, 100)
 }
 
 // Gestion de la sortie du hover
 const handleAvatarLeave = (teamId: string) => {
-  // Éviter l'animation si déjà en cours
-  if (isAnimating.value[teamId]) return
+  // Si on n'est pas sur le bon tooltip ou en cours d'animation, ignorer
+  if (activeTooltip.value !== teamId || isAnimating.value) return
   
-  const tooltipElement = document.querySelector(`[data-tooltip="${teamId}"]`)
+  isAnimating.value = true
+  
+  const tooltipElement = document.querySelector(`[data-tooltip="${teamId}"]`) as HTMLElement
   
   if (tooltipElement) {
-    isAnimating.value[teamId] = true
-    gsap.to(tooltipElement, {
-      opacity: 0,
-      scale: 0.8,
-      y: tooltipPositions.value[teamId] === 'top' ? 10 : -10,
-      duration: 0.15,
-      ease: "power2.in",
-      onComplete: () => {
-        activeTooltip.value = null
-        isAnimating.value[teamId] = false
-      }
+    hideModal(tooltipElement, () => {
+      activeTooltip.value = null
+      isAnimating.value = false
     })
   } else {
     activeTooltip.value = null
-    isAnimating.value[teamId] = false
+    isAnimating.value = false
   }
 }
 </script>
@@ -166,7 +170,7 @@ const handleAvatarLeave = (teamId: string) => {
                         class="flex-shrink-0"
                       />
                       <div class="min-w-0 flex-1">
-                        <p class="text-sm font-medium text-gray-900 dark:text-white truncate">
+                        <p class="text-base font-medium text-gray-900 dark:text-white truncate">
                           {{ team.name }}
                         </p>
                       </div>
@@ -178,9 +182,10 @@ const handleAvatarLeave = (teamId: string) => {
                     <UBadge 
                       v-if="team.membership" 
                       variant="soft"
-                      size="sm"
-                      class="text-white bg-bordercolor/70"
+                      size="md"
+                      class="text-white bg-bordercolor/70 flex gap-1 max-w-max items-center"
                     >
+                      <UIcon name="i-heroicons-check" class="w-3 h-3" />
                       Joined
                     </UBadge>
                     <span v-else class="text-gray-400 text-sm">—</span>
@@ -188,7 +193,7 @@ const handleAvatarLeave = (teamId: string) => {
 
                   <!-- Component - Caché sur mobile et tablette -->
                   <div class="hidden lg:block lg:col-span-2 xl:col-span-2">
-                    <UBadge variant="undefined" class="text-gray-300" size="sm">
+                    <UBadge variant="outline" class="text-gray-300" size="md">
                       {{ getComponentName(team.identifier) }}
                     </UBadge>
                   </div>
@@ -225,13 +230,13 @@ const handleAvatarLeave = (teamId: string) => {
                         </UAvatar>
                       </div>
 
-                      <!-- Tooltip dynamique avec Nuxt UI -->
+                      <!-- Tooltip dynamique - UN SEUL à la fois -->
                       <UCard
-                        v-if="activeTooltip === team.identifier"
+                        v-show="activeTooltip === team.identifier"
                         :data-tooltip="team.identifier"
                         :class="[
-                          'absolute left-0 w-72 z-50 shadow-xl',
-                          tooltipPositions[team.identifier] === 'top' 
+                          'absolute left-0 w-72 z-50 shadow-xl opacity-0',
+                          tooltipPosition === 'top' 
                             ? 'bottom-full mb-2' 
                             : 'top-full mt-2'
                         ]"
@@ -259,14 +264,14 @@ const handleAvatarLeave = (teamId: string) => {
                               size="sm"
                             />
                             <div class="flex-1 min-w-0">
-                              <p class="text-sm font-medium text-gray-900 dark:text-white truncate">
+                              <p class="text-base font-medium text-gray-900 dark:text-white truncate">
                                 {{ users.find(u => u.id === member.userId)?.name }}
                               </p>
                               <p class="text-xs text-gray-500 truncate">
                                 {{ users.find(u => u.id === member.userId)?.email }}
                               </p>
                             </div>
-                            <UBadge variant="soft" size="xs">
+                            <UBadge variant="soft">
                               {{ member.role }}
                             </UBadge>
                           </div>
@@ -277,7 +282,7 @@ const handleAvatarLeave = (teamId: string) => {
 
                   <!-- Projects - Caché sur mobile, tablette et écrans moyens -->
                   <div class="hidden xl:block xl:col-span-2">
-                    <UBadge variant="undefined" class="text-gray-300" size="sm">
+                    <UBadge variant="outline" class="text-gray-300" size="md">
                       {{ team.projects }} {{ team.projects === 1 ? 'project' : 'projects' }}
                     </UBadge>
                   </div>
