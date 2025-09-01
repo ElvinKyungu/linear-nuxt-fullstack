@@ -16,36 +16,7 @@ const teams = ref<Team[]>([
   { name: 'Performance Lab', membership: false, identifier: 'PERF', members: ['🟢','🟢','🔴','+4'], projects: 2 },
   { name: 'Performance Lab', membership: false, identifier: 'PERF', members: ['🟢','🟢','🔴','+4'], projects: 2 },
   { name: 'Performance Lab', membership: false, identifier: 'PERF', members: ['🟢','🟢','🔴','+4'], projects: 2 },
-  { name: 'Performance Lab', membership: false, identifier: 'PERF', members: ['🟢','🟢','🔴','+4'], projects: 2 },
-  { name: 'Performance Lab', membership: false, identifier: 'PERF', members: ['🟢','🟢','🔴','+4'], projects: 2 },
-  { name: 'Performance Lab', membership: false, identifier: 'PERF', members: ['🟢','🟢','🔴','+4'], projects: 2 },
-  { name: 'Performance Lab', membership: false, identifier: 'PERF', members: ['🟢','🟢','🔴','+4'], projects: 2 },
-  { name: 'Performance Lab', membership: false, identifier: 'PERF', members: ['🟢','🟢','🔴','+4'], projects: 2 },
-  { name: 'Performance Lab', membership: false, identifier: 'PERF', members: ['🟢','🟢','🔴','+4'], projects: 2 },
-  { name: 'Performance Lab', membership: false, identifier: 'PERF', members: ['🟢','🟢','🔴','+4'], projects: 2 },
-  { name: 'Performance Lab', membership: false, identifier: 'PERF', members: ['🟢','🟢','🔴','+4'], projects: 2 },
-  { name: 'Performance Lab', membership: false, identifier: 'PERF', members: ['🟢','🟢','🔴','+4'], projects: 2 },
-  { name: 'Performance Lab', membership: false, identifier: 'PERF', members: ['🟢','🟢','🔴','+4'], projects: 2 },
-  { name: 'Performance Lab', membership: false, identifier: 'PERF', members: ['🟢','🟢','🔴','+4'], projects: 2 },
-  { name: 'Performance Lab', membership: false, identifier: 'PERF', members: ['🟢','🟢','🔴','+4'], projects: 2 },
-  { name: 'Performance Lab', membership: false, identifier: 'PERF', members: ['🟢','🟢','🔴','+4'], projects: 2 },
-  { name: 'Performance Lab', membership: false, identifier: 'PERF', members: ['🟢','🟢','🔴','+4'], projects: 2 },
-  { name: 'Performance Lab', membership: false, identifier: 'PERF', members: ['🟢','🟢','🔴','+4'], projects: 2 },
-  { name: 'Performance Lab', membership: false, identifier: 'PERF', members: ['🟢','🟢','🔴','+4'], projects: 2 },
-  { name: 'Performance Lab', membership: false, identifier: 'PERF', members: ['🟢','🟢','🔴','+4'], projects: 2 },
-  { name: 'Performance Lab', membership: false, identifier: 'PERF', members: ['🟢','🟢','🔴','+4'], projects: 2 },
-  { name: 'Performance Lab', membership: false, identifier: 'PERF', members: ['🟢','🟢','🔴','+4'], projects: 2 },
-  { name: 'Performance Lab', membership: false, identifier: 'PERF', members: ['🟢','🟢','🔴','+4'], projects: 2 },
-  { name: 'Performance Lab', membership: false, identifier: 'PERF', members: ['🟢','🟢','🔴','+4'], projects: 2 },
-  { name: 'Performance Lab', membership: false, identifier: 'PERF', members: ['🟢','🟢','🔴','+4'], projects: 2 },
-  { name: 'Performance Lab', membership: false, identifier: 'PERF', members: ['🟢','🟢','🔴','+4'], projects: 2 },
-  { name: 'Performance Lab', membership: false, identifier: 'PERF', members: ['🟢','🟢','🔴','+4'], projects: 2 },
-  { name: 'Performance Lab', membership: false, identifier: 'PERF', members: ['🟢','🟢','🔴','+4'], projects: 2 },
-  { name: 'Performance Lab', membership: false, identifier: 'PERF', members: ['🟢','🟢','🔴','+4'], projects: 2 },
-  { name: 'Performance Lab', membership: false, identifier: 'PERF', members: ['🟢','🟢','🔴','+4'], projects: 2 },
-  { name: 'Performance Lab', membership: false, identifier: 'PERF', members: ['🟢','🟢','🔴','+4'], projects: 2 },
-  { name: 'Performance Lab', membership: false, identifier: 'PERF', members: ['🟢','🟢','🔴','+4'], projects: 2 },
-  // ... ajoute le reste des équipes
+
 ])
 </script>
 
@@ -55,7 +26,7 @@ const teams = ref<Team[]>([
       <!-- Table Header fixe -->
       <div class="bg-primary fixed w-full">
         <table class="min-w-full">
-          <thead class="text-left">
+          <thead class="text-left w-full">
             <tr>
               <th class="px-6 py-3 text-sm font-medium text-gray-500 dark:text-gray-300">Name</th>
               <th class="px-6 py-3 text-sm font-medium text-gray-500 dark:text-gray-300">Membership</th>
@@ -69,14 +40,14 @@ const teams = ref<Team[]>([
       </div>
 
       <!-- Table Body scrollable -->
-      <div class=" overflow-y-auto">
-        <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+      <div class=" overflow-y-auto mt-10">
+        <table class="min-w-full divide-y divide-gray-200">
           <tbody class="">
-            <tr v-for="team in teams" :key="team.identifier" class="hover:bg-gray-100 dark:hover:bg-gray-800">
+            <tr v-for="team in teams" :key="team.identifier" class="text-left border-b border-bordercolor/20 hover:bg-bordercolor/20">
               <td class="px-6 py-3 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-gray-100">{{ team.name }}</td>
-              <td class="px-6 py-3 text-sm text-gray-500 dark:text-gray-300">
-                <span v-if="team.membership" class="text-green-500 font-semibold">Joined</span>
-                <span v-else class="text-gray-400 font-semibold">—</span>
+              <td class="px-6 py-3 text-sm text-gray-500 dark:text-gray-300 text-left">
+                <span v-if="team.membership" class="text-green-500 font-semibold text-left">Joined</span>
+                <span v-else class="text-gray-400 font-semibold text-left">—</span>
               </td>
               <td class="px-6 py-3 text-sm text-gray-500 dark:text-gray-300">{{ team.identifier }}</td>
               <td class="px-6 py-3 text-sm text-gray-500 dark:text-gray-300 flex items-center gap-1">
