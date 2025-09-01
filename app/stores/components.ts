@@ -1,6 +1,6 @@
 // stores/components.ts
 import { defineStore } from 'pinia'
-
+import type { Component } from '@/types/components'
 export const useComponentsStore = defineStore('components', () => {
   const components = ref<Component[]>([])
   const loading = ref(false)

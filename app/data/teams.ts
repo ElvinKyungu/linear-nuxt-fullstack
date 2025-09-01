@@ -1,5 +1,5 @@
 // data/team.ts
-import type { Team } from '@/types/team'
+import type { Team } from '~/types/teams'
 
 export const teams: Team[] = [
   {
@@ -7,7 +7,13 @@ export const teams: Team[] = [
     name: 'Elvin-Code Core',
     membership: 'Joined',
     identifier: '6f980025-ee0',
-    members: ['ELVIN-CODE-001', 'ELVIN-CODE-401', 'ELVIN-CODE-671'],
+    members: [
+      { userId: 'ELVIN-CODE-001', role: 'Admin' },
+      { userId: 'ELVIN-CODE-401', role: 'Member' },
+      { userId: 'ELVIN-CODE-671', role: 'Member' },
+      { userId: 'ELVIN-CODE-101', role: 'Member' },
+      { userId: 'ELVIN-CODE-910', role: 'Member' },
+    ],
     projects: 3,
     componentId: '6f980025-ee0',
   },
@@ -16,7 +22,10 @@ export const teams: Team[] = [
     name: 'UI Components Squad',
     membership: 'Joined',
     identifier: '6f980025-ee1',
-    members: ['ELVIN-CODE-401', 'ELVIN-CODE-101'],
+    members: [
+      { userId: 'ELVIN-CODE-401', role: 'Member' },
+      { userId: 'ELVIN-CODE-101', role: 'Member' }
+    ],
     projects: 5,
     componentId: '6f980025-ee1',
   },
@@ -25,7 +34,10 @@ export const teams: Team[] = [
     name: 'Auth Guardians',
     membership: '',
     identifier: '6f980025-ee2',
-    members: ['ELVIN-CODE-001', 'ELVIN-CODE-910'],
+    members: [
+      { userId: 'ELVIN-CODE-001', role: 'Admin' },
+      { userId: 'ELVIN-CODE-910', role: 'Member' }
+    ],
     projects: 2,
     componentId: '6f980025-ee2',
   },
@@ -34,7 +46,10 @@ export const teams: Team[] = [
     name: 'Dashboard Builders',
     membership: 'Joined',
     identifier: '6f980025-ee3',
-    members: ['ELVIN-CODE-671', 'ELVIN-CODE-101'],
+    members: [
+      { userId: 'ELVIN-CODE-671', role: 'Member' },
+      { userId: 'ELVIN-CODE-101', role: 'Member' }
+    ],
     projects: 4,
     componentId: '6f980025-ee3',
   },
@@ -43,7 +58,10 @@ export const teams: Team[] = [
     name: 'API Core Team',
     membership: 'Joined',
     identifier: '6f980025-ee4',
-    members: ['ELVIN-CODE-001', 'ELVIN-CODE-401'],
+    members: [
+      { userId: 'ELVIN-CODE-001', role: 'Admin' },
+      { userId: 'ELVIN-CODE-401', role: 'Member' }
+    ],
     projects: 3,
     componentId: '6f980025-ee4',
   },
@@ -52,7 +70,10 @@ export const teams: Team[] = [
     name: 'Navigation Masters',
     membership: '',
     identifier: '6f980025-ee5',
-    members: ['ELVIN-CODE-910', 'ELVIN-CODE-671'],
+    members: [
+      { userId: 'ELVIN-CODE-910', role: 'Member' },
+      { userId: 'ELVIN-CODE-671', role: 'Member' }
+    ],
     projects: 2,
     componentId: '6f980025-ee5',
   },
@@ -61,7 +82,10 @@ export const teams: Team[] = [
     name: 'Data Table Squad',
     membership: '',
     identifier: '6f980025-ee6',
-    members: ['ELVIN-CODE-101', 'ELVIN-CODE-401'],
+    members: [
+      { userId: 'ELVIN-CODE-101', role: 'Member' },
+      { userId: 'ELVIN-CODE-401', role: 'Member' }
+    ],
     projects: 4,
     componentId: '6f980025-ee6',
   },
@@ -70,7 +94,10 @@ export const teams: Team[] = [
     name: 'Layout Crew',
     membership: 'Joined',
     identifier: '6f980025-ee8',
-    members: ['ELVIN-CODE-001', 'ELVIN-CODE-910'],
+    members: [
+      { userId: 'ELVIN-CODE-001', role: 'Admin' },
+      { userId: 'ELVIN-CODE-910', role: 'Member' }
+    ],
     projects: 1,
     componentId: '6f980025-ee8',
   },
@@ -79,7 +106,10 @@ export const teams: Team[] = [
     name: 'Theming Innovators',
     membership: 'Joined',
     identifier: '6f980025-ee9',
-    members: ['ELVIN-CODE-401', 'ELVIN-CODE-671'],
+    members: [
+      { userId: 'ELVIN-CODE-401', role: 'Member' },
+      { userId: 'ELVIN-CODE-671', role: 'Member' }
+    ],
     projects: 2,
     componentId: '6f980025-ee9',
   },
@@ -88,7 +118,10 @@ export const teams: Team[] = [
     name: 'Card Designers',
     membership: 'Joined',
     identifier: '6f980025-ee0',
-    members: ['ELVIN-CODE-910', 'ELVIN-CODE-101'],
+    members: [
+      { userId: 'ELVIN-CODE-910', role: 'Member' },
+      { userId: 'ELVIN-CODE-101', role: 'Member' }
+    ],
     projects: 3,
     componentId: '6f980025-ee0',
   },
@@ -97,7 +130,7 @@ export const teams: Team[] = [
     name: 'Security Taskforce',
     membership: '',
     identifier: '6f980025-ee2',
-    members: ['ELVIN-CODE-001'],
+    members: [{ userId: 'ELVIN-CODE-001', role: 'Admin' }],
     projects: 2,
     componentId: '6f980025-ee2',
   },
@@ -106,7 +139,10 @@ export const teams: Team[] = [
     name: 'UI/UX Research',
     membership: '',
     identifier: '6f980025-ee1',
-    members: ['ELVIN-CODE-401', 'ELVIN-CODE-910'],
+    members: [
+      { userId: 'ELVIN-CODE-401', role: 'Member' },
+      { userId: 'ELVIN-CODE-910', role: 'Member' }
+    ],
     projects: 1,
     componentId: '6f980025-ee1',
   },
@@ -115,7 +151,7 @@ export const teams: Team[] = [
     name: 'Analytics Dashboard',
     membership: 'Joined',
     identifier: '6f980025-ee3',
-    members: ['ELVIN-CODE-671'],
+    members: [{ userId: 'ELVIN-CODE-671', role: 'Member' }],
     projects: 3,
     componentId: '6f980025-ee3',
   },
@@ -124,7 +160,10 @@ export const teams: Team[] = [
     name: 'API Integrators',
     membership: '',
     identifier: '6f980025-ee4',
-    members: ['ELVIN-CODE-101', 'ELVIN-CODE-401'],
+    members: [
+      { userId: 'ELVIN-CODE-101', role: 'Member' },
+      { userId: 'ELVIN-CODE-401', role: 'Member' }
+    ],
     projects: 4,
     componentId: '6f980025-ee4',
   },
@@ -133,7 +172,9 @@ export const teams: Team[] = [
     name: 'Frontend Nav Team',
     membership: 'Joined',
     identifier: '6f980025-ee5',
-    members: ['ELVIN-CODE-910'],
+    members: [
+      { userId: 'ELVIN-CODE-910', role: 'Member' }
+    ],
     projects: 2,
     componentId: '6f980025-ee5',
   },
@@ -142,7 +183,10 @@ export const teams: Team[] = [
     name: 'Data Processing',
     membership: 'Joined',
     identifier: '6f980025-ee6',
-    members: ['ELVIN-CODE-001', 'ELVIN-CODE-671'],
+    members: [
+      { userId: 'ELVIN-CODE-001', role: 'Admin' },
+      { userId: 'ELVIN-CODE-671', role: 'Member' }
+    ],
     projects: 5,
     componentId: '6f980025-ee6',
   },
@@ -151,7 +195,7 @@ export const teams: Team[] = [
     name: 'Layout Designers',
     membership: '',
     identifier: '6f980025-ee8',
-    members: ['ELVIN-CODE-401'],
+    members: [{ userId: 'ELVIN-CODE-401', role: 'Member' }],
     projects: 3,
     componentId: '6f980025-ee8',
   },
@@ -160,7 +204,10 @@ export const teams: Team[] = [
     name: 'Theme Creators',
     membership: 'Joined',
     identifier: '6f980025-ee9',
-    members: ['ELVIN-CODE-101', 'ELVIN-CODE-910'],
+    members: [
+      { userId: 'ELVIN-CODE-101', role: 'Member' },
+      { userId: 'ELVIN-CODE-910', role: 'Member' }
+    ],
     projects: 2,
     componentId: '6f980025-ee9',
   },
@@ -169,7 +216,10 @@ export const teams: Team[] = [
     name: 'Card Innovators',
     membership: 'Joined',
     identifier: '6f980025-ee0',
-    members: ['ELVIN-CODE-671', 'ELVIN-CODE-001'],
+    members: [
+      { userId: 'ELVIN-CODE-671', role: 'Member' },
+      { userId: 'ELVIN-CODE-001', role: 'Admin' }
+    ],
     projects: 1,
     componentId: '6f980025-ee0',
   },
@@ -178,7 +228,11 @@ export const teams: Team[] = [
     name: 'Fullstack Builders',
     membership: 'Joined',
     identifier: '6f980025-ee4',
-    members: ['ELVIN-CODE-910', 'ELVIN-CODE-401', 'ELVIN-CODE-101'],
+    members: [
+      { userId: 'ELVIN-CODE-910', role: 'Admin' },
+      { userId: 'ELVIN-CODE-401', role: 'Member' },
+      { userId: 'ELVIN-CODE-101', role: 'Member' }
+    ],
     projects: 6,
     componentId: '6f980025-ee4',
   },
