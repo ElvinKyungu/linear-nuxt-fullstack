@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted, nextTick } from 'vue'
+import { ref, onMounted } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useTeamsStore } from '@/stores/team'
 import { useComponentsStore } from '@/stores/components'
@@ -11,9 +11,6 @@ const componentsStore = useComponentsStore()
 const { teams, loading } = storeToRefs(teamsStore)
 const { components } = storeToRefs(componentsStore)
 
-// Utilisation du composable GSAP
-const { showModal, hideModal } = useGsapModal()
-
 onMounted(async () => {
   await Promise.all([
     teamsStore.fetchTeams(),
@@ -24,10 +21,8 @@ onMounted(async () => {
 const getDisplayedMembers = (team: Team) => team.members.slice(0, 4)
 const getRemainingCount = (team: Team) => team.members.length - 4
 
-// Refs pour gérer les tooltips - UN SEUL tooltip à la fois
+// État simple pour le tooltip
 const activeTooltip = ref<string | null>(null)
-const tooltipPosition = ref<'top' | 'bottom'>('top')
-const isAnimating = ref(false)
 
 // Fonction pour obtenir le nom du composant par son ID
 const getComponentName = (componentId: string) => {
@@ -35,79 +30,14 @@ const getComponentName = (componentId: string) => {
   return component?.name || componentId
 }
 
-// Gestion du hover sur les avatars
-const handleAvatarHover = async (teamId: string, event: MouseEvent) => {
-  // Éviter les tooltips multiples et les animations en cours
-  if (isAnimating.value) return
-  
-  const target = event.currentTarget as HTMLElement
-  
-  // Calculer la position du tooltip
-  const rect = target.getBoundingClientRect()
-  const spaceAbove = rect.top
-  const spaceBelow = window.innerHeight - rect.bottom
-  
-  // Par défaut en haut, mais en bas si pas assez de place
-  tooltipPosition.value = (spaceAbove > 200) ? 'top' : 'bottom'
-  
-  // Si c'est déjà le tooltip actif, ne rien faire
-  if (activeTooltip.value === teamId) return
-  
-  // Marquer comme en cours d'animation
-  isAnimating.value = true
-  
-  // Cacher le tooltip précédent s'il existe
-  if (activeTooltip.value) {
-    const prevTooltip = document.querySelector(`[data-tooltip="${activeTooltip.value}"]`) as HTMLElement
-    if (prevTooltip) {
-      hideModal(prevTooltip, () => {
-        // Après avoir caché l'ancien, afficher le nouveau
-        showNewTooltip(teamId)
-      })
-      return
-    }
-  }
-  
-  // Afficher directement le nouveau tooltip
-  showNewTooltip(teamId)
-}
-
-// Fonction pour afficher un nouveau tooltip
-const showNewTooltip = async (teamId: string) => {
-  // Activer le nouveau tooltip
+// Gestion simple du hover
+const handleAvatarHover = (teamId: string) => {
   activeTooltip.value = teamId
-  
-  // Attendre le rendu puis animer
-  await nextTick()
-  
-  const tooltipElement = document.querySelector(`[data-tooltip="${teamId}"]`) as HTMLElement
-  if (tooltipElement) {
-    showModal(tooltipElement)
-  }
-  
-  // Débloquer les animations
-  setTimeout(() => {
-    isAnimating.value = false
-  }, 100)
 }
 
-// Gestion de la sortie du hover
 const handleAvatarLeave = (teamId: string) => {
-  // Si on n'est pas sur le bon tooltip ou en cours d'animation, ignorer
-  if (activeTooltip.value !== teamId || isAnimating.value) return
-  
-  isAnimating.value = true
-  
-  const tooltipElement = document.querySelector(`[data-tooltip="${teamId}"]`) as HTMLElement
-  
-  if (tooltipElement) {
-    hideModal(tooltipElement, () => {
-      activeTooltip.value = null
-      isAnimating.value = false
-    })
-  } else {
+  if (activeTooltip.value === teamId) {
     activeTooltip.value = null
-    isAnimating.value = false
   }
 }
 </script>
@@ -119,7 +49,7 @@ const handleAvatarLeave = (teamId: string) => {
       <UCard class="bg-primary flex-1 flex flex-col overflow-hidden">
         <div class="flex-1 flex flex-col overflow-hidden">
           <!-- Header fixe -->
-          <div class="border-b border-bordercolor shrink-0">
+          <div class="border-b border-bordercolor shrink-0 sticky top-0 bg-primary z-20">
             <div class="min-w-full">
               <div class="grid grid-cols-12 gap-4 px-6 py-3">
                 <!-- Responsive columns -->
@@ -204,7 +134,7 @@ const handleAvatarLeave = (teamId: string) => {
                       <!-- Groupe d'avatars avec hover pour tooltip -->
                       <div 
                         class="flex items-center -space-x-2 cursor-pointer"
-                        @mouseenter="handleAvatarHover(team.identifier, $event)"
+                        @mouseenter="handleAvatarHover(team.identifier)"
                         @mouseleave="handleAvatarLeave(team.identifier)"
                       >
                         <!-- Affichage des 4 premiers avatars -->
@@ -230,53 +160,14 @@ const handleAvatarLeave = (teamId: string) => {
                         </UAvatar>
                       </div>
 
-                      <!-- Tooltip dynamique - UN SEUL à la fois -->
-                      <UCard
-                        v-show="activeTooltip === team.identifier"
-                        :data-tooltip="team.identifier"
-                        :class="[
-                          'absolute left-0 w-72 z-50 shadow-xl opacity-0',
-                          tooltipPosition === 'top' 
-                            ? 'bottom-full mb-2' 
-                            : 'top-full mt-2'
-                        ]"
-                        :ui="{ 
-                          base: 'overflow-visible',
-                          body: { padding: 'p-3' }
-                        }"
-                      >
-                        <template #header>
-                          <div class="flex items-center justify-between">
-                            <h4 class="text-sm font-semibold">Team Members</h4>
-                            <UBadge variant="soft" size="xs">{{ team.members.length }}</UBadge>
-                          </div>
-                        </template>
-
-                        <div class="space-y-2 max-h-48 overflow-y-auto">
-                          <div 
-                            v-for="member in team.members" 
-                            :key="member.userId"
-                            class="flex items-center gap-3"
-                          >
-                            <UAvatar
-                              :src="users.find(u => u.id === member.userId)?.avatarUrl"
-                              :alt="users.find(u => u.id === member.userId)?.name"
-                              size="sm"
-                            />
-                            <div class="flex-1 min-w-0">
-                              <p class="text-base font-medium text-gray-900 dark:text-white truncate">
-                                {{ users.find(u => u.id === member.userId)?.name }}
-                              </p>
-                              <p class="text-xs text-gray-500 truncate">
-                                {{ users.find(u => u.id === member.userId)?.email }}
-                              </p>
-                            </div>
-                            <UBadge variant="soft">
-                              {{ member.role }}
-                            </UBadge>
-                          </div>
-                        </div>
-                      </UCard>
+                      <!-- Composant Tooltip -->
+                      <TeamMembersTooltip />
+                      <TeamMembersTooltip 
+                        v-if="activeTooltip === team.identifier" 
+                        :members="team.members" 
+                        :users="users" 
+                        class="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 z-10"
+                      />
                     </div>
                   </div>
 
