@@ -11,11 +11,20 @@ export default defineEventHandler(async (event) => {
   try {
     const encoder = new TextEncoder()
     const { payload } = await jwtVerify(token, encoder.encode(JWT_SECRET))
-    const user = users.find(u => u.id === payload.userId)
+    const user = users.find((u) => u.id === payload.userId)
 
-    if (!user) throw createError({ statusCode: 401, statusMessage: 'User not found' })
+    if (!user)
+      throw createError({ statusCode: 401, statusMessage: 'User not found' })
 
-    return { user: { id: user.id, name: user.name, lastName: user.lastName, email: user.email, avatarUrl: user.avatarUrl } }
+    return {
+      user: {
+        id: user.id,
+        name: user.name,
+        lastName: user.lastName,
+        email: user.email,
+        avatarUrl: user.avatarUrl,
+      },
+    }
   } catch {
     throw createError({ statusCode: 401, statusMessage: 'Invalid token' })
   }

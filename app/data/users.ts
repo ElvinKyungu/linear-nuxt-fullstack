@@ -32,8 +32,7 @@ export const users: User[] = [
     name: 'Gabriel',
     lastName: 'Delattre',
     email: 'gab.delattre@example.com',
-    avatarUrl:
-      'https://api.dicebear.com/9.x/glass/svg?seed=gabrieldelattre',
+    avatarUrl: 'https://api.dicebear.com/9.x/glass/svg?seed=gabrieldelattre',
     createdAt: new Date('2024-01-12'),
   },
   {

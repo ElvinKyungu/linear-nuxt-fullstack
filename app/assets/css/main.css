@@ -7,7 +7,7 @@
   --color-primary: #101011;
   --color-secondary: #201828;
   --color-bordercolor: #424347;
-  --color-background: oklch(.141 .005 285.823);
+  --color-background: oklch(0.141 0.005 285.823);
 }
 @layer base {
   body {

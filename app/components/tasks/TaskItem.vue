@@ -14,16 +14,13 @@ const emit = defineEmits(['open-assignee', 'update-assignee'])
 
 const assigneeUser = computed(() => {
   if (!props.users || !props.task?.lead_id) return null
-  return (
-    props.users.find((user: User) => user.id === props.task.leadId) || null
-  )
+  return props.users.find((user: User) => user.id === props.task.leadId) || null
 })
 
 const taskComponent = computed(() => {
   return (
-    props.components.find(
-      (c: Components) => c.id === props.task.componentId
-    ) || null
+    props.components.find((c: Components) => c.id === props.task.componentId) ||
+    null
   )
 })
 
@@ -117,7 +114,9 @@ const getStatusColor = () => {
           @update:model-value="handleLevelSelect"
           @close="isLevelSelectorOpen = false"
         />
-        <span class="text-gray-400 font-medium hidden md:block">{{ task?.leadId }}</span>
+        <span class="text-gray-400 font-medium hidden md:block">{{
+          task?.leadId
+        }}</span>
       </div>
       <div class="flex items-center gap-2 font-medium relative">
         <UButton

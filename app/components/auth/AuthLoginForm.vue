@@ -37,10 +37,7 @@ watchEffect(() => {
       disabled
     >
       <template #leading>
-        <UIcon
-          name="uil:github"
-          class="w-5 h-5 text-white"
-        />
+        <UIcon name="uil:github" class="w-5 h-5 text-white" />
       </template>
       <span class="text-white">Sign in with GitHub</span>
     </UButton>

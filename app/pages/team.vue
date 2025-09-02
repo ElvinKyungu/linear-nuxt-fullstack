@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref, computed, reactive, onMounted } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useTeamsStore } from '@/stores/team'
 import { useComponentsStore } from '@/stores/components'
@@ -14,33 +14,65 @@ const { components } = storeToRefs(componentsStore)
 onMounted(async () => {
   await Promise.all([
     teamsStore.fetchTeams(),
-    componentsStore.fetchComponents()
+    componentsStore.fetchComponents(),
   ])
 })
 
 const getDisplayedMembers = (team: Team) => team.members.slice(0, 4)
-const getRemainingCount = (team: Team) => team.members.length - 4
+const getRemainingCount  = (team: Team) => Math.max(team.members.length - 4, 0)
 
-// État simple pour le tooltip
-const activeTooltip = ref<string | null>(null)
-
-// Fonction pour obtenir le nom du composant par son ID
 const getComponentName = (componentId: string) => {
   const component = components.value.find(c => c.id === componentId)
   return component?.name || componentId
 }
 
-// Gestion simple du hover
-const handleAvatarHover = (teamId: string) => {
-  activeTooltip.value = teamId
+/** --- Tooltip global state --- */
+const activeTeamId = ref<string | null>(null)
+const activeTeam   = computed(() => teams.value.find(t => t.identifier === activeTeamId.value) || null)
+
+const anchorRect = reactive({ x: 0, y: 0, w: 0, h: 0 })
+const placement  = ref<'top' | 'bottom'>('top')
+
+let hideTimer: number | undefined
+
+function openTooltip(teamId: string, el: HTMLElement) {
+  if (hideTimer) { clearTimeout(hideTimer); hideTimer = undefined }
+  activeTeamId.value = teamId
+  const r = el.getBoundingClientRect()
+  anchorRect.x = r.left + r.width / 2
+  anchorRect.y = r.top
+  anchorRect.w = r.width
+  anchorRect.h = r.height
+  // 280px ≈ hauteur max du tooltip
+  placement.value = (r.top > 280) ? 'top' : 'bottom'
 }
 
-const handleAvatarLeave = (teamId: string) => {
-  if (activeTooltip.value === teamId) {
-    activeTooltip.value = null
-  }
+function scheduleClose() {
+  hideTimer = window.setTimeout(() => { activeTeamId.value = null }, 120)
 }
+function cancelClose() {
+  if (hideTimer) { clearTimeout(hideTimer); hideTimer = undefined }
+}
+
+const tooltipStyle = computed(() => {
+  if (!activeTeam.value) return {}
+  if (placement.value === 'top') {
+    return {
+      position: 'fixed',
+      left: `${anchorRect.x}px`,
+      top: `${anchorRect.y - 8}px`,
+      transform: 'translate(-50%, -100%)'
+    }
+  }
+  return {
+    position: 'fixed',
+    left: `${anchorRect.x}px`,
+    top: `${anchorRect.y + anchorRect.h + 8}px`,
+    transform: 'translate(-50%, 0)'
+  }
+})
 </script>
+
 
 <template>
   <NuxtLayout>
@@ -49,32 +81,50 @@ const handleAvatarLeave = (teamId: string) => {
       <UCard class="bg-primary flex-1 flex flex-col overflow-hidden">
         <div class="flex-1 flex flex-col overflow-hidden">
           <!-- Header fixe -->
-          <div class="border-b border-bordercolor shrink-0 sticky top-0 bg-primary z-20">
+          <div
+            class="border-b border-bordercolor shrink-0 sticky top-0 bg-primary z-20"
+          >
             <div class="min-w-full">
               <div class="grid grid-cols-12 gap-4 px-6 py-3">
                 <!-- Responsive columns -->
-                <div class="col-span-12 sm:col-span-6 lg:col-span-4 xl:col-span-4">
-                  <span class="text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                <div
+                  class="col-span-12 sm:col-span-6 lg:col-span-4 xl:col-span-4"
+                >
+                  <span
+                    class="text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider"
+                  >
                     Name
                   </span>
                 </div>
-                <div class="hidden md:block md:col-span-3 lg:col-span-2 xl:col-span-2">
-                  <span class="text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                <div
+                  class="hidden md:block md:col-span-3 lg:col-span-2 xl:col-span-2"
+                >
+                  <span
+                    class="text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider"
+                  >
                     Membership
                   </span>
                 </div>
                 <div class="hidden lg:block lg:col-span-2 xl:col-span-2">
-                  <span class="text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                  <span
+                    class="text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider"
+                  >
                     Component
                   </span>
                 </div>
-                <div class="col-span-12 sm:col-span-6 lg:col-span-2 xl:col-span-2">
-                  <span class="text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                <div
+                  class="col-span-12 sm:col-span-6 lg:col-span-2 xl:col-span-2"
+                >
+                  <span
+                    class="text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider"
+                  >
                     Members
                   </span>
                 </div>
                 <div class="hidden xl:block xl:col-span-2">
-                  <span class="text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                  <span
+                    class="text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider"
+                  >
                     Projects
                   </span>
                 </div>
@@ -85,22 +135,26 @@ const handleAvatarLeave = (teamId: string) => {
           <!-- Table Body scrollable - prend le reste de l'espace -->
           <div class="flex-1 overflow-y-auto">
             <div class="min-w-full divide-y divide-bordercolor/20">
-              <div 
-                v-for="team in teams" 
-                :key="team.identifier" 
+              <div
+                v-for="team in teams"
+                :key="team.identifier"
                 class="hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors duration-200 border-b border-bordercolor/10"
               >
                 <div class="grid grid-cols-12 gap-4 px-6 py-4 items-center">
                   <!-- Name - Toujours visible -->
-                  <div class="col-span-12 sm:col-span-6 lg:col-span-4 xl:col-span-4">
+                  <div
+                    class="col-span-12 sm:col-span-6 lg:col-span-4 xl:col-span-4"
+                  >
                     <div class="flex items-center gap-3">
-                      <UAvatar 
+                      <UAvatar
                         :alt="team.name"
                         size="sm"
                         class="flex-shrink-0"
                       />
                       <div class="min-w-0 flex-1">
-                        <p class="text-base font-medium text-gray-900 dark:text-white truncate">
+                        <p
+                          class="text-base font-medium text-gray-900 dark:text-white truncate"
+                        >
                           {{ team.name }}
                         </p>
                       </div>
@@ -108,9 +162,11 @@ const handleAvatarLeave = (teamId: string) => {
                   </div>
 
                   <!-- Membership - Caché sur mobile -->
-                  <div class="hidden md:block md:col-span-3 lg:col-span-2 xl:col-span-2">
-                    <UBadge 
-                      v-if="team.membership" 
+                  <div
+                    class="hidden md:block md:col-span-3 lg:col-span-2 xl:col-span-2"
+                  >
+                    <UBadge
+                      v-if="team.membership"
                       variant="soft"
                       size="md"
                       class="text-white bg-bordercolor/70 flex gap-1 max-w-max items-center"
@@ -129,20 +185,28 @@ const handleAvatarLeave = (teamId: string) => {
                   </div>
 
                   <!-- Members - Toujours visible -->
-                  <div class="col-span-12 sm:col-span-6 lg:col-span-2 xl:col-span-2 relative">
+                  <div
+                    class="col-span-12 sm:col-span-6 lg:col-span-2 xl:col-span-2 relative"
+                    
+                  >
                     <div class="flex items-center gap-1 relative">
                       <!-- Groupe d'avatars avec hover pour tooltip -->
-                      <div 
+                      <div
+                        :ref="`teamMemberTrigger-${team.identifier}`"
+                        
                         class="flex items-center -space-x-2 cursor-pointer"
-                        @mouseenter="handleAvatarHover(team.identifier)"
-                        @mouseleave="handleAvatarLeave(team.identifier)"
+                         @mouseenter="(e) => openTooltip(team.identifier, e.currentTarget as HTMLElement)"
+                        @mouseleave="scheduleClose"
+                        
                       >
                         <!-- Affichage des 4 premiers avatars -->
                         <UAvatar
-                          v-for="member in getDisplayedMembers(team)" 
+                          v-for="member in getDisplayedMembers(team)"
                           :key="member.userId"
-                          :src="users.find(u => u.id === member.userId)?.avatarUrl"
-                          :alt="users.find(u => u.id === member.userId)?.name"
+                          :src="
+                            users.find((u) => u.id === member.userId)?.avatarUrl
+                          "
+                          :alt="users.find((u) => u.id === member.userId)?.name"
                           size="xs"
                           class="ring-2 ring-black"
                         />
@@ -159,22 +223,14 @@ const handleAvatarLeave = (teamId: string) => {
                           </span>
                         </UAvatar>
                       </div>
-
-                      <!-- Composant Tooltip -->
-                      <TeamMembersTooltip />
-                      <TeamMembersTooltip 
-                        v-if="activeTooltip === team.identifier" 
-                        :members="team.members" 
-                        :users="users" 
-                        class="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 z-10"
-                      />
                     </div>
                   </div>
 
                   <!-- Projects - Caché sur mobile, tablette et écrans moyens -->
                   <div class="hidden xl:block xl:col-span-2">
                     <UBadge variant="outline" class="text-gray-300" size="md">
-                      {{ team.projects }} {{ team.projects === 1 ? 'project' : 'projects' }}
+                      {{ team.projects }}
+                      {{ team.projects === 1 ? 'project' : 'projects' }}
                     </UBadge>
                   </div>
                 </div>
@@ -184,19 +240,38 @@ const handleAvatarLeave = (teamId: string) => {
 
           <!-- Loading State -->
           <div v-if="loading" class="flex justify-center items-center py-8">
-            <UIcon name="i-heroicons-arrow-path" class="animate-spin w-6 h-6 text-gray-400" />
+            <UIcon
+              name="i-heroicons-arrow-path"
+              class="animate-spin w-6 h-6 text-gray-400"
+            />
             <span class="ml-2 text-gray-500">Chargement...</span>
           </div>
 
           <!-- Empty State -->
-          <div v-else-if="teams.length === 0" class="flex justify-center items-center py-8">
+          <div
+            v-else-if="teams.length === 0"
+            class="flex justify-center items-center py-8"
+          >
             <div class="text-center">
-              <UIcon name="i-heroicons-users" class="w-12 h-12 text-gray-300 mx-auto mb-2" />
+              <UIcon
+                name="i-heroicons-users"
+                class="w-12 h-12 text-gray-300 mx-auto mb-2"
+              />
               <p class="text-gray-500">Aucune équipe trouvée</p>
             </div>
           </div>
         </div>
       </UCard>
+      <Teleport to="body">
+        <TeamMembersTooltip
+          v-if="activeTeam"
+          :team="activeTeam"
+          :placement="placement"
+          :style="tooltipStyle"
+          @mouseenter.native="cancelClose"
+          @mouseleave.native="scheduleClose"
+        />
+      </Teleport>
     </div>
   </NuxtLayout>
 </template>

@@ -16,7 +16,10 @@ export default defineEventHandler(async (event) => {
   }
 
   try {
-    const { payload } = await jwtVerify(token, new TextEncoder().encode(JWT_SECRET))
+    const { payload } = await jwtVerify(
+      token,
+      new TextEncoder().encode(JWT_SECRET)
+    )
     const userId = payload.userId as string
     const userIndex = users.findIndex((u) => u.id === userId)
 

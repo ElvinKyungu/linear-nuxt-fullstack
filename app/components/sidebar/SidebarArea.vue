@@ -173,11 +173,13 @@ const toggleGroup = (group: any, key: string) => {
           <a target="_blank" rel="noopener noreferrer" href="">elvincode.com</a>
         </button>
       </div>
-      <div class="w-full flex absolute bottom-5 px-5 left-0 items-center justify-between">
+      <div
+        class="w-full flex absolute bottom-5 px-5 left-0 items-center justify-between"
+      >
         <UButton
           class="text-gray-400 bg-gray-400/20 hover:text-white col-span-1"
         >
-        <!-- icon for information/question -->
+          <!-- icon for information/question -->
           <UIcon
             name="uil:question-circle"
             class="text-2xl cursor-pointer text-gray-400"

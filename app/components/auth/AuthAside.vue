@@ -16,7 +16,9 @@
 
       <div class="bg-white text-gray-900 p-4 rounded-xl">
         <p class="text-sm">
-          “Built with Nuxt & Nuxt UI, my Linear-inspired project makes task management fast, sleek, and fun — exactly how productivity should feel.”
+          “Built with Nuxt & Nuxt UI, my Linear-inspired project makes task
+          management fast, sleek, and fun — exactly how productivity should
+          feel.”
         </p>
         <div class="mt-2 flex items-center space-x-2">
           <UAvatar src="/images/gab.jpg" />

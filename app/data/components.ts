@@ -51,7 +51,7 @@ export const components: Component[] = [
   {
     id: '6f980025-ee9',
     name: 'Theming',
-    description: 'Thèmes de l\'application',
+    description: "Thèmes de l'application",
     color: '#f59e0b',
     createdAt: new Date('2024-01-04'),
   },

@@ -1,96 +1,71 @@
-<!-- components/TeamMembersTooltip.vue -->
 <script setup lang="ts">
+import { gsap } from 'gsap'
+import type { PropType } from 'vue'
 import { users } from '@/data/users'
 import type { Team } from '@/types/teams'
 
-interface Props {
-  team: Team
-  show: boolean
-}
-
-const props = defineProps<Props>()
-
-const tooltipRef = ref<HTMLElement>()
-const position = ref<'top' | 'bottom'>('top')
-
-const { showModal, hideModal } = useGsapModal()
-
-onMounted(() => {
-  console.log(props.team);
-
-  // Calculer la position automatiquement
-  const calculatePosition = () => {
-    if (!tooltipRef.value) return
-
-    const rect = tooltipRef.value.getBoundingClientRect()
-  const spaceAbove = rect.top
-  const spaceBelow = window.innerHeight - rect.bottom
-  
-  // Si pas assez d'espace en haut (280px pour le tooltip), on met en bas
-  position.value = spaceAbove > 280 ? 'top' : 'bottom'
+const props = defineProps({
+  team: { type: Object as PropType<Team>, required: true },
+  placement: { type: String as PropType<'top' | 'bottom'>, default: 'top' }
 })
 
-// Watcher pour les changements de visibilité
-watch(() => props.show, (newShow) => {
-  if (!tooltipRef.value) return
-  if (newShow) {
-    calculatePosition()
-    nextTick(() => {
-      if (tooltipRef.value) {
-        showModal(tooltipRef.value)
-      }
-    })
-  } else {
-    hideModal(tooltipRef.value)
-  }
+const el = ref<HTMLElement | null>(null)
+
+onMounted(() => {
+  gsap.from(el.value, { opacity: 0, y: 10, duration: 0.18, ease: 'power2.out' })
+})
+
+const teamUsers = computed(() => {
+  return props.team.members.map(m => {
+    const u = users.find(x => x.id === m.userId)
+    return {
+      ...m,
+      name: u?.name || 'Unknown',
+      avatarUrl: u?.avatarUrl,
+      email: u?.email
+    }
+  })
 })
 </script>
 
 <template>
-  <UCard
-    v-show="show"
-    ref="tooltipRef"
-    :class="[
-      'absolute w-72 z-50 shadow-xl opacity-0',
-      position === 'top' 
-        ? 'bottom-full left-0 mb-1' 
-        : 'top-full left-0 mt-1'
-    ]"
-    :ui="{ 
-      base: 'overflow-visible',
-      body: { padding: 'p-3' }
-    }"
+    <div
+    ref="el"
+    class="z-[999] min-w-[240px] max-w-[300px] h-auto rounded-2xl border border-bordercolor/80 bg-primary p-3 shadow-lg pointer-events-auto"
   >
-    <template #header>
-      <div class="flex items-center justify-between">
-        <h4 class="text-sm font-semibold">Team Members</h4>
-        <UBadge variant="soft" size="xs">{{ team.members.length }}</UBadge>
-      </div>
-    </template>
+    <!-- Flèche -->
+    <div
+      v-if="placement === 'top'"
+      class="absolute w-0 h-0 border-l-4 border-r-4 border-t-4 border-l-transparent border-r-transparent border-t-gray-900"
+      style="left:50%; top:100%; transform:translateX(-50%);"
+    />
+    <div
+      v-else
+      class="absolute w-0 h-0 border-l-4 border-r-4 border-b-4 border-l-transparent border-r-transparent border-b-gray-900"
+      style="left:50%; bottom:100%; transform:translateX(-50%);"
+    />
 
-    <div class="space-y-2 max-h-48 overflow-y-auto">
-      <div 
-        v-for="member in team.members" 
-        :key="member.userId"
-        class="flex items-center gap-3"
-      >
-        <UAvatar
-          :src="users.find(u => u.id === member.userId)?.avatarUrl"
-          :alt="users.find(u => u.id === member.userId)?.name"
-          size="sm"
-        />
-        <div class="flex-1 min-w-0">
-          <p class="text-base font-medium text-gray-900 dark:text-white truncate">
-            {{ users.find(u => u.id === member.userId)?.name }}
-          </p>
-          <p class="text-xs text-gray-500 truncate">
-            {{ users.find(u => u.id === member.userId)?.email }}
-          </p>
+    <div class="text-white">
+      <h3 class="mb-2 text-sm font-medium">{{ team.name }} Members</h3>
+
+      <div class="max-h-56 space-y-2 overflow-y-auto">
+        <div v-for="member in teamUsers" :key="member.userId" class="flex items-center gap-2">
+          <UAvatar :src="member.avatarUrl" :alt="member.name" size="xs" class="flex-shrink-0" />
+          <div class="min-w-0 flex-1">
+            <p class="truncate text-sm text-white">{{ member.name }}</p>
+            <p v-if="member.email" class="truncate text-xs text-gray-400">{{ member.email }}</p>
+          </div>
+          <UBadge variant="soft" size="sm"
+              class="flex justify-center items-center"
+                  :class="member.role === 'Admin' ? 'bg-teal-600/60 text-white' : 'bg-bordercolor/70 text-white'">
+            {{ member.role }}
+          </UBadge>
         </div>
-        <UBadge variant="soft">
-          {{ member.role }}
-        </UBadge>
+      </div>
+
+      <div v-if="teamUsers.length === 0" class="py-2 text-center text-sm text-gray-400">
+        No members found
       </div>
     </div>
-  </UCard>
+  </div>
 </template>

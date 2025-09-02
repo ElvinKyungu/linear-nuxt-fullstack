@@ -20,7 +20,7 @@ export default defineNuxtConfig({
     jwtSecret: process.env.JWT_SECRET || 'fallback-secret-key-for-demo',
     public: {
       // Variables publiques
-    }
+    },
   },
   vite: {
     plugins: [tailwindcss()],

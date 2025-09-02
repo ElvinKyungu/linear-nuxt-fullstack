@@ -24,7 +24,7 @@ export const teams: Team[] = [
     identifier: '6f980025-ee1',
     members: [
       { userId: 'ELVIN-CODE-401', role: 'Member' },
-      { userId: 'ELVIN-CODE-101', role: 'Member' }
+      { userId: 'ELVIN-CODE-101', role: 'Member' },
     ],
     projects: 5,
     componentId: '6f980025-ee1',
@@ -36,7 +36,7 @@ export const teams: Team[] = [
     identifier: '6f980025-ee2',
     members: [
       { userId: 'ELVIN-CODE-001', role: 'Admin' },
-      { userId: 'ELVIN-CODE-910', role: 'Member' }
+      { userId: 'ELVIN-CODE-910', role: 'Member' },
     ],
     projects: 2,
     componentId: '6f980025-ee2',
@@ -48,7 +48,7 @@ export const teams: Team[] = [
     identifier: '6f980025-ee3',
     members: [
       { userId: 'ELVIN-CODE-671', role: 'Member' },
-      { userId: 'ELVIN-CODE-101', role: 'Member' }
+      { userId: 'ELVIN-CODE-101', role: 'Member' },
     ],
     projects: 4,
     componentId: '6f980025-ee3',
@@ -60,7 +60,7 @@ export const teams: Team[] = [
     identifier: '6f980025-ee4',
     members: [
       { userId: 'ELVIN-CODE-001', role: 'Admin' },
-      { userId: 'ELVIN-CODE-401', role: 'Member' }
+      { userId: 'ELVIN-CODE-401', role: 'Member' },
     ],
     projects: 3,
     componentId: '6f980025-ee4',
@@ -72,7 +72,7 @@ export const teams: Team[] = [
     identifier: '6f980025-ee5',
     members: [
       { userId: 'ELVIN-CODE-910', role: 'Member' },
-      { userId: 'ELVIN-CODE-671', role: 'Member' }
+      { userId: 'ELVIN-CODE-671', role: 'Member' },
     ],
     projects: 2,
     componentId: '6f980025-ee5',
@@ -84,7 +84,7 @@ export const teams: Team[] = [
     identifier: '6f980025-ee6',
     members: [
       { userId: 'ELVIN-CODE-101', role: 'Member' },
-      { userId: 'ELVIN-CODE-401', role: 'Member' }
+      { userId: 'ELVIN-CODE-401', role: 'Member' },
     ],
     projects: 4,
     componentId: '6f980025-ee6',
@@ -96,7 +96,7 @@ export const teams: Team[] = [
     identifier: '6f980025-ee8',
     members: [
       { userId: 'ELVIN-CODE-001', role: 'Admin' },
-      { userId: 'ELVIN-CODE-910', role: 'Member' }
+      { userId: 'ELVIN-CODE-910', role: 'Member' },
     ],
     projects: 1,
     componentId: '6f980025-ee8',
@@ -108,7 +108,7 @@ export const teams: Team[] = [
     identifier: '6f980025-ee9',
     members: [
       { userId: 'ELVIN-CODE-401', role: 'Member' },
-      { userId: 'ELVIN-CODE-671', role: 'Member' }
+      { userId: 'ELVIN-CODE-671', role: 'Member' },
     ],
     projects: 2,
     componentId: '6f980025-ee9',
@@ -120,7 +120,7 @@ export const teams: Team[] = [
     identifier: '6f980025-ee0',
     members: [
       { userId: 'ELVIN-CODE-910', role: 'Member' },
-      { userId: 'ELVIN-CODE-101', role: 'Member' }
+      { userId: 'ELVIN-CODE-101', role: 'Member' },
     ],
     projects: 3,
     componentId: '6f980025-ee0',
@@ -141,7 +141,7 @@ export const teams: Team[] = [
     identifier: '6f980025-ee1',
     members: [
       { userId: 'ELVIN-CODE-401', role: 'Member' },
-      { userId: 'ELVIN-CODE-910', role: 'Member' }
+      { userId: 'ELVIN-CODE-910', role: 'Member' },
     ],
     projects: 1,
     componentId: '6f980025-ee1',
@@ -162,7 +162,7 @@ export const teams: Team[] = [
     identifier: '6f980025-ee4',
     members: [
       { userId: 'ELVIN-CODE-101', role: 'Member' },
-      { userId: 'ELVIN-CODE-401', role: 'Member' }
+      { userId: 'ELVIN-CODE-401', role: 'Member' },
     ],
     projects: 4,
     componentId: '6f980025-ee4',
@@ -172,9 +172,7 @@ export const teams: Team[] = [
     name: 'Frontend Nav Team',
     membership: 'Joined',
     identifier: '6f980025-ee5',
-    members: [
-      { userId: 'ELVIN-CODE-910', role: 'Member' }
-    ],
+    members: [{ userId: 'ELVIN-CODE-910', role: 'Member' }],
     projects: 2,
     componentId: '6f980025-ee5',
   },
@@ -185,7 +183,7 @@ export const teams: Team[] = [
     identifier: '6f980025-ee6',
     members: [
       { userId: 'ELVIN-CODE-001', role: 'Admin' },
-      { userId: 'ELVIN-CODE-671', role: 'Member' }
+      { userId: 'ELVIN-CODE-671', role: 'Member' },
     ],
     projects: 5,
     componentId: '6f980025-ee6',
@@ -206,7 +204,7 @@ export const teams: Team[] = [
     identifier: '6f980025-ee9',
     members: [
       { userId: 'ELVIN-CODE-101', role: 'Member' },
-      { userId: 'ELVIN-CODE-910', role: 'Member' }
+      { userId: 'ELVIN-CODE-910', role: 'Member' },
     ],
     projects: 2,
     componentId: '6f980025-ee9',
@@ -218,7 +216,7 @@ export const teams: Team[] = [
     identifier: '6f980025-ee0',
     members: [
       { userId: 'ELVIN-CODE-671', role: 'Member' },
-      { userId: 'ELVIN-CODE-001', role: 'Admin' }
+      { userId: 'ELVIN-CODE-001', role: 'Admin' },
     ],
     projects: 1,
     componentId: '6f980025-ee0',
@@ -231,7 +229,7 @@ export const teams: Team[] = [
     members: [
       { userId: 'ELVIN-CODE-910', role: 'Admin' },
       { userId: 'ELVIN-CODE-401', role: 'Member' },
-      { userId: 'ELVIN-CODE-101', role: 'Member' }
+      { userId: 'ELVIN-CODE-101', role: 'Member' },
     ],
     projects: 6,
     componentId: '6f980025-ee4',
