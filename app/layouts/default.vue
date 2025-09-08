@@ -192,11 +192,11 @@ const toggleIcon = computed(() => {
           <template #sidebar-toggle>
             <UButton
               variant="ghost"
-              class="lg:inline-flex text-white hover:bg-white/10"
+              class="lg:inline-flex text-white hover:bg-white/10 cursor-pointer"
               @click="toggleSidebar"
             >
               <UIcon 
-                :name="toggleIcon"
+                :name="'uil:bars'"
                 class="w-5 h-5"
               />
             </UButton>
@@ -215,9 +215,13 @@ const toggleIcon = computed(() => {
     <!-- Overlay pour mobile quand sidebar est ouverte -->
     <div
       v-if="isMobileOrTablet && sidebarStore.isSidebarOpen"
-      class="fixed inset-0 bg-black/50 z-40 lg:hidden"
+      class="fixed inset-0 bg-black/90 z-40 lg:hidden"
       @click="sidebarStore.closeSidebar()"
-    />
+    >
+      <p class="text-white absolute right-3/12 translate-x-1/2 top-1/2 -translate-y-1/2">
+        {{ 'Click outside to close' }}
+      </p>
+    </div>  
   </div>
 </template>
 

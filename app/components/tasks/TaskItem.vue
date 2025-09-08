@@ -13,7 +13,7 @@ const leadId = ref<string | null>(null)
 const emit = defineEmits(['open-assignee', 'update-assignee'])
 
 const assigneeUser = computed(() => {
-  if (!props.users || !props.task?.lead_id) return null
+  if (!props.users || !props.task?.leadId) return null
   return props.users.find((user: User) => user.id === props.task.leadId) || null
 })
 
@@ -265,7 +265,7 @@ const getStatusColor = () => {
         color="neutral"
         variant="outline"
         size="xs"
-        class="border border-bordercolor bg-black flex items-center gap-1 px-2 text-xs py-1 rounded-full"
+        class="border-[1px] border-bordercolor bg-black flex items-center gap-1 px-2 text-xs py-1 rounded-full"
       >
         <span class="w-2 h-2 rounded-full" :class="getTagBgClass(task.type)" />
         {{ task.type }}
@@ -287,8 +287,8 @@ const getStatusColor = () => {
     <div class="flex items-center justify-between">
       <div class="text-xs text-gray-400">
         {{
-          task.target_date
-            ? new Date(task.target_date).toLocaleDateString('en-US', {
+          task.targetDate
+            ? new Date(task.targetDate).toLocaleDateString('en-US', {
                 month: 'short',
                 day: 'numeric',
               })
@@ -307,7 +307,7 @@ const getStatusColor = () => {
         >
           <template #badge>
             <UIcon
-              v-if="task?.lead_id"
+              v-if="task?.leadId"
               name="i-heroicons-check-circle-20-solid"
               class="absolute -bottom-0.5 -right-0.5 w-4 h-4 text-primary"
             />
