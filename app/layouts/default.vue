@@ -24,7 +24,13 @@ const updateScreenSize = () => {
 
 // État de la sidebar basé sur la taille d'écran
 const shouldSidebarBeHidden = computed(() => {
-  return isMobileOrTablet.value || sidebarStore.isExtended
+  if (isMobileOrTablet.value) {
+    // Sur mobile/tablet, on se base sur isSidebarOpen (true = visible, false = caché)
+    return !sidebarStore.isSidebarOpen
+  } else {
+    // Sur desktop, on se base sur isExtended (true = fermé, false = ouvert)
+    return sidebarStore.isExtended
+  }
 })
 
 // Animation de la sidebar
@@ -76,16 +82,6 @@ watch(
   }
 )
 
-// Watcher spécifique pour le toggle manuel (bouton)
-watch(
-  () => sidebarStore.isExtended,
-  (extended) => {
-    if (isInitialized.value && !isMobileOrTablet.value) {
-      animateSidebar(extended)
-    }
-  }
-)
-
 // Gestion du redimensionnement de la fenêtre
 const handleResize = () => {
   const oldScreenSize = screenSize.value
@@ -95,7 +91,7 @@ const handleResize = () => {
   if (oldScreenSize !== screenSize.value && isInitialized.value) {
     // Sur mobile/tablet, on force la fermeture
     if (isMobileOrTablet.value) {
-      sidebarStore.setSidebarState(true) // Forcer l'état fermé
+      sidebarStore.closeSidebar() // Utilise la méthode du store
     } else {
       // Sur desktop, on peut rouvrir selon l'état du store
       if (sidebarStore.isExtended) {
@@ -113,7 +109,8 @@ onMounted(() => {
   
   // Configuration initiale basée sur la taille d'écran
   if (isMobileOrTablet.value) {
-    sidebarStore.setSidebarState(true)
+    // Sur mobile, la sidebar est cachée par défaut
+    sidebarStore.closeSidebar()
     const wrap = sidebarWrapRef.value
     if (wrap) {
       gsap.set(wrap, { width: 0, opacity: 0 })
@@ -156,6 +153,17 @@ const mainContentClasses = computed(() => ({
   'w-full': shouldSidebarBeHidden.value,
   'transition-all duration-300 ease-in-out': true
 }))
+
+// Déterminer l'icône du bouton toggle
+const toggleIcon = computed(() => {
+  if (isMobileOrTablet.value) {
+    // Sur mobile, toujours afficher l'icône "bars" car on ouvre un overlay
+    return 'uil:bars'
+  } else {
+    // Sur desktop, changer selon l'état
+    return sidebarStore.isExtended ? 'uil:bars' : 'uil:times'
+  }
+})
 </script>
 
 <template>
@@ -188,14 +196,8 @@ const mainContentClasses = computed(() => ({
               @click="toggleSidebar"
             >
               <UIcon 
-                name="uil:bars" 
+                :name="toggleIcon"
                 class="w-5 h-5"
-                v-if="sidebarStore.isExtended" 
-              />
-              <UIcon 
-                name="uil:times" 
-                class="w-5 h-5"
-                v-else 
               />
             </UButton>
           </template>
@@ -212,9 +214,9 @@ const mainContentClasses = computed(() => ({
 
     <!-- Overlay pour mobile quand sidebar est ouverte -->
     <div
-      v-if="isMobileOrTablet && !sidebarStore.isExtended"
+      v-if="isMobileOrTablet && sidebarStore.isSidebarOpen"
       class="fixed inset-0 bg-black/50 z-40 lg:hidden"
-      @click="sidebarStore.setSidebarState(true)"
+      @click="sidebarStore.closeSidebar()"
     />
   </div>
 </template>

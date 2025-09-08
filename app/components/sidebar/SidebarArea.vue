@@ -75,16 +75,30 @@ const toggleGroup = (group: any, key: string) => {
 const closeSidebar = () => {
   sidebarStore.closeSidebar()
 }
+
+// Calculer la visibilité de la sidebar
+const sidebarVisibility = computed(() => {
+  if (sidebarStore.isMobileOrTablet) {
+    // Sur mobile/tablet, on se base sur isSidebarOpen
+    return {
+      'translate-x-0': sidebarStore.isSidebarOpen,
+      '-translate-x-full': !sidebarStore.isSidebarOpen
+    }
+  } else {
+    // Sur desktop, elle est toujours visible (gérée par le layout parent)
+    return {
+      'translate-x-0': true,
+      '-translate-x-full': false
+    }
+  }
+})
 </script>
 
 <template>
   <aside
     ref="sidebarRef"
     class="absolute left-0 top-0 z-sidebar flex h-screen w-80 flex-col overflow-y-hidden bg-primary text-white duration-300 ease-in-out lg:static lg:translate-x-0"
-    :class="{
-      'translate-x-0': sidebarStore.isSidebarOpen || sidebarStore.isDesktop,
-      '-translate-x-full': !sidebarStore.isSidebarOpen && sidebarStore.isMobileOrTablet,
-    }"
+    :class="sidebarVisibility"
   >
     <!-- Header -->
     <div class="flex items-center justify-between px-5 py-5">
