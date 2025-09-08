@@ -21,6 +21,8 @@ const statusTriggerElement = ref<HTMLElement | null>(null)
 const popupTask = ref<Task | null>(null)
 
 const isDragging = ref(false)
+// Nouveau: gérer le délai de drag pour éviter les conflits avec le scroll
+const dragDelay = ref(150) // 150ms de délai avant d'activer le drag
 
 const { tasks: storeTasks, loading: tasksLoading } = storeToRefs(tasksStore)
 const { users: storeUsers } = storeToRefs(usersStore)
@@ -236,6 +238,7 @@ function openAssigneeModal(task: Task) {
   assigneeModalOpen.value = true
 }
 
+// Amélioré: positionnement correct des popups
 function openPrioritySelector(data: {
   task: Task
   triggerElement: HTMLElement
@@ -352,7 +355,9 @@ onMounted(async () => {
               item-key="id"
               class="min-h-[50px] pb-4"
               :animation="200"
-              :delay="0"
+              :delay="dragDelay"
+              :delay-on-touch-start="true"
+              :touch-start-threshold="5"
               :force-fallback="false"
               ghost-class="ghost-task"
               chosen-class="chosen-task"
@@ -362,7 +367,7 @@ onMounted(async () => {
               @change="(evt) => handleDragChange(evt, status.key)"
             >
               <template #item="{ element: task }">
-                <div class="cursor-move">
+                <div class="drag-handle">
                   <TaskItem
                     :task="task"
                     :display-mode="displayMode"
@@ -429,14 +434,16 @@ onMounted(async () => {
                 </div>
 
                 <!-- Zone des tâches avec drag and drop optimisé -->
-                <div class="flex-1 overflow-y-auto pr-2">
+                <div class="flex-1 overflow-y-auto pr-2 relative">
                   <draggable
                     v-model="taskLists[status.key].value"
                     group="tasks"
                     item-key="id"
                     class="space-y-3 min-h-[200px] pb-4"
                     :animation="200"
-                    :delay="0"
+                    :delay="dragDelay"
+                    :delay-on-touch-start="true"
+                    :touch-start-threshold="5"
                     :force-fallback="false"
                     ghost-class="ghost-task"
                     chosen-class="chosen-task"
@@ -446,7 +453,7 @@ onMounted(async () => {
                     @change="(evt) => handleDragChange(evt, status.key)"
                   >
                     <template #item="{ element: task }">
-                      <div class="cursor-move">
+                      <div class="drag-handle">
                         <TaskItem
                           :task="task"
                           :display-mode="displayMode"
@@ -485,20 +492,29 @@ onMounted(async () => {
       @close="showTaskPopup = false"
     />
 
-    <!-- Popups globaux -->
-    <TaskPrioritySelector
-      v-if="prioritySelectorOpen && popupTask"
-      :task="popupTask"
-      :trigger-element="priorityTriggerElement"
-      @close="closePrioritySelector"
-    />
+    <!-- Popups globaux avec z-index élevé -->
+    <Teleport to="body">
+      <TaskPrioritySelector
+        v-if="prioritySelectorOpen && popupTask"
+        :task="popupTask"
+        :trigger-element="priorityTriggerElement"
+        @close="closePrioritySelector"
+      />
 
-    <TaskStatusSelector
-      v-if="statusSelectorOpen && popupTask"
-      :task="popupTask"
-      :trigger-element="statusTriggerElement"
-      @close="closeStatusSelector"
-    />
+      <TaskStatusSelector
+        v-if="statusSelectorOpen && popupTask"
+        :task="popupTask"
+        :trigger-element="statusTriggerElement"
+        @close="closeStatusSelector"
+      />
+
+      <AssigneeModal
+        v-if="assigneeModalOpen && currentTask"
+        :task="currentTask"
+        :users="users"
+        @close="assigneeModalOpen = false"
+      />
+    </Teleport>
   </div>
 </template>
 
@@ -559,13 +575,34 @@ onMounted(async () => {
   opacity: 0.9;
 }
 
-/* Améliorer la zone de grab */
-.cursor-move {
+/* Améliorer la gestion du drag */
+.drag-handle {
   cursor: grab;
+  position: relative;
 }
 
-.cursor-move:active {
+.drag-handle:active {
   cursor: grabbing;
+}
+
+/* Permettre le scroll sur mobile en ajoutant une zone de scroll */
+.drag-handle::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 20px;
+  height: 100%;
+  z-index: 1;
+  pointer-events: none;
+}
+
+/* Style pour les éléments interactifs dans les tâches */
+.drag-handle :deep(button),
+.drag-handle :deep(.clickable) {
+  position: relative;
+  z-index: 2;
+  pointer-events: auto;
 }
 
 /* Assurer une hauteur minimale pour les zones de drop */
@@ -584,20 +621,32 @@ onMounted(async () => {
   border-radius: 8px !important;
 }
 
-/* Styles pour rendre le drag plus réactif */
-* {
+/* Styles pour rendre le drag plus réactif tout en préservant le scroll */
+.task-management-app {
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
 }
 
-/* Permettre la sélection du texte dans les inputs */
+/* Permettre la sélection du texte dans les inputs et le contenu des tâches */
 input,
-textarea {
+textarea,
+.task-content {
   -webkit-user-select: text;
   -moz-user-select: text;
   -ms-user-select: text;
   user-select: text;
+}
+
+/* Améliorations pour le touch sur mobile */
+@media (max-width: 768px) {
+  .drag-handle {
+    padding: 2px;
+  }
+  
+  .drag-delay {
+    transition-delay: 200ms;
+  }
 }
 </style>

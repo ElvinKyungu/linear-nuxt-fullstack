@@ -15,11 +15,11 @@ const search = ref('')
 const isOpen = ref(false)
 
 const priorityMap = [
-  { id: 0, name: 'No priority', icon: resolveComponent('IconNoPriority') },
-  { id: 1, name: 'Urgent', icon: resolveComponent('IconUrgent') },
-  { id: 2, name: 'High', icon: resolveComponent('IconHigh') },
-  { id: 3, name: 'Medium', icon: resolveComponent('IconMedium') },
-  { id: 4, name: 'Low', icon: resolveComponent('IconLow') },
+  { id: 0, name: 'No priority', icon: resolveComponent('IconsIconNoPriority') },
+  { id: 1, name: 'Urgent', icon: resolveComponent('IconsIconUrgent') },
+  { id: 2, name: 'High', icon: resolveComponent('IconsIconHigh') },
+  { id: 3, name: 'Medium', icon: resolveComponent('IconsIconMedium') },
+  { id: 4, name: 'Low', icon: resolveComponent('IconsIconLow') },
 ]
 
 const filtered = computed(() =>

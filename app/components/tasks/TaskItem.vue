@@ -50,11 +50,11 @@ const handleLevelSelect = () => {
 
 const priorityIcon = computed(() => {
   const priorityMap: Record<string, any> = {
-    'No priority': resolveComponent('IconNoPriority'),
-    Low: resolveComponent('IconLow'),
-    Medium: resolveComponent('IconMedium'),
-    High: resolveComponent('IconHigh'),
-    Urgent: resolveComponent('IconUrgent'),
+    'No priority': resolveComponent('IconsIconNoPriority'),
+    Low: resolveComponent('IconsIconLow'),
+    Medium: resolveComponent('IconsIconMedium'),
+    High: resolveComponent('IconsIconHigh'),
+    Urgent: resolveComponent('IconsIconUrgent'),
   }
   return priorityMap[props.task.priority] || resolveComponent('NoPriority')
 })
@@ -125,7 +125,7 @@ const getStatusColor = () => {
           class="hover:bg-white/10 p-2 cursor-pointer rounded-xl"
           @click="openStatusPopup"
         >
-          <IconTaskStatus
+          <IconsIconTaskStatus
             :stroke-color="statusColor"
             transform-status="rotate(-90 7 7)"
           />
@@ -145,7 +145,7 @@ const getStatusColor = () => {
           color="neutral"
           variant="outline"
           size="xs"
-          class="border border-bordercolor bg-black flex items-center gap-2 px-3 text-xs py-1 rounded-full"
+          class="border border-bordercolor/5 bg-black flex items-center gap-2 px-3 text-xs py-1 rounded-full"
         >
           <span
             class="w-2 h-2 rounded-full"
@@ -160,7 +160,7 @@ const getStatusColor = () => {
           color="neutral"
           variant="outline"
           size="xs"
-          class="border flex items-center gap-2 px-3 text-xs py-1 border-bordercolor rounded-full bg-black"
+          class="border flex items-center gap-2 px-3 text-xs py-1 border-bordercolor/5 rounded-full bg-black"
         >
           <UIcon
             v-if="taskComponent?.name"
@@ -222,7 +222,7 @@ const getStatusColor = () => {
             class="hover:bg-white/10 p-1 cursor-pointer rounded text-white"
             @click="openStatusPopup"
           >
-            <IconTaskStatus
+            <IconsIconTaskStatus
               :stroke-color="statusColor"
               transform-status="rotate(-90 7 7)"
               class="text-white"

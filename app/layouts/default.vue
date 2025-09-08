@@ -1,45 +1,205 @@
+<!-- layouts/default.vue -->
 <script setup lang="ts">
 import gsap from 'gsap'
 
-const layoutStore = useLayoutStore()
+const sidebarStore = useSidebarStore()
 const sidebarWrapRef = ref<HTMLElement | null>(null)
+const isInitialized = ref(false)
 
+// Détecter la taille d'écran
+const screenSize = ref<'mobile' | 'tablet' | 'desktop'>('desktop')
+const isMobileOrTablet = computed(() => screenSize.value !== 'desktop')
+
+// Fonction pour détecter la taille d'écran
+const updateScreenSize = () => {
+  const width = window.innerWidth
+  if (width < 768) {
+    screenSize.value = 'mobile'
+  } else if (width < 1024) {
+    screenSize.value = 'tablet'
+  } else {
+    screenSize.value = 'desktop'
+  }
+}
+
+// État de la sidebar basé sur la taille d'écran
+const shouldSidebarBeHidden = computed(() => {
+  return isMobileOrTablet.value || sidebarStore.isExtended
+})
+
+// Animation de la sidebar
+const animateSidebar = (hide: boolean) => {
+  const wrap = sidebarWrapRef.value
+  const aside = wrap?.querySelector('aside') as HTMLElement | null
+  if (!wrap || !aside) return
+
+  if (hide) {
+    // Fermer/cacher la sidebar
+    gsap
+      .timeline()
+      .to(aside, { 
+        x: '-100%', 
+        duration: 0.3, 
+        ease: 'power2.inOut' 
+      }, 0)
+      .to(wrap, { 
+        width: 0, 
+        opacity: 0,
+        duration: 0.35, 
+        ease: 'power2.inOut' 
+      }, 0)
+  } else {
+    // Réouvrir/afficher la sidebar
+    gsap
+      .timeline()
+      .to(wrap, { 
+        width: '20rem', 
+        opacity: 1,
+        duration: 0.35, 
+        ease: 'power2.inOut' 
+      }, 0)
+      .to(aside, { 
+        x: '0%', 
+        duration: 0.3, 
+        ease: 'power2.inOut' 
+      }, 0.05)
+  }
+}
+
+// Watcher pour les changements d'état de la sidebar
 watch(
-  () => layoutStore.isExtended,
-  (extended) => {
-    const wrap = sidebarWrapRef.value
-    const aside = wrap?.querySelector('aside') as HTMLElement | null
-    if (!wrap || !aside) return
-
-    if (extended) {
-      // Fermer sidebar
-      gsap
-        .timeline()
-        .to(aside, { x: '-100%', duration: 0.3, ease: 'power2.inOut' }, 0)
-        .to(wrap, { width: 0, duration: 0.35, ease: 'power2.inOut' }, 0)
-    } else {
-      // Réouvrir sidebar
-      gsap
-        .timeline()
-        .to(wrap, { width: '20rem', duration: 0.35, ease: 'power2.inOut' }, 0)
-        .to(aside, { x: '0%', duration: 0.3, ease: 'power2.inOut' }, 0)
+  shouldSidebarBeHidden,
+  (hide) => {
+    if (isInitialized.value) {
+      animateSidebar(hide)
     }
-  },
-  { immediate: true }
+  }
 )
+
+// Watcher spécifique pour le toggle manuel (bouton)
+watch(
+  () => sidebarStore.isExtended,
+  (extended) => {
+    if (isInitialized.value && !isMobileOrTablet.value) {
+      animateSidebar(extended)
+    }
+  }
+)
+
+// Gestion du redimensionnement de la fenêtre
+const handleResize = () => {
+  const oldScreenSize = screenSize.value
+  updateScreenSize()
+  
+  // Si on change de catégorie d'écran, on réinitialise
+  if (oldScreenSize !== screenSize.value && isInitialized.value) {
+    // Sur mobile/tablet, on force la fermeture
+    if (isMobileOrTablet.value) {
+      sidebarStore.setSidebarState(true) // Forcer l'état fermé
+    } else {
+      // Sur desktop, on peut rouvrir selon l'état du store
+      if (sidebarStore.isExtended) {
+        animateSidebar(true)
+      } else {
+        animateSidebar(false)
+      }
+    }
+  }
+}
+
+// Initialisation
+onMounted(() => {
+  updateScreenSize()
+  
+  // Configuration initiale basée sur la taille d'écran
+  if (isMobileOrTablet.value) {
+    sidebarStore.setSidebarState(true)
+    const wrap = sidebarWrapRef.value
+    if (wrap) {
+      gsap.set(wrap, { width: 0, opacity: 0 })
+      const aside = wrap.querySelector('aside') as HTMLElement | null
+      if (aside) {
+        gsap.set(aside, { x: '-100%' })
+      }
+    }
+  } else {
+    // Sur desktop, respecter l'état du store
+    if (sidebarStore.isExtended) {
+      const wrap = sidebarWrapRef.value
+      if (wrap) {
+        gsap.set(wrap, { width: 0, opacity: 0 })
+        const aside = wrap.querySelector('aside') as HTMLElement | null
+        if (aside) {
+          gsap.set(aside, { x: '-100%' })
+        }
+      }
+    }
+  }
+  
+  isInitialized.value = true
+  
+  // Écouter les changements de taille
+  window.addEventListener('resize', handleResize)
+})
+
+onUnmounted(() => {
+  window.removeEventListener('resize', handleResize)
+})
+
+// Fonction utilitaire pour forcer l'ouverture/fermeture
+const toggleSidebar = () => {
+  sidebarStore.toggleExtend()
+}
+
+// Classes réactives pour le contenu principal
+const mainContentClasses = computed(() => ({
+  'w-full': shouldSidebarBeHidden.value,
+  'transition-all duration-300 ease-in-out': true
+}))
 </script>
 
 <template>
   <div class="flex h-screen overflow-hidden bg-background">
-    <!-- Sidebar -->
-    <div ref="sidebarWrapRef" class="w-80 shrink-0 overflow-hidden">
+    <!-- Sidebar Container -->
+    <div 
+      ref="sidebarWrapRef" 
+      class="shrink-0 overflow-hidden relative"
+      :class="{
+        'w-80': !shouldSidebarBeHidden,
+        'w-0': shouldSidebarBeHidden
+      }"
+    >
       <SidebarArea />
     </div>
+
+    <!-- Main Content Area -->
     <div
       class="relative flex flex-1 flex-col overflow-hidden border border-bordercolor m-2 rounded-xl"
+      :class="mainContentClasses"
     >
-      <header class="shrink-0">
-        <HeaderArea />
+      <!-- Header avec bouton toggle responsive -->
+      <header class="shrink-0 relative">
+        <HeaderArea>
+          <!-- Slot pour ajouter le bouton toggle dans le header -->
+          <template #sidebar-toggle>
+            <UButton
+              variant="ghost"
+              class="lg:inline-flex text-white hover:bg-white/10"
+              @click="toggleSidebar"
+            >
+              <UIcon 
+                name="uil:bars" 
+                class="w-5 h-5"
+                v-if="sidebarStore.isExtended" 
+              />
+              <UIcon 
+                name="uil:times" 
+                class="w-5 h-5"
+                v-else 
+              />
+            </UButton>
+          </template>
+        </HeaderArea>
       </header>
 
       <!-- Contenu scrollable -->
@@ -49,5 +209,40 @@ watch(
         </div>
       </main>
     </div>
+
+    <!-- Overlay pour mobile quand sidebar est ouverte -->
+    <div
+      v-if="isMobileOrTablet && !sidebarStore.isExtended"
+      class="fixed inset-0 bg-black/50 z-40 lg:hidden"
+      @click="sidebarStore.setSidebarState(true)"
+    />
   </div>
 </template>
+
+<style scoped>
+.transition-all {
+  transition-property: all;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 300ms;
+}
+
+.flex-1 {
+  flex: 1 1 0%;
+}
+
+@media (max-width: 1023px) {
+  .sidebar-hidden {
+    transform: translateX(-100%);
+  }
+}
+
+.overlay-enter-active,
+.overlay-leave-active {
+  transition: opacity 0.3s ease;
+}
+
+.overlay-enter-from,
+.overlay-leave-to {
+  opacity: 0;
+}
+</style>

@@ -19,29 +19,29 @@ const priorities = [
   {
     id: 0,
     name: 'In progress',
-    icon: resolveComponent('IconTaskStatus'),
+    icon: resolveComponent('IconsIconTaskStatus'),
     count: 3,
   },
   {
     id: 1,
     name: 'Technical Review',
-    icon: resolveComponent('IconTaskStatus'),
+    icon: resolveComponent('IconsIconTaskStatus'),
     count: 11,
   },
   {
     id: 2,
     name: 'Completed',
-    icon: resolveComponent('IconTaskStatus'),
+    icon: resolveComponent('IconsIconTaskStatus'),
     count: 10,
   },
-  { id: 3, name: 'To Do', icon: resolveComponent('IconTaskStatus'), count: 6 },
+  { id: 3, name: 'To Do', icon: resolveComponent('IconsIconTaskStatus'), count: 6 },
   {
     id: 4,
     name: 'Backlog',
-    icon: resolveComponent('IconTaskStatus'),
+    icon: resolveComponent('IconsIconTaskStatus'),
     count: 0,
   },
-  { id: 5, name: 'Paused', icon: resolveComponent('IconTaskStatus'), count: 0 },
+  { id: 5, name: 'Paused', icon: resolveComponent('IconsIconTaskStatus'), count: 0 },
 ]
 
 const selected = ref(priorities[1])

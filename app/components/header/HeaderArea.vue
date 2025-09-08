@@ -1,141 +1,86 @@
-<script setup lang="ts">
-const layoutStore = useLayoutStore()
-const authStore = useAuthStore()
-
-const menuItems = [
-  {
-    label: 'Profile',
-    icon: 'uil:user',
-    command: () => openProfileModal(),
-  },
-  {
-    label: 'Settings',
-    icon: 'uil:cog',
-    command: () => console.log('Settings Clicked'),
-  },
-  { separator: true },
-  {
-    label: 'Logout',
-    icon: 'uil:sign-out-alt',
-    command: () => handleLogout(),
-  },
-]
-
-const notifications = [
-  { label: 'New comment on your post', icon: 'uil:comment-alt' },
-  { label: 'New follower', icon: 'uil:user-plus' },
-  { label: 'System update available', icon: 'uil:sync' },
-]
-
-const isNotifOpen = ref(false)
-const isProfileOpen = ref(false)
-const profileModalOpen = ref(false)
-
-const toggleNotif = useToggle(isNotifOpen)
-const toggleProfile = useToggle(isProfileOpen)
-
-const openProfileModal = () => {
-  isProfileOpen.value = false
-  profileModalOpen.value = true
-}
-
-const handleLogout = async () => {
-  isProfileOpen.value = false
-  await authStore.logout()
-}
-
-const currentUser = computed(() => authStore.user)
-</script>
-
+<!-- HeaderArea.vue -->
 <template>
-  <div
-    class="sticky top-0 z-50 text-white w-full rounded-2xl transition-all duration-300 bg-primary"
-  >
-    <div class="flex items-center justify-between pt-4 px-6">
-      <div class="flex items-center gap-4">
-        <NuxtLink to="/" class="flex items-center gap-2 text-white text-lg">
-          <UButton
-            icon="uil:expand-arrows-alt"
-            class="text-white cursor-pointer bg-gray-800 hover:bg-gray-700"
-            variant="ghost"
-            @click="layoutStore.toggleExtend"
-          />
-          <p>Team {{ 20 }}</p>
-        </NuxtLink>
-      </div>
-
-      <div class="flex items-center gap-4">
-        <div class="relative">
-          <UButton
-            icon="uil:bell"
-            class="text-white cursor-pointer bg-gray-800 hover:bg-gray-700"
-            variant="ghost"
-            @click="toggleNotif"
-          />
-          <NPopover placement="bottom-end" trigger="click" class="absolute">
-            <ul
-              v-if="isNotifOpen"
-              class="w-64 bg-gray-800 text-white rounded-lg shadow-lg overflow-hidden"
-            >
-              <li
-                v-for="(notif, index) in notifications"
-                :key="index"
-                class="flex items-center gap-2 px-4 py-2 hover:bg-gray-700 cursor-pointer"
-              >
-                <i :class="notif.icon"></i>
-                <span>{{ notif.label }}</span>
-              </li>
-            </ul>
-          </NPopover>
-        </div>
-
-        <div class="relative">
-          <div class="flex items-center gap-2">
-            <span v-if="currentUser" class="text-sm hidden md:block">
-              {{ currentUser.name }} {{ currentUser.lastName }}
-            </span>
-            <UAvatar
-              :src="currentUser?.avatarUrl"
-              :alt="currentUser?.name"
-              class="cursor-pointer hover:ring-2 hover:ring-primary"
-              @click="toggleProfile"
-            />
-          </div>
-
-          <NPopover
-            v-model:show="isProfileOpen"
-            placement="bottom-end"
-            trigger="click"
-            class="absolute"
-          >
-            <ul
-              v-if="isProfileOpen"
-              class="w-48 bg-gray-800 text-white rounded-lg shadow-lg overflow-hidden"
-            >
-              <li
-                v-for="(item, index) in menuItems"
-                :key="index"
-                class="cursor-pointer"
-              >
-                <div
-                  v-if="item.separator"
-                  class="border-t border-gray-600 my-1"
-                />
-                <div
-                  v-else
-                  class="flex items-center gap-2 px-4 py-2 hover:bg-gray-700"
-                  @click="item.command"
-                >
-                  <i :class="item.icon"></i>
-                  <span>{{ item.label }}</span>
-                </div>
-              </li>
-            </ul>
-          </NPopover>
-        </div>
+  <div class="flex items-center justify-between p-4 bg-primary border-b border-bordercolor">
+    <!-- Section gauche avec toggle sidebar -->
+    <div class="flex items-center gap-4">
+      <!-- Bouton toggle sidebar (visible uniquement sur desktop) -->
+      <slot name="sidebar-toggle" />
+      
+      <!-- Titre ou breadcrumb -->
+      <div class="flex items-center gap-2">
+        <h1 class="text-xl font-semibold text-white">
+          {{ pageTitle }}
+        </h1>
       </div>
     </div>
-  </div>
 
-  <ProfileModal v-model="profileModalOpen" />
+    <!-- Section centrale (optionnelle) -->
+    <div class="hidden md:flex items-center gap-4">
+      <slot name="center-content" />
+    </div>
+
+    <!-- Section droite -->
+    <div class="flex items-center gap-3">
+      <!-- Recherche (optionnelle) -->
+      <div class="hidden lg:block">
+        <UInput
+          placeholder="Search..."
+          class="w-64"
+          variant="outline"
+        >
+          <template #leading>
+            <UIcon name="uil:search" class="w-4 h-4 text-gray-400" />
+          </template>
+        </UInput>
+      </div>
+
+      <!-- Notifications -->
+      <UButton variant="ghost" class="text-white hover:bg-white/10">
+        <UIcon name="uil:bell" class="w-5 h-5" />
+      </UButton>
+
+      <!-- Menu utilisateur -->
+      <UDropdown>
+        <template #trigger>
+          <UButton variant="ghost" class="text-white hover:bg-white/10">
+            <UIcon name="uil:user-circle" class="w-6 h-6" />
+          </UButton>
+        </template>
+
+        <template #content>
+          <div class="p-2">
+            <UButton variant="ghost" class="w-full justify-start">
+              <UIcon name="uil:user" class="w-4 h-4 mr-2" />
+              Profile
+            </UButton>
+            <UButton variant="ghost" class="w-full justify-start">
+              <UIcon name="uil:setting" class="w-4 h-4 mr-2" />
+              Settings
+            </UButton>
+            <UDivider class="my-2" />
+            <UButton variant="ghost" class="w-full justify-start text-red-400">
+              <UIcon name="uil:sign-out-alt" class="w-4 h-4 mr-2" />
+              Logout
+            </UButton>
+          </div>
+        </template>
+      </UDropdown>
+    </div>
+  </div>
 </template>
+
+<script setup lang="ts">
+interface Props {
+  pageTitle?: string
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  pageTitle: 'Dashboard'
+})
+
+// Vous pouvez ajouter d'autres logiques spécifiques au header ici
+</script>
+
+<style scoped>
+/* Styles spécifiques au header si nécessaire */
+</style>
