@@ -88,7 +88,7 @@ const tooltipStyle = computed(() => {
               <div class="grid grid-cols-12 gap-4 px-6 py-3">
                 <!-- Responsive columns -->
                 <div
-                  class="col-span-12 sm:col-span-6 lg:col-span-4 xl:col-span-4"
+                  class="col-span-6 flex justify-start w-full items-start sm:col-span-6 lg:col-span-4 xl:col-span-4"
                 >
                   <span
                     class="text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider"
@@ -113,7 +113,7 @@ const tooltipStyle = computed(() => {
                   </span>
                 </div>
                 <div
-                  class="col-span-12 sm:col-span-6 lg:col-span-2 xl:col-span-2"
+                  class="flex justify-end w-full items-end col-span-6 sm:col-span-6 lg:col-span-2 xl:col-span-2"
                 >
                   <span
                     class="text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider"
@@ -140,10 +140,10 @@ const tooltipStyle = computed(() => {
                 :key="team.identifier"
                 class="hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors duration-200 border-b border-bordercolor/10"
               >
-                <div class="grid grid-cols-12 gap-4 px-6 py-4 items-center">
+                <div class="grid grid-cols-12 gap-4 px-6 py-4 items-center w-full">
                   <!-- Name - Toujours visible -->
                   <div
-                    class="col-span-12 sm:col-span-6 lg:col-span-4 xl:col-span-4"
+                    class="col-span-6 flex justify-start w-full items-end sm:col-span-6 lg:col-span-4 xl:col-span-4"
                   >
                     <div class="flex items-center gap-3">
                       <UAvatar
@@ -161,7 +161,6 @@ const tooltipStyle = computed(() => {
                     </div>
                   </div>
 
-                  <!-- Membership - Caché sur mobile -->
                   <div
                     class="hidden md:block md:col-span-3 lg:col-span-2 xl:col-span-2"
                   >
@@ -177,29 +176,22 @@ const tooltipStyle = computed(() => {
                     <span v-else class="text-gray-400 text-sm">—</span>
                   </div>
 
-                  <!-- Component - Caché sur mobile et tablette -->
                   <div class="hidden lg:block lg:col-span-2 xl:col-span-2">
                     <UBadge variant="outline" class="text-gray-300" size="md">
                       {{ getComponentName(team.identifier) }}
                     </UBadge>
                   </div>
 
-                  <!-- Members - Toujours visible -->
                   <div
-                    class="col-span-12 sm:col-span-6 lg:col-span-2 xl:col-span-2 relative"
-                    
+                    class="col-span-6 flex justify-end w-full items-end sm:col-span-6 lg:col-span-2 xl:col-span-2 relative"
                   >
                     <div class="flex items-center gap-1 relative">
-                      <!-- Groupe d'avatars avec hover pour tooltip -->
                       <div
                         :ref="`teamMemberTrigger-${team.identifier}`"
-                        
                         class="flex items-center -space-x-2 cursor-pointer"
                          @mouseenter="(e) => openTooltip(team.identifier, e.currentTarget as HTMLElement)"
                         @mouseleave="scheduleClose"
-                        
                       >
-                        <!-- Affichage des 4 premiers avatars -->
                         <UAvatar
                           v-for="member in getDisplayedMembers(team)"
                           :key="member.userId"
@@ -210,8 +202,6 @@ const tooltipStyle = computed(() => {
                           size="xs"
                           class="ring-2 ring-black"
                         />
-
-                        <!-- Cercle +X si plus de 4 membres -->
                         <UAvatar
                           v-if="team.members.length > 4"
                           :alt="`+${getRemainingCount(team)} more`"
@@ -225,8 +215,6 @@ const tooltipStyle = computed(() => {
                       </div>
                     </div>
                   </div>
-
-                  <!-- Projects - Caché sur mobile, tablette et écrans moyens -->
                   <div class="hidden xl:block xl:col-span-2">
                     <UBadge variant="outline" class="text-gray-300" size="md">
                       {{ team.projects }}
@@ -237,8 +225,6 @@ const tooltipStyle = computed(() => {
               </div>
             </div>
           </div>
-
-          <!-- Loading State -->
           <div v-if="loading" class="flex justify-center items-center py-8">
             <UIcon
               name="i-heroicons-arrow-path"
@@ -246,8 +232,6 @@ const tooltipStyle = computed(() => {
             />
             <span class="ml-2 text-gray-500">Chargement...</span>
           </div>
-
-          <!-- Empty State -->
           <div
             v-else-if="teams.length === 0"
             class="flex justify-center items-center py-8"

@@ -285,17 +285,6 @@ const getStatusColor = () => {
 
     <!-- Pied de carte avec date et assigné -->
     <div class="flex items-center justify-between">
-      <div class="text-xs text-gray-400">
-        {{
-          task.targetDate
-            ? new Date(task.targetDate).toLocaleDateString('en-US', {
-                month: 'short',
-                day: 'numeric',
-              })
-            : 'No due date'
-        }}
-      </div>
-
       <div class="relative">
         <UAvatar
           ref="assigneeTrigger"
@@ -313,8 +302,7 @@ const getStatusColor = () => {
             />
           </template>
         </UAvatar>
-        <Teleport to="body">
-          <TaskAssignSelect
+        <TaskAssignSelect
             v-if="isAssigneePopupOpen"
             :users="props.users"
             :model-value="leadId"
@@ -324,7 +312,16 @@ const getStatusColor = () => {
             @update:model-value="handleAssigneeSelect"
             @close="isAssigneePopupOpen = false"
           />
-        </Teleport>
+      </div>
+      <div class="text-xs text-gray-400">
+        {{
+          task.targetDate
+            ? new Date(task.targetDate).toLocaleDateString('en-US', {
+                month: 'short',
+                day: 'numeric',
+              })
+            : 'No due date'
+        }}
       </div>
     </div>
   </div>
