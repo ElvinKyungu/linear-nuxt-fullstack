@@ -1,16 +1,15 @@
 export interface Project {
   id: string
   title: string
-  health: string
+  health: Health
   priority: string
   lead: string
   status: string
   startDate: string
   percentComplete: number
-  icon: any
 }
 export interface Health {
-  id: string
+  id: 'no-update' | 'off-track' | 'on-track' | 'at-risk'
   title: string
   color: string
   description: string
