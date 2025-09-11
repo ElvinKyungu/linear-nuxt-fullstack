@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { UAvatar } from '#components'
 import { users } from '@/data/users'
+import { statusConfig } from '@/data/projects'
 import type { Team } from '@/types/teams'
 
 const projectsStore = useProjectStore()
@@ -10,6 +11,7 @@ const { components } = storeToRefs(componentsStore)
 
 const popup = ref<HTMLElement | null>(null)
 const search = ref('')
+const userSearch = ref('')
 const isOpen = ref(false)
 
 const priorityMap = [
@@ -20,22 +22,43 @@ const priorityMap = [
   { id: 4, name: 'Low', icon: resolveComponent('IconsIconLow') },
 ]
 
-const filtered = computed(() =>
+const filteredPriorities = computed(() =>
   priorityMap.filter((p) =>
     p.name.toLowerCase().includes(search.value.toLowerCase())
   )
 )
-const selectLevel = (level: any) => {
-  gsap.to(popup.value, {
-    opacity: 0,
-    y: -10,
-    duration: 0.2,
-    ease: 'power2.in',
-    onComplete: () => {
-      emit('update:modelValue', level)
-      emit('close')
-    },
-  })
+
+const filteredUsers = computed(() =>
+  users.filter((u) =>
+    `${u.name} ${u.lastName}`.toLowerCase().includes(userSearch.value.toLowerCase())
+  )
+)
+
+const selectPriority = (level: any) => {
+  // Logique pour mettre à jour la priority
+  console.log('Selected priority:', level)
+  // Vous pouvez utiliser projectsStore.updatePriority ici
+}
+
+const selectUser = (user: any, projectId: string) => {
+  projectsStore.updateLead(projectId, user.id)
+}
+
+const selectStatus = (status: any, projectId: string) => {
+  projectsStore.updateStatus(projectId, status.id)
+}
+
+const updateDate = (date: Date, projectId: string) => {
+  const formattedDate = date.toISOString().split('T')[0]
+  projectsStore.updateProject(projectId, { startDate: formattedDate })
+}
+
+const getHealthIcon = (health: any) => {
+  return health?.icon || 'i-heroicons-question-mark-circle'
+}
+
+const getStatusConfig = (status: string) => {
+  return statusConfig.find(s => s.id === status) || statusConfig[0]
 }
 
 onMounted(async () => {
@@ -52,7 +75,6 @@ const getComponentName = (componentId: string) => {
 
 </script>
 
-
 <template>
   <NuxtLayout>
     <div class="h-full flex flex-col overflow-hidden">
@@ -68,6 +90,7 @@ const getComponentName = (componentId: string) => {
                 class="hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors duration-200 border-b border-bordercolor/10"
               >
                 <div class="grid grid-cols-12 gap-4 px-6 py-4 items-center w-full">
+                  <!-- Title Column -->
                   <div
                     class="col-span-6 flex justify-start w-full items-end sm:col-span-6 lg:col-span-3 xl:col-span-6"
                   >
@@ -77,16 +100,21 @@ const getComponentName = (componentId: string) => {
                     </div>
                   </div>
 
+                  <!-- Health Column -->
                   <div
                     class="hidden md:block md:col-span-3 lg:col-span-1 xl:col-span-1"
                   >
-                    <UPopover>
+                    <UPopover v-if="project.health">
                       <UBadge
                         variant="soft"
                         size="md"
-                        class="text-white hover:bg-bordercolor/70 flex p-2 gap-2 max-w-max items-center"
+                        class="text-white hover:bg-bordercolor/70 flex p-2 gap-2 max-w-max items-center cursor-pointer"
+                        :style="{ backgroundColor: project.health.color + '20', borderColor: project.health.color }"
                       >
-                        <IconsIconNoPriority />
+                        <UIcon
+                          :name="getHealthIcon(project.health)" 
+                          :style="{ color: project.health.color }" 
+                          class="text-xl" />
                         <span>{{ project.health.title }}</span>
                       </UBadge>
                       <template #content>
@@ -102,6 +130,11 @@ const getComponentName = (componentId: string) => {
                               </div>
                               <USeparator />
                               <div class="flex items-center gap-2 text-gray-400">
+                                <UIcon
+                                  :name="getHealthIcon(project.health)" 
+                                  :style="{ color: project.health.color }" 
+                                  class="text-xl"
+                                />
                                 <span class="text-gray-200">
                                   {{ project.health?.id}}
                                 </span>
@@ -128,7 +161,10 @@ const getComponentName = (componentId: string) => {
                         </div>
                       </template>
                     </UPopover>
+                    <div v-else class="text-gray-500 text-sm">No health</div>
                   </div>
+
+                  <!-- Priority Column -->
                   <div
                     class="hidden md:block md:col-span-3 lg:col-span-1 xl:col-span-1"
                   >
@@ -136,7 +172,7 @@ const getComponentName = (componentId: string) => {
                       <UBadge
                         variant="soft"
                         size="md"
-                        class="text-white hover:bg-bordercolor/70 flex p-2 gap-1 max-w-max items-center"
+                        class="text-white hover:bg-bordercolor/70 flex p-2 gap-1 max-w-max items-center cursor-pointer"
                       >
                         <IconsIconNoPriority />
                       </UBadge>
@@ -147,7 +183,7 @@ const getComponentName = (componentId: string) => {
                             class=""
                           >
                             <div class="flex flex-col gap-2 mb-3 w-full">
-                              <h2 class="text-sm font-medium">Task Level</h2>
+                              <h2 class="text-sm font-medium">Priority Level</h2>
                               <UInput
                                 v-model="search"
                                 trailing-icon="uil:search"
@@ -159,10 +195,10 @@ const getComponentName = (componentId: string) => {
 
                             <div class="space-y-1 max-h-64 overflow-y-auto">
                               <button
-                                v-for="item in filtered"
+                                v-for="item in filteredPriorities"
                                 :key="item.id"
-                                class="w-full flex items-center justify-between px-2 py-1rounded hover:bg-gray-800 cursor-pointer text-sm transition"
-                                @click="selectLevel(item)"
+                                class="w-full flex items-center justify-between px-2 py-1 rounded hover:bg-gray-800 cursor-pointer text-sm transition"
+                                @click="selectPriority(item)"
                               >
                                 <div class="flex items-center gap-3">
                                   <UButton variant="ghost" class="cursor-pointer text-white">
@@ -181,9 +217,10 @@ const getComponentName = (componentId: string) => {
                     </UPopover>
                   </div>
 
+                  <!-- Lead Column -->
                   <div class="hidden lg:block lg:col-span-2 xl:col-span-2">
                      <UPopover>
-                      <div class="flex gap-2 items-center">
+                      <div class="flex gap-2 items-center cursor-pointer hover:bg-gray-800/50 rounded p-1">
                         <UAvatar
                         :src="
                           users.find((u) => u.id === project.lead)?.avatarUrl
@@ -204,11 +241,11 @@ const getComponentName = (componentId: string) => {
                             class=""
                           >
                             <div class="flex flex-col gap-2 mb-3 w-full">
-                              <h2 class="text-sm font-medium">Task Level</h2>
+                              <h2 class="text-sm font-medium">Assign Lead</h2>
                               <UInput
-                                v-model="search"
+                                v-model="userSearch"
                                 trailing-icon="uil:search"
-                                placeholder="Search priority..."
+                                placeholder="Search users..."
                                 size="md"
                                 class="text-sm"
                               />
@@ -216,49 +253,101 @@ const getComponentName = (componentId: string) => {
 
                             <div class="space-y-1 max-h-64 overflow-y-auto">
                               <button
-                                v-for="item in filtered"
-                                :key="item.id"
-                                class="w-full flex items-center justify-between px-2 py-1rounded hover:bg-gray-800 cursor-pointer text-sm transition"
-                                @click="selectLevel(item)"
+                                v-for="user in filteredUsers"
+                                :key="user.id"
+                                class="w-full flex items-center justify-between px-2 py-1 rounded hover:bg-gray-800 cursor-pointer text-sm transition"
+                                @click="selectUser(user, project.id)"
                               >
                                 <div class="flex items-center gap-3">
                                   <UAvatar
-                                    :src="
-                                      users?.avatarUrl
-                                    "
-                                    :alt="users.find((u) => u.id === project.lead)?.name"
+                                    :src="user.avatarUrl"
+                                    :alt="user.name"
                                     size="xs"
                                     class="ring-2 ring-black"
                                   />
-                                  <span>
-                                    {{ 
-                                      users.find((u) => u.id === project.lead)?.name.toLowerCase()
-                                    }}.{{ 
-                                      users.find((u) => u.id === project.lead)?.lastName.toLowerCase()
-                                    }}
-                                  </span>
+                                  <div class="flex flex-col items-start">
+                                    <span class="text-white">
+                                      {{ user.name }} {{ user.lastName }}
+                                    </span>
+                                    <span class="text-xs text-gray-400">{{ user.email }}</span>
+                                  </div>
                                 </div>
-                                <div class="flex items-center gap-1">
-                                  <span class="text-xs text-gray-500">{{ item.id }}</span>
-                                </div>
+                                <UIcon 
+                                  v-if="project.lead === user.id"
+                                  name="i-heroicons-check"
+                                  class="text-green-500"
+                                />
                               </button>
                             </div>
                           </div>
                         </div>
                       </template>
                     </UPopover>
-                    
                   </div>
 
+                  <!-- Date Column -->
                   <div
                     class="col-span-6 text-gray-300 text-sm flex sm:col-span-6 lg:col-span-2 xl:col-span-1 relative"
                   >
-                    {{ formatDate(project.startDate) }}
+                    <UPopover>
+                      <div class="cursor-pointer hover:bg-gray-800/50 rounded p-1">
+                        {{ formatDate(project.startDate) }}
+                      </div>
+                      <template #content>
+                        <div class="bg-primary border border-bordercolor rounded-lg shadow-lg p-3">
+                          <UCalendar size="xl" />
+                        </div>
+                      </template>
+                    </UPopover>
                   </div>
+
+                  <!-- Status/Percent Column -->
                   <div class="hidden xl:block lg:flex justify-start xl:col-span-1">
-                    <UBadge variant="outline" class="text-gray-300" size="md">
-                      percent
-                    </UBadge>
+                    <UPopover>
+                      <div class="cursor-pointer hover:bg-gray-800/50 rounded p-1">
+                        <UBadge 
+                          variant="outline" 
+                          class="text-gray-300 flex items-center gap-2" 
+                          size="md"
+                          :style="{ borderColor: getStatusConfig(project.status).color }"
+                        >
+                          <UIcon 
+                            :name="getStatusConfig(project?.status)?.icon || 'i-heroicons-question-mark-circle'" 
+                            :style="{ color: getStatusConfig(project?.status)?.color }"
+                            class="text-xl"
+                          />
+                          <span>{{ project.percentComplete }}%</span>
+                        </UBadge>
+                      </div>
+                      <template #content>
+                        <div class="bg-primary border border-bordercolor text-white rounded-lg shadow-lg p-3 z-[999] min-w-48">
+                          <div class="flex flex-col gap-2 mb-3">
+                            <h3 class="text-sm font-medium">Change Status</h3>
+                          </div>
+                          <div class="space-y-1">
+                            <button
+                              v-for="status in statusConfig"
+                              :key="status.id"
+                              class="w-full flex items-center justify-between px-2 py-2 rounded hover:bg-gray-800 cursor-pointer text-sm transition"
+                              @click="selectStatus(status, project.id)"
+                            >
+                              <div class="flex items-center gap-3">
+                                <UIcon 
+                                  :name="status.icon" 
+                                  :style="{ color: status.color }"
+                                />
+                                <span>{{ status.name }}</span>
+                              </div>
+                              <UIcon 
+                                v-if="project.status === status.id"
+                                name="i-heroicons-check"
+                                class="text-green-500"
+                              />
+                            </button>
+                          </div>
+                        </div>
+                      </template>
+                    </UPopover>
                   </div>
                 </div>
               </div>

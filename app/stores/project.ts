@@ -2,6 +2,7 @@ import { defineStore } from 'pinia'
 import type { Project, Health } from '~/types/projects'
 import { health } from '~/data/projects'
 import { users } from '~/data/users'
+
 export const useProjectStore = defineStore('projects', {
   state: () => ({
     projects: [] as Project[],
@@ -47,8 +48,11 @@ export const useProjectStore = defineStore('projects', {
       }
     },
 
-    updatePriority(id: string, priority: string) {
-      this.updateProject(id, { priority })
+    updatePriority(id: string, priorityLevel: number) {
+      // Convertir le niveau de priorité en string ou objet selon vos besoins
+      const priorityNames = ['No priority', 'Urgent', 'High', 'Medium', 'Low']
+      const priorityName = priorityNames[priorityLevel] || 'Medium'
+      this.updateProject(id, { priority: priorityName })
     },
 
     updateLead(id: string, leadId: string) {
@@ -59,7 +63,36 @@ export const useProjectStore = defineStore('projects', {
     },
 
     updateStatus(id: string, status: string) {
-      this.updateProject(id, { status })
+      // Calculer le pourcentage en fonction du statut
+      let percentComplete = 0
+      switch (status) {
+        case 'Todo':
+          percentComplete = 0
+          break
+        case 'In progress':
+          percentComplete = 50
+          break
+        case 'Technical Review':
+          percentComplete = 85
+          break
+        case 'Completed':
+          percentComplete = 100
+          break
+        case 'Backlog':
+          percentComplete = 0
+          break
+        case 'Paused':
+          percentComplete = 25
+          break
+        default:
+          percentComplete = 0
+      }
+      
+      this.updateProject(id, { status, percentComplete })
+    },
+
+    updateStartDate(id: string, startDate: string) {
+      this.updateProject(id, { startDate })
     }
   }
 })

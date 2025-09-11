@@ -1,29 +1,73 @@
 import type { Project, Health } from '@/types/projects'
+
 export const health: Health[] = [
    {
       id: 'no-update',
       title: 'No Update',
       color: '#FF0000',
       description: 'The project has not been updated in the last 30 days.',
+      icon: 'i-heroicons-exclamation-triangle'
    },
    {
       id: 'off-track',
       title: 'Off Track',
       color: '#FF0000',
       description: 'The project is not on track and may be delayed.',
+      icon: 'i-heroicons-x-circle'
    },
    {
       id: 'on-track',
       title: 'On Track',
       color: '#00FF00',
       description: 'The project is on track and on schedule.',
+      icon: 'i-heroicons-check-circle'
    },
    {
       id: 'at-risk',
       title: 'At Risk',
-      color: '#FF0000',
+      color: '#FFA500',
       description: 'The project is at risk and may be delayed.',
+      icon: 'i-heroicons-exclamation-circle'
    },
+]
+
+export const statusConfig = [
+   {
+      id: 'Todo',
+      name: 'Todo',
+      icon: 'i-heroicons-circle-stack',
+      color: '#6B7280'
+   },
+   {
+      id: 'In progress',
+      name: 'In Progress',
+      icon: 'i-heroicons-arrow-path',
+      color: '#3B82F6'
+   },
+   {
+      id: 'Technical Review',
+      name: 'Technical Review',
+      icon: 'i-heroicons-eye',
+      color: '#F59E0B'
+   },
+   {
+      id: 'Completed',
+      name: 'Completed',
+      icon: 'i-heroicons-check-circle',
+      color: '#10B981'
+   },
+   {
+      id: 'Backlog',
+      name: 'Backlog',
+      icon: 'i-heroicons-archive-box',
+      color: '#6B7280'
+   },
+   {
+      id: 'Paused',
+      name: 'Paused',
+      icon: 'i-heroicons-pause-circle',
+      color: '#EF4444'
+   }
 ]
 
 export const projects: Project[] = [
@@ -41,7 +85,7 @@ export const projects: Project[] = [
       id: '2',
       title: 'Elvin Code - Theming',
       status: 'In progress',
-      percentComplete: 80,
+      percentComplete: 65,
       startDate: '2025-03-08',
       lead: 'ELVIN-CODE-401',
       priority: '',
@@ -51,7 +95,7 @@ export const projects: Project[] = [
       id: '3',
       title: 'Elvin Code - Modals',
       status: 'Technical Review',
-      percentComplete: 80,
+      percentComplete: 90,
       startDate: '2025-03-08',
       lead: 'ELVIN-CODE-671',
       priority: '',
@@ -61,7 +105,7 @@ export const projects: Project[] = [
       id: '4',
       title: 'Elvin Code - Navigation',
       status: 'Paused',
-      percentComplete: 80,
+      percentComplete: 45,
       startDate: '2025-03-08',
       lead: 'ELVIN-CODE-101',
       priority: '',
@@ -71,7 +115,7 @@ export const projects: Project[] = [
       id: '5',
       title: 'Elvin Code - Layout',
       status: 'Paused',
-      percentComplete: 80,
+      percentComplete: 30,
       startDate: '2025-03-08',
       lead: '',
       priority: 'ELVIN-CODE-910',
@@ -81,7 +125,7 @@ export const projects: Project[] = [
       id: '6',
       title: 'Elvin Code - Sidebar',
       status: 'Todo',
-      percentComplete: 80,
+      percentComplete: 25,
       startDate: '2025-03-08',
       lead: 'ELVIN-CODE-101',
       priority: '',
@@ -91,7 +135,7 @@ export const projects: Project[] = [
       id: '7',
       title: 'Elvin Code - Cards',
       status: 'Paused',
-      percentComplete: 80,
+      percentComplete: 55,
       startDate: '2025-03-08',
       lead: 'ELVIN-CODE-910',
       priority: '',
@@ -101,7 +145,7 @@ export const projects: Project[] = [
       id: '8',
       title: 'Elvin Code - Tooltip',
       status: 'Backlog',
-      percentComplete: 80,
+      percentComplete: 10,
       startDate: '2025-03-08',
       lead: 'ELVIN-CODE-101',
       priority: '',
@@ -111,7 +155,7 @@ export const projects: Project[] = [
       id: '9',
       title: 'Elvin Code - Dropdown',
       status: 'Paused',
-      percentComplete: 80,
+      percentComplete: 40,
       startDate: '2025-03-08',
       lead: 'ELVIN-CODE-910',
       priority: '',
@@ -121,7 +165,7 @@ export const projects: Project[] = [
       id: '10',
       title: 'Elvin Code - Data Tables',
       status: 'Todo',
-      percentComplete: 80,
+      percentComplete: 15,
       startDate: '2025-03-08',
       lead: 'ELVIN-CODE-910',
       priority: '',
@@ -131,7 +175,7 @@ export const projects: Project[] = [
       id: '11',
       title: 'Elvin Code - Form Controls',
       status: 'Todo',
-      percentComplete: 80,
+      percentComplete: 20,
       startDate: '2025-03-08',
       lead: 'ELVIN-CODE-910',
       priority: '',
@@ -141,7 +185,7 @@ export const projects: Project[] = [
       id: '12',
       title: 'Elvin Code - Notifications',
       status: 'Paused',
-      percentComplete: 80,
+      percentComplete: 35,
       startDate: '2025-03-08',
       lead: 'ELVIN-CODE-910',
       priority: '',
@@ -150,8 +194,8 @@ export const projects: Project[] = [
    {
       id: '13',
       title: 'Elvin Code - Authentication Flow',
-      status: 'Compledted',
-      percentComplete: 80,
+      status: 'Completed',
+      percentComplete: 100,
       startDate: '2025-03-08',
       lead: 'ELVIN-CODE-001',
       priority: '',
@@ -161,7 +205,7 @@ export const projects: Project[] = [
       id: '14',
       title: 'Elvin Code - User Preferences',
       status: 'Backlog',
-      percentComplete: 80,
+      percentComplete: 5,
       startDate: '2025-03-08',
       lead: 'ELVIN-CODE-401',
       priority: '',
@@ -171,7 +215,7 @@ export const projects: Project[] = [
       id: '15',
       title: 'Elvin Code - Dashboard Widgets',
       status: 'In progress',
-      percentComplete: 80,
+      percentComplete: 70,
       startDate: '2025-03-08',
       lead: 'ELVIN-CODE-401',
       priority: '',
@@ -181,7 +225,7 @@ export const projects: Project[] = [
       id: '16',
       title: 'Elvin Code - Onboarding Guide',
       status: 'Completed',
-      percentComplete: 80,
+      percentComplete: 100,
       startDate: '2025-03-08',
       lead: 'ELVIN-CODE-001',
       priority: '',
@@ -191,7 +235,7 @@ export const projects: Project[] = [
       id: '17',
       title: 'Elvin Code - Progress Indicators',
       status: 'Completed',
-      percentComplete: 80,
+      percentComplete: 100,
       startDate: '2025-03-08',
       lead: 'ELVIN-CODE-001',
       priority: '',
@@ -201,7 +245,7 @@ export const projects: Project[] = [
       id: '18',
       title: 'Elvin Code - Internationalization',
       status: 'Technical Review',
-      percentComplete: 80,
+      percentComplete: 85,
       startDate: '2025-03-08',
       lead: 'ELVIN-CODE-910',
       priority: '',
@@ -211,7 +255,7 @@ export const projects: Project[] = [
       id: '19',
       title: 'Elvin Code - Accessibility Features',
       status: 'Todo',
-      percentComplete: 80,
+      percentComplete: 0,
       startDate: '2025-03-08',
       lead: 'ELVIN-CODE-001',
       priority: '',
@@ -221,7 +265,7 @@ export const projects: Project[] = [
       id: '20',
       title: 'Elvin Code - Media Player',
       status: 'Completed',
-      percentComplete: 80,
+      percentComplete: 100,
       startDate: '2025-03-08',
       lead: 'ELVIN-CODE-910',
       priority: '',
