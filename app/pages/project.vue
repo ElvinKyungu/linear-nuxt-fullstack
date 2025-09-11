@@ -2,13 +2,27 @@
 import { UAvatar } from '#components'
 import { users } from '@/data/users'
 import { statusConfig, priorityLevels } from '@/data/projects'
+import IconHigh from '~/components/icons/IconHigh.vue'
+import IconMedium from '~/components/icons/IconMedium.vue'
+import IconLow from '~/components/icons/IconLow.vue'
+import IconNoPriority from '~/components/icons/IconNoPriority.vue'
+import IconUrgent from '~/components/icons/IconUrgent.vue'
 
 const projectsStore = useProjectStore()
 const componentsStore = useComponentsStore()
+const { projects, loading } = storeToRefs(projectsStore)
+const { components } = storeToRefs(componentsStore)
 
 const search = ref('')
 const userSearch = ref('')
 
+const priorityIcons = {
+  IconHigh,
+  IconMedium,
+  IconLow,
+  IconNoPriority,
+  IconUrgent
+}
 const filteredPriorities = computed(() =>
   priorityLevels.filter((p) =>
     p.name.toLowerCase().includes(search.value.toLowerCase())
@@ -59,14 +73,16 @@ const getStatusConfig = (status: string) => {
 const getPriorityConfig = (priority: number) => {
   return priorityLevels.find(p => p.id === priority) || priorityLevels[0]
 }
-
+const getPriorityIcon = (priority: number) => {
+  const config = getPriorityConfig(priority)
+  return priorityIcons[config?.icon] || priorityIcons.IconNoPriority
+}
 onMounted(async () => {
   await Promise.all([
     projectsStore.fetchProjects(),
     componentsStore.fetchComponents(),
   ])
 })
-
 </script>
 
 <template>
@@ -153,7 +169,7 @@ onMounted(async () => {
                         size="md"
                         class="text-white hover:bg-bordercolor/70 flex p-2 gap-1 max-w-max items-center cursor-pointer"
                       >
-                        <UIcon :name="getPriorityConfig(project.priority).icon" />
+                        <component :is="getPriorityIcon(project.priority)" class="text-lg"/>
                       </UBadge>
                       <template #content>
                         <div class="bg-primary border border-bordercolor text-white rounded-lg shadow-lg p-3 max-w-64">
@@ -174,7 +190,7 @@ onMounted(async () => {
                               @click="selectPriority(item, project.id)"
                             >
                               <div class="flex items-center gap-3">
-                                <UIcon :name="item.icon" />
+                                <component :is="priorityIcons[item.icon]" class="text-lg"/>
                                 <span>{{ item.name }}</span>
                               </div>
                               <UIcon 
@@ -199,9 +215,10 @@ onMounted(async () => {
                           size="xs"
                           class="ring-2 ring-black"
                         />
-                        <span class="text-gray-300 text-sm">
-                          {{ users.find((u) => u.id === project.lead)?.name?.toLowerCase() }}.
-                          {{ users.find((u) => u.id === project.lead)?.lastName?.toLowerCase() }}
+                        <span class="text-gray-300 fontt-medium">
+                          {{ users.find((u) => u.id === project.lead)?.name?.toLowerCase() }}.{{ 
+                            users.find((u) => u.id === project.lead)?.lastName?.toLowerCase() 
+                          }}
                         </span>
                       </div>
                       <template #content>
@@ -219,7 +236,7 @@ onMounted(async () => {
                             <div
                               v-for="user in filteredUsers"
                               :key="user.id"
-                              class="flex items-center justify-between px-2 py-1 rounded hover:bg-gray-800 cursor-pointer text-sm transition"
+                              class="flex items-center gap-4 justify-between px-2 py-1 rounded hover:bg-gray-800 cursor-pointer text-sm transition"
                               @click="selectUser(user, project.id)"
                             >
                               <div class="flex items-center gap-3">
@@ -254,10 +271,7 @@ onMounted(async () => {
                       </div>
                       <template #content>
                         <div class="bg-primary border border-bordercolor rounded-lg shadow-lg p-3">
-                          <UCalendar 
-                            :model-value="new Date(project.startDate)"
-                            @update:model-value="(date) => updateDate(date, project.id)"
-                          />
+                          <UCalendar                           />
                         </div>
                       </template>
                     </UPopover>
@@ -290,11 +304,11 @@ onMounted(async () => {
                             <div
                               v-for="status in statusConfig"
                               :key="status.id"
-                              class="flex items-center justify-between px-2 py-2 rounded hover:bg-gray-800 cursor-pointer text-sm transition"
+                              class="flex items-center gap-3 justify-between px-2 py-2 rounded hover:bg-gray-800 cursor-pointer text-sm transition"
                               @click="selectStatus(status, project.id)"
                             >
                               <div class="flex items-center gap-3">
-                                <UIcon :name="status.icon" :style="{ color: status.color }" />
+                                <UIcon :name="status.icon" :style="{ color: status.color }" class="text-lg" />
                                 <span>{{ status.name }}</span>
                               </div>
                               <UIcon 
@@ -317,7 +331,6 @@ onMounted(async () => {
             <UIcon name="i-heroicons-arrow-path" class="animate-spin w-6 h-6 text-gray-400" />
             <span class="ml-2 text-gray-500">Chargement...</span>
           </div>
-          
           <div v-else-if="projects.length === 0" class="flex justify-center items-center py-8">
             <div class="text-center">
               <UIcon name="i-heroicons-users" class="w-12 h-12 text-gray-300 mx-auto mb-2" />

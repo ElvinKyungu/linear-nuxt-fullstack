@@ -32,11 +32,11 @@ export const health: Health[] = [
 ]
 
 export const priorityLevels = [
-  { id: 0, name: 'No priority', icon: 'i-heroicons-minus' },
-  { id: 1, name: 'Urgent', icon: 'i-heroicons-exclamation-triangle' },
-  { id: 2, name: 'High', icon: 'i-heroicons-chevron-double-up' },
-  { id: 3, name: 'Medium', icon: 'i-heroicons-chevron-up' },
-  { id: 4, name: 'Low', icon: 'i-heroicons-chevron-down' },
+  { id: 0, name: 'No priority', icon: 'IconNoPriority' },
+  { id: 1, name: 'Urgent', icon: 'IconUrgent' },
+  { id: 2, name: 'High', icon: 'IconHigh' },
+  { id: 3, name: 'Medium', icon: 'IconMedium' },
+  { id: 4, name: 'Low', icon: 'IconLow' },
 ]
 
 export const statusConfig = [
@@ -137,7 +137,7 @@ export const projects: Project[] = [
       startDate: '2025-03-08',
       lead: 'ELVIN-CODE-101',
       priority: 4,
-      health: '',
+      health:  health[3] || '',
    },
    {
       id: '7',
@@ -147,7 +147,7 @@ export const projects: Project[] = [
       startDate: '2025-03-08',
       lead: 'ELVIN-CODE-910',
       priority: 2,
-      health: '',
+      health:  health[2] || '',
    },
    {
       id: '8',
@@ -157,7 +157,7 @@ export const projects: Project[] = [
       startDate: '2025-03-08',
       lead: 'ELVIN-CODE-101',
       priority: 1,
-      health: '',
+      health:  health[0] || '',
    },
    {
       id: '9',
@@ -167,7 +167,7 @@ export const projects: Project[] = [
       startDate: '2025-03-08',
       lead: 'ELVIN-CODE-910',
       priority: 3,
-      health: '',
+      health:  health[1] || '',
    },
    {
       id: '10',
@@ -177,7 +177,7 @@ export const projects: Project[] = [
       startDate: '2025-03-08',
       lead: 'ELVIN-CODE-910',
       priority: 0,
-      health: '',
+      health:  health[1] || '',
    },
    {
       id: '11',
@@ -187,7 +187,7 @@ export const projects: Project[] = [
       startDate: '2025-03-08',
       lead: 'ELVIN-CODE-910',
       priority: 2,
-      health: '',
+      health:  health[2] || '',
    },
    {
       id: '12',
@@ -197,7 +197,7 @@ export const projects: Project[] = [
       startDate: '2025-03-08',
       lead: 'ELVIN-CODE-910',
       priority: 1,
-      health: '',
+      health: health[3] || '',
    },
    {
       id: '13',
@@ -207,7 +207,7 @@ export const projects: Project[] = [
       startDate: '2025-03-08',
       lead: 'ELVIN-CODE-001',
       priority: 4,
-      health: '',
+      health: health[2] || '',
    },
    {
       id: '14',
@@ -217,7 +217,7 @@ export const projects: Project[] = [
       startDate: '2025-03-08',
       lead: 'ELVIN-CODE-401',
       priority: 3,
-      health: '',
+      health: health[2] || '',
    },
    {
       id: '15',
@@ -227,7 +227,7 @@ export const projects: Project[] = [
       startDate: '2025-03-08',
       lead: 'ELVIN-CODE-401',
       priority: 1,
-      health: '',
+      health: health[2] || '',
    },
    {
       id: '16',
@@ -237,7 +237,7 @@ export const projects: Project[] = [
       startDate: '2025-03-08',
       lead: 'ELVIN-CODE-001',
       priority: 2,
-      health: '',
+      health: health[0] || '',
    },
    {
       id: '17',
@@ -247,7 +247,7 @@ export const projects: Project[] = [
       startDate: '2025-03-08',
       lead: 'ELVIN-CODE-001',
       priority: 0,
-      health: '',
+      health: health[1] || '',
    },
    {
       id: '18',
@@ -257,7 +257,7 @@ export const projects: Project[] = [
       startDate: '2025-03-08',
       lead: 'ELVIN-CODE-910',
       priority: 1,
-      health: '',
+      health: health[0] || '',
    },
    {
       id: '19',
@@ -267,7 +267,7 @@ export const projects: Project[] = [
       startDate: '2025-03-08',
       lead: 'ELVIN-CODE-001',
       priority: 2,
-      health: '',
+      health: health[2] || '',
    },
    {
       id: '20',
@@ -277,6 +277,6 @@ export const projects: Project[] = [
       startDate: '2025-03-08',
       lead: 'ELVIN-CODE-910',
       priority: 3,
-      health: '',
+      health: health[1] || '',
    },
 ];
