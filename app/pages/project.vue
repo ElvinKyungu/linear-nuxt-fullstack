@@ -5,8 +5,6 @@ import { statusConfig, priorityLevels } from '@/data/projects'
 
 const projectsStore = useProjectStore()
 const componentsStore = useComponentsStore()
-const { projects, loading } = storeToRefs(projectsStore)
-const { components } = storeToRefs(componentsStore)
 
 const search = ref('')
 const userSearch = ref('')
@@ -68,11 +66,6 @@ onMounted(async () => {
     componentsStore.fetchComponents(),
   ])
 })
-
-const getComponentName = (componentId: string) => {
-  const component = components.value.find(c => c.id === componentId)
-  return component?.name || componentId
-}
 
 </script>
 

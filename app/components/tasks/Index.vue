@@ -22,7 +22,7 @@ const popupTask = ref<Task | null>(null)
 
 const isDragging = ref(false)
 // Nouveau: gérer le délai de drag pour éviter les conflits avec le scroll
-const dragDelay = ref(150) // 150ms de délai avant d'activer le drag
+const dragDelay = ref(50) // 150ms de délai avant d'activer le drag
 
 const { tasks: storeTasks, loading: tasksLoading } = storeToRefs(tasksStore)
 const { users: storeUsers } = storeToRefs(usersStore)
@@ -440,10 +440,10 @@ onMounted(async () => {
                     group="tasks"
                     item-key="id"
                     class="space-y-3 min-h-[200px] pb-4"
-                    :animation="200"
+                    :animation="100"
                     :delay="dragDelay"
                     :delay-on-touch-start="true"
-                    :touch-start-threshold="5"
+                    :touch-start-threshold="2"
                     :force-fallback="false"
                     ghost-class="ghost-task"
                     chosen-class="chosen-task"
