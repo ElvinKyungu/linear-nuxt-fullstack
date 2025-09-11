@@ -1,10 +1,10 @@
 export interface Project {
   id: string
   title: string
-  health: Health
+  health: Health | ''
   priority: string
   lead: string
-  status: string
+  status: 'Todo' | 'In progress' | 'Technical Review' | 'Completed' | 'Backlog' | 'Paused'
   startDate: string
   percentComplete: number
 }

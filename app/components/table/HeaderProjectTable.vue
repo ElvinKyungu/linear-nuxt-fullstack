@@ -31,7 +31,7 @@
                   </span>
                 </div>
                 <div
-                  class="flex justify-end w-full items-end col-span-6 sm:col-span-6 lg:col-span-1 xl:col-span-1"
+                  class="flex justify-start w-full items-end col-span-6 sm:col-span-6 lg:col-span-2 xl:col-span-2"
                 >
                   <span
                     class="text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider"
