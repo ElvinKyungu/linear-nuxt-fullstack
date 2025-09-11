@@ -49,10 +49,7 @@ export const useProjectStore = defineStore('projects', {
     },
 
     updatePriority(id: string, priorityLevel: number) {
-      // Convertir le niveau de priorité en string ou objet selon vos besoins
-      const priorityNames = ['No priority', 'Urgent', 'High', 'Medium', 'Low']
-      const priorityName = priorityNames[priorityLevel] || 'Medium'
-      this.updateProject(id, { priority: priorityName })
+      this.updateProject(id, { priority: priorityLevel })
     },
 
     updateLead(id: string, leadId: string) {

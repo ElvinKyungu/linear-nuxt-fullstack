@@ -31,6 +31,14 @@ export const health: Health[] = [
    },
 ]
 
+export const priorityLevels = [
+  { id: 0, name: 'No priority', icon: 'i-heroicons-minus' },
+  { id: 1, name: 'Urgent', icon: 'i-heroicons-exclamation-triangle' },
+  { id: 2, name: 'High', icon: 'i-heroicons-chevron-double-up' },
+  { id: 3, name: 'Medium', icon: 'i-heroicons-chevron-up' },
+  { id: 4, name: 'Low', icon: 'i-heroicons-chevron-down' },
+]
+
 export const statusConfig = [
    {
       id: 'Todo',
@@ -78,7 +86,7 @@ export const projects: Project[] = [
       percentComplete: 80,
       startDate: '2025-03-08',
       lead: 'ELVIN-CODE-001',
-      priority: '',
+      priority: 0,
       health: health[2] || '',
    },
    {
@@ -88,7 +96,7 @@ export const projects: Project[] = [
       percentComplete: 65,
       startDate: '2025-03-08',
       lead: 'ELVIN-CODE-401',
-      priority: '',
+      priority: 1,
       health: health[1] || '',
    },
    {
@@ -98,7 +106,7 @@ export const projects: Project[] = [
       percentComplete: 90,
       startDate: '2025-03-08',
       lead: 'ELVIN-CODE-671',
-      priority: '',
+      priority: 2,
       health: health[2] || '',
    },
    {
@@ -108,7 +116,7 @@ export const projects: Project[] = [
       percentComplete: 45,
       startDate: '2025-03-08',
       lead: 'ELVIN-CODE-101',
-      priority: '',
+      priority: 3,
       health: health[0] || '',
    },
    {
@@ -117,8 +125,8 @@ export const projects: Project[] = [
       status: 'Paused',
       percentComplete: 30,
       startDate: '2025-03-08',
-      lead: '',
-      priority: 'ELVIN-CODE-910',
+      lead: 'ELVIN-CODE-910',
+      priority: 0,
       health: health[2] || '',
    },
    {
@@ -128,7 +136,7 @@ export const projects: Project[] = [
       percentComplete: 25,
       startDate: '2025-03-08',
       lead: 'ELVIN-CODE-101',
-      priority: '',
+      priority: 4,
       health: '',
    },
    {
@@ -138,7 +146,7 @@ export const projects: Project[] = [
       percentComplete: 55,
       startDate: '2025-03-08',
       lead: 'ELVIN-CODE-910',
-      priority: '',
+      priority: 2,
       health: '',
    },
    {
@@ -148,7 +156,7 @@ export const projects: Project[] = [
       percentComplete: 10,
       startDate: '2025-03-08',
       lead: 'ELVIN-CODE-101',
-      priority: '',
+      priority: 1,
       health: '',
    },
    {
@@ -158,7 +166,7 @@ export const projects: Project[] = [
       percentComplete: 40,
       startDate: '2025-03-08',
       lead: 'ELVIN-CODE-910',
-      priority: '',
+      priority: 3,
       health: '',
    },
    {
@@ -168,7 +176,7 @@ export const projects: Project[] = [
       percentComplete: 15,
       startDate: '2025-03-08',
       lead: 'ELVIN-CODE-910',
-      priority: '',
+      priority: 0,
       health: '',
    },
    {
@@ -178,7 +186,7 @@ export const projects: Project[] = [
       percentComplete: 20,
       startDate: '2025-03-08',
       lead: 'ELVIN-CODE-910',
-      priority: '',
+      priority: 2,
       health: '',
    },
    {
@@ -188,7 +196,7 @@ export const projects: Project[] = [
       percentComplete: 35,
       startDate: '2025-03-08',
       lead: 'ELVIN-CODE-910',
-      priority: '',
+      priority: 1,
       health: '',
    },
    {
@@ -198,7 +206,7 @@ export const projects: Project[] = [
       percentComplete: 100,
       startDate: '2025-03-08',
       lead: 'ELVIN-CODE-001',
-      priority: '',
+      priority: 4,
       health: '',
    },
    {
@@ -208,7 +216,7 @@ export const projects: Project[] = [
       percentComplete: 5,
       startDate: '2025-03-08',
       lead: 'ELVIN-CODE-401',
-      priority: '',
+      priority: 3,
       health: '',
    },
    {
@@ -218,7 +226,7 @@ export const projects: Project[] = [
       percentComplete: 70,
       startDate: '2025-03-08',
       lead: 'ELVIN-CODE-401',
-      priority: '',
+      priority: 1,
       health: '',
    },
    {
@@ -228,7 +236,7 @@ export const projects: Project[] = [
       percentComplete: 100,
       startDate: '2025-03-08',
       lead: 'ELVIN-CODE-001',
-      priority: '',
+      priority: 2,
       health: '',
    },
    {
@@ -238,7 +246,7 @@ export const projects: Project[] = [
       percentComplete: 100,
       startDate: '2025-03-08',
       lead: 'ELVIN-CODE-001',
-      priority: '',
+      priority: 0,
       health: '',
    },
    {
@@ -248,7 +256,7 @@ export const projects: Project[] = [
       percentComplete: 85,
       startDate: '2025-03-08',
       lead: 'ELVIN-CODE-910',
-      priority: '',
+      priority: 1,
       health: '',
    },
    {
@@ -258,7 +266,7 @@ export const projects: Project[] = [
       percentComplete: 0,
       startDate: '2025-03-08',
       lead: 'ELVIN-CODE-001',
-      priority: '',
+      priority: 2,
       health: '',
    },
    {
@@ -268,7 +276,7 @@ export const projects: Project[] = [
       percentComplete: 100,
       startDate: '2025-03-08',
       lead: 'ELVIN-CODE-910',
-      priority: '',
+      priority: 3,
       health: '',
    },
 ];

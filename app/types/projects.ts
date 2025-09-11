@@ -2,7 +2,7 @@ export interface Project {
   id: string
   title: string
   health: Health | ''
-  priority: string
+  priority: number
   lead: string
   status: 'Todo' | 'In progress' | 'Technical Review' | 'Completed' | 'Backlog' | 'Paused'
   startDate: string
@@ -22,4 +22,10 @@ export interface StatusConfig {
   name: string
   icon: string
   color: string
+}
+
+export interface PriorityLevel {
+  id: number
+  name: string
+  icon: string
 }
