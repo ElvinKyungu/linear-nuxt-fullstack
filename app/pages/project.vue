@@ -2,11 +2,11 @@
 import { users } from '@/data/users'
 import { statusConfig } from '@/data/projects'
 import { priorityLevels } from '@/data/priority'
-import IconHigh from '~/components/icons/IconHigh.vue'
-import IconMedium from '~/components/icons/IconMedium.vue'
-import IconLow from '~/components/icons/IconLow.vue'
-import IconNoPriority from '~/components/icons/IconNoPriority.vue'
-import IconUrgent from '~/components/icons/IconUrgent.vue'
+import IconHigh from '@/components/icons/IconHigh.vue'
+import IconMedium from '@/components/icons/IconMedium.vue'
+import IconLow from '@/components/icons/IconLow.vue'
+import IconNoPriority from '@/components/icons/IconNoPriority.vue'
+import IconUrgent from '@/components/icons/IconUrgent.vue'
 
 const projectsStore = useProjectStore()
 const componentsStore = useComponentsStore()
