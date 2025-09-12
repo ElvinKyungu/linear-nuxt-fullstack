@@ -1,8 +1,4 @@
 <script setup lang="ts">
-import { ref, computed, reactive, onMounted } from 'vue'
-import { storeToRefs } from 'pinia'
-import { useTeamsStore } from '~/stores/useTeam'
-import { useComponentsStore } from '~/stores/useComponents'
 import { users } from '@/data/users'
 import type { Team } from '@/types/teams'
 
