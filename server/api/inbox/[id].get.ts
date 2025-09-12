@@ -9,10 +9,16 @@ export default defineEventHandler(async (event) => {
     throw createError({ statusCode: 401, statusMessage: 'Unauthorized' })
   }
 
-  // simule latence
   await new Promise((r) => setTimeout(r, DELAY))
 
+  const id = Number(event.context.params?.id)
+  const item = notifications.find((n) => n.id === id)
+
+  if (!item) {
+    throw createError({ statusCode: 404, statusMessage: 'Notification not found' })
+  }
+
   return {
-    data: notifications
+    data: item
   }
 })

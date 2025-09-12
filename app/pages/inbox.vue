@@ -33,6 +33,9 @@
               transform: sidebarWidth > 120 ? 'scale(1)' : 'scale(0)'
             }"
           >
+            <button class="p-1 rounded hover:bg-gray-700" @click="openCreate">
+              <Icon name="uil:plus" class="w-4 h-4 text-gray-300" />
+            </button>
             <Icon name="uil:ellipsis-h" class="w-4 h-4 text-gray-400" />
           </div>
         </div>
@@ -71,10 +74,12 @@
 
         <!-- Notifications list -->
         <div class="flex-1 overflow-y-auto overflow-x-hidden">
+          <div v-if="loading" class="p-4 text-center text-gray-400">Chargement...</div>
+
           <div
-            v-for="notification in notifications"
+            v-for="notification in visibleNotifications"
             :key="notification.id"
-            @click="selectedNotification = notification"
+            @click="select(notification)"
             class="flex items-center gap-3 p-3 border-b border-gray-700 hover:bg-gray-750 cursor-pointer transition-all duration-150 relative"
             :class="{ 'bg-gray-700': selectedNotification?.id === notification.id }"
           >
@@ -150,6 +155,16 @@
               >
                 {{ truncateText(notification.description, getDescriptionMaxLength()) }}
               </p>
+            </div>
+
+            <!-- Actions (small) -->
+            <div class="flex gap-2 items-center ml-2">
+              <button class="p-1 rounded hover:bg-gray-700" @click.stop="edit(notification)">
+                <Icon name="uil:edit" class="w-4 h-4 text-gray-300" />
+              </button>
+              <button class="p-1 rounded hover:bg-gray-700" @click.stop="confirmDelete(notification)">
+                <Icon name="uil:trash" class="w-4 h-4 text-gray-300" />
+              </button>
             </div>
 
             <!-- Status indicator for very small widths -->
@@ -229,11 +244,14 @@
                 transform: mainContentWidth > 300 ? 'scale(1)' : 'scale(0.8)'
               }"
             >
-              <button class="p-2 hover:bg-gray-700 rounded-md transition-colors">
-                <Icon name="uil:paperclip" class="w-4 h-4 text-gray-400" />
+              <button class="p-2 hover:bg-gray-700 rounded-md transition-colors" @click="markSelectedRead" :disabled="!selectedNotification">
+                <Icon name="uil:check" class="w-4 h-4 text-gray-400" />
               </button>
-              <button class="p-2 hover:bg-gray-700 rounded-md transition-colors">
-                <Icon name="uil:message" class="w-4 h-4 text-gray-400" />
+              <button class="p-2 hover:bg-gray-700 rounded-md transition-colors" @click="openEditSelected" :disabled="!selectedNotification">
+                <Icon name="uil:edit" class="w-4 h-4 text-gray-400" />
+              </button>
+              <button class="p-2 hover:bg-gray-700 rounded-md transition-colors" @click="selectedNotification && confirmDelete(selectedNotification)">
+                <Icon name="uil:trash" class="w-4 h-4 text-gray-400" />
               </button>
             </div>
           </div>
@@ -288,159 +306,95 @@
         </div>
       </div>
     </div>
+
+    <!-- Modal create/edit -->
+    <div v-if="showModal" class="fixed inset-0 flex items-center justify-center bg-black/50 z-50">
+      <div class="bg-gray-900 rounded-md p-4 w-full max-w-lg">
+        <h3 class="text-lg font-semibold mb-3">{{ editItem ? 'Modifier notification' : 'Créer notification' }}</h3>
+        <div class="grid grid-cols-1 gap-2">
+          <input v-model="form.title" class="p-2 bg-gray-800 border border-gray-700 rounded" placeholder="Titre" />
+          <input v-model="form.description" class="p-2 bg-gray-800 border border-gray-700 rounded" placeholder="Description" />
+          <div class="grid grid-cols-2 gap-2">
+            <input v-model="form.time" class="p-2 bg-gray-800 border border-gray-700 rounded" placeholder="time (ex: 2h, 3d)" />
+            <input v-model="form.assignee" class="p-2 bg-gray-800 border border-gray-700 rounded" placeholder="assignee" />
+          </div>
+          <div class="flex items-center gap-2">
+            <input v-model="form.icon" class="p-2 bg-gray-800 border border-gray-700 rounded flex-1" placeholder="icon (uil:...)" />
+            <input v-model="form.color" class="p-2 bg-gray-800 border border-gray-700 rounded w-32" placeholder="#hex" />
+          </div>
+          <div class="flex items-center gap-2">
+            <label class="flex items-center gap-2">
+              <input type="checkbox" v-model="form.isReaded" />
+              <span class="text-sm text-gray-300">Lu</span>
+            </label>
+            <select v-model="form.status" class="p-2 bg-gray-800 border border-gray-700 rounded text-sm">
+              <option value="info">info</option>
+              <option value="warning">warning</option>
+              <option value="completed">completed</option>
+              <option value="error">error</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="mt-4 flex justify-end gap-2">
+          <button class="px-3 py-1 rounded hover:bg-gray-800" @click="closeModal">Annuler</button>
+          <button class="px-3 py-1 rounded bg-orange-600" @click="submitModal">{{ editItem ? 'Enregistrer' : 'Créer' }}</button>
+        </div>
+      </div>
+    </div>
   </NuxtLayout>
 </template>
 
-<script setup>
-const sidebarWidth = ref(320)
-const isResizing = ref(false)
-const selectedNotification = ref(null)
-const activeTab = ref('inbox')
-const containerWidth = ref(1200) // Default container width
+<script setup lang="ts">
+import type { Notifications } from '@/types/inbox'
+import { storeToRefs } from 'pinia'
 
-const mainContentWidth = computed(() => {
-  return Math.max(0, containerWidth.value - sidebarWidth.value - 1) // -1 for resize handle
-})
+/* layout / resize */
+const sidebarWidth = ref<number>(320)
+const isResizing = ref<boolean>(false)
+const containerWidth = ref<number>(1200)
+const updateContainerWidth = () => {
+  containerWidth.value = window.innerWidth
+}
+const mainContentWidth = computed(() => Math.max(0, containerWidth.value - sidebarWidth.value - 1))
 
+/* tabs */
 const tabs = [
   { id: 'inbox', name: 'Inbox', icon: 'uil:inbox' },
   { id: 'issues', name: 'My issues', icon: 'uil:exclamation-circle' }
 ]
+const activeTab = ref<string>('inbox')
 
-const notifications = ref([
-  {
-    id: 1,
-    title: 'Refactor Button component for full accessibility compliance',
-    description: "I've attached the new design mockup",
-    time: '10h',
-    status: 'warning',
-    icon: 'uil:refresh',
-    color: '#10b981',
-    assignee: 'uhih'
-  },
-  {
-    id: 2,
-    title: 'Optimize animations for smoother UI transitions',
-    description: 'Section renamed from Animations to UI Transitions',
-    time: '4d',
-    status: 'completed',
-    icon: 'uil:play',
-    color: '#ec4899',
-    assignee: null
-  },
-  {
-    id: 3,
-    title: 'Implement dark mode toggle with system preferences support',
-    description: 'Reopened by GitHub',
-    time: '6d',
-    status: 'info',
-    icon: 'uil:moon',
-    color: '#84cc16',
-    assignee: null
-  },
-  {
-    id: 4,
-    title: 'Design new modal system with focus trapping',
-    description: 'https://github.com/ElvinKyungu/linear-nuxt-fullstack',
-    time: '13d',
-    status: 'info',
-    icon: 'uil:layer-group',
-    color: '#8b5cf6',
-    url: 'https://github.com/ElvinKyungu/linear-nuxt-fullstack'
-  },
-  {
-    id: 5,
-    title: 'Enhance responsiveness of Navbar',
-    description: 'Tested on mobile and it works perfectly now',
-    time: '11d',
-    status: 'warning',
-    icon: 'uil:mobile-android',
-    color: '#10b981'
-  },
-  {
-    id: 6,
-    title: 'Optimize loading time of Footer',
-    description: 'Updated performance metrics in the documentation',
-    time: '18d',
-    status: 'completed',
-    icon: 'uil:rocket',
-    color: '#10b981'
-  },
-  {
-    id: 7,
-    title: 'Refactor Sidebar for better accessibility',
-    description: 'Closed by Linear',
-    time: '4w',
-    status: 'info',
-    icon: 'uil:sidebar',
-    color: '#84cc16'
-  },
-  {
-    id: 8,
-    title: 'Implement new Card component design',
-    description: 'Closed by Linear',
-    time: '4w',
-    status: 'completed',
-    icon: 'uil:credit-card',
-    color: '#84cc16'
-  },
-  {
-    id: 9,
-    title: 'Dashboard: adapt breadcrumb text in feature view',
-    description: 'Reopened by GitHub',
-    time: '6w',
-    status: 'info',
-    icon: 'uil:dashboard',
-    color: '#10b981'
-  }
-])
+/* store */
+const store = useInboxStore()
+const { items, loading } = storeToRefs(store) // items = Notification[]
+const visibleNotifications = computed(() => items.value) // transform later if needed
 
-// Fonction pour mettre à jour la largeur du conteneur
-const updateContainerWidth = () => {
-  containerWidth.value = window.innerWidth
-}
+/* selection */
+const selectedNotification = ref<Notifications | null>(null)
 
-// Fonction pour démarrer le redimensionnement
-const startResize = (e) => {
-  isResizing.value = true
-  const startX = e.clientX
-  const startSidebarWidth = sidebarWidth.value
-  
-  const handleMouseMove = (moveEvent) => {
-    if (isResizing.value) {
-      const deltaX = moveEvent.clientX - startX
-      const newWidth = Math.max(0, Math.min(containerWidth.value - 100, startSidebarWidth + deltaX))
-      sidebarWidth.value = newWidth
-    }
-  }
-  
-  const handleMouseUp = () => {
-    isResizing.value = false
-    document.removeEventListener('mousemove', handleMouseMove)
-    document.removeEventListener('mouseup', handleMouseUp)
-    document.body.style.cursor = ''
-    document.body.style.userSelect = ''
-  }
-  
-  document.addEventListener('mousemove', handleMouseMove)
-  document.addEventListener('mouseup', handleMouseUp)
-  document.body.style.cursor = 'col-resize'
-  document.body.style.userSelect = 'none'
-  e.preventDefault()
-}
+/* modal + form */
+const showModal = ref(false)
+const editItem = ref<Notifications | null>(null)
+const form = reactive<Partial<Notifications>>({
+  title: '',
+  description: '',
+  time: '',
+  isReaded: false,
+  icon: 'uil:bell',
+  color: '#6b7280',
+  assignee: '',
+  status: 'info',
+  url: ''
+})
 
-// Fonctions pour tronquer le texte
-const truncateText = (text, maxLength) => {
-  if (!text || text.length <= maxLength) return text
-  
-  // Try to break at word boundaries
+/* helpers (truncate + widths) */
+const truncateText = (text: string | undefined, maxLength: number) => {
+  if (!text) return ''
+  if (text.length <= maxLength) return text
   const truncated = text.substring(0, maxLength - 3)
   const lastSpace = truncated.lastIndexOf(' ')
-  
-  if (lastSpace > maxLength / 2) {
-    return truncated.substring(0, lastSpace) + '...'
-  }
-  
+  if (lastSpace > maxLength / 2) return truncated.substring(0, lastSpace) + '...'
   return truncated + '...'
 }
 
@@ -462,24 +416,147 @@ const getDescriptionMaxLength = () => {
   return 60
 }
 
-const getTitleWidth = () => {
-  return Math.max(0, sidebarWidth.value - 120)
-}
+const getTitleWidth = () => Math.max(0, sidebarWidth.value - 120)
+const getDescriptionWidth = () => Math.max(0, sidebarWidth.value - 100)
 
-const getDescriptionWidth = () => {
-  return Math.max(0, sidebarWidth.value - 100)
-}
+/* resize logic */
+const startResize = (e: MouseEvent) => {
+  isResizing.value = true
+  const startX = e.clientX
+  const startSidebarWidth = sidebarWidth.value
 
-// Initialisation
-onMounted(() => {
-  if (notifications.value.length > 0) {
-    selectedNotification.value = notifications.value[8] // Dashboard notification
+  const handleMouseMove = (moveEvent: MouseEvent) => {
+    if (!isResizing.value) return
+    const deltaX = moveEvent.clientX - startX
+    const newWidth = Math.max(48, Math.min(containerWidth.value - 100, startSidebarWidth + deltaX))
+    sidebarWidth.value = newWidth
   }
+
+  const handleMouseUp = () => {
+    isResizing.value = false
+    document.removeEventListener('mousemove', handleMouseMove)
+    document.removeEventListener('mouseup', handleMouseUp)
+    document.body.style.cursor = ''
+    document.body.style.userSelect = ''
+  }
+
+  document.addEventListener('mousemove', handleMouseMove)
+  document.addEventListener('mouseup', handleMouseUp)
+  document.body.style.cursor = 'col-resize'
+  document.body.style.userSelect = 'none'
+  e.preventDefault()
+}
+
+/* CRUD actions using store */
+async function fetchAll() {
+  try {
+    await store.fetchAll()
+    // default selection like before: try index 8, else first, else null
+    if (items.value.length) {
+      selectedNotification.value = items.value[8] ?? items.value[0] ?? null
+    }
+  } catch (err) {
+    // erreur gérée dans store
+    console.warn(err)
+  }
+}
+
+function select(notification: Notifications) {
+  selectedNotification.value = notification
+}
+
+function openCreate() {
+  editItem.value = null
+  Object.assign(form, {
+    title: '',
+    description: '',
+    time: 'now',
+    isReaded: false,
+    icon: 'uil:bell',
+    color: '#6b7280',
+    assignee: '',
+    status: 'info',
+    url: ''
+  })
+  showModal.value = true
+}
+
+function openEditSelected() {
+  if (!selectedNotification.value) return
+  editItem.value = selectedNotification.value
+  Object.assign(form, { ...selectedNotification.value })
+  showModal.value = true
+}
+
+function edit(notification: Notifications) {
+  editItem.value = notification
+  Object.assign(form, { ...notification })
+  showModal.value = true
+}
+
+async function submitModal() {
+  if (editItem.value) {
+    // update
+    try {
+      const updated = await store.update(editItem.value.id, form)
+      selectedNotification.value = updated
+    } catch (e) {
+      console.error(e)
+    }
+  } else {
+    // create
+    try {
+      const created = await store.create(form)
+      selectedNotification.value = created
+    } catch (e) {
+      console.error(e)
+    }
+  }
+  showModal.value = false
+}
+
+function closeModal() {
+  showModal.value = false
+}
+
+/* delete helpers */
+function confirmDelete(notification: Notifications) {
+  const ok = confirm('Supprimer cette notification ?')
+  if (!ok) return
+  doDelete(notification.id)
+}
+
+async function doDelete(id: number) {
+  try {
+    if (selectedNotification.value?.id === id) {
+      selectedNotification.value = items.value[0] ?? null
+    }
+  } catch (e) {
+    console.error(e)
+  }
+}
+
+/* mark read */
+async function markSelectedRead() {
+  if (!selectedNotification.value) return
+  try {
+    const updated = await store.update(selectedNotification.value.id, { isReaded: true })
+    selectedNotification.value = updated
+  } catch (e) {
+    console.error(e)
+  }
+}
+
+/* lifecycle */
+onMounted(() => {
+  // fetch data from API via store
+  fetchAll()
+
+  // container width
   updateContainerWidth()
   window.addEventListener('resize', updateContainerWidth)
 })
 
-// Nettoyage
 onUnmounted(() => {
   window.removeEventListener('resize', updateContainerWidth)
 })
@@ -494,16 +571,13 @@ onUnmounted(() => {
 ::-webkit-scrollbar {
   width: 4px;
 }
-
 ::-webkit-scrollbar-track {
   background: #1f2937;
 }
-
 ::-webkit-scrollbar-thumb {
   background: #4b5563;
   border-radius: 2px;
 }
-
 ::-webkit-scrollbar-thumb:hover {
   background: #6b7280;
 }
