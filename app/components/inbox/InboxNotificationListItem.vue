@@ -1,0 +1,146 @@
+<script setup lang="ts">
+import type { Notifications } from '@/types/inbox'
+
+const props = defineProps<{
+  notification: Notifications
+  sidebarWidth: number
+  isSelected: boolean
+}>()
+
+const emit = defineEmits(['select-notification', 'edit-notification', 'confirm-delete'])
+
+/* Helper Functions */
+const truncateText = (text: string | undefined, maxLength: number) => {
+  if (!text) return ''
+  if (text.length <= maxLength) return text
+  const truncated = text.substring(0, maxLength - 3)
+  const lastSpace = truncated.lastIndexOf(' ')
+  if (lastSpace > maxLength / 2) return truncated.substring(0, lastSpace) + '...'
+  return truncated + '...'
+}
+
+const getTitleMaxLength = () => {
+  if (props.sidebarWidth <= 80) return 5
+  if (props.sidebarWidth <= 120) return 8
+  if (props.sidebarWidth <= 180) return 15
+  if (props.sidebarWidth <= 240) return 25
+  if (props.sidebarWidth <= 300) return 35
+  return 50
+}
+
+const getDescriptionMaxLength = () => {
+  if (props.sidebarWidth <= 80) return 8
+  if (props.sidebarWidth <= 120) return 10
+  if (props.sidebarWidth <= 180) return 20
+  if (props.sidebarWidth <= 240) return 35
+  if (props.sidebarWidth <= 300) return 45
+  return 60
+}
+
+const getTitleWidth = () => Math.max(0, props.sidebarWidth - 120)
+const getDescriptionWidth = () => Math.max(0, props.sidebarWidth - 100)
+</script>
+<template>
+  <div 
+    @click="$emit('select-notification', notification)"
+    class="flex items-center gap-3 p-3 border-b border-gray-700 hover:bg-gray-750 cursor-pointer transition-all duration-150 relative"
+    :class="{ 'bg-gray-700': isSelected }"
+  >
+    <div class="flex-shrink-0">
+      <div 
+        class="w-8 h-8 rounded-full flex items-center justify-center transition-all duration-200"
+        :style="{ 
+          backgroundColor: notification.color,
+          transform: sidebarWidth < 70 ? 'scale(0.8)' : 'scale(1)'
+        }"
+      >
+        <Icon :name="notification.icon" class="w-4 h-4 text-white" />
+      </div>
+    </div>
+
+    <div 
+      class="flex-1 min-w-0 transition-all duration-200"
+      :style="{ 
+        opacity: sidebarWidth > 70 ? 1 : 0,
+        transform: sidebarWidth > 70 ? 'translateX(0)' : 'translateX(-10px)'
+      }"
+    >
+      <div class="flex items-center justify-between mb-1">
+        <h4 
+          class="text-sm font-medium text-white overflow-hidden whitespace-nowrap"
+          :title="notification.title"
+          :style="{ 
+            width: getTitleWidth() + 'px'
+          }"
+        >
+          {{ truncateText(notification.title, getTitleMaxLength()) }}
+        </h4>
+        <div class="flex items-center gap-1 flex-shrink-0 ml-2">
+          <Icon 
+            v-if="notification.status === 'completed'" 
+            name="uil:check-circle" 
+            class="w-4 h-4 text-green-400" 
+          />
+          <Icon 
+            v-else-if="notification.status === 'error'" 
+            name="uil:exclamation-triangle" 
+            class="w-4 h-4 text-red-400" 
+          />
+          <Icon 
+            v-else-if="notification.status === 'info'" 
+            name="uil:info-circle" 
+            class="w-4 h-4 text-blue-400" 
+          />
+          <Icon 
+            v-else-if="notification.status === 'warning'" 
+            name="uil:exclamation-circle" 
+            class="w-4 h-4 text-yellow-400" 
+          />
+          <span 
+            class="text-xs text-gray-400 transition-all duration-200 whitespace-nowrap overflow-hidden"
+            :style="{ 
+              opacity: sidebarWidth > 200 ? 1 : 0,
+              width: sidebarWidth > 200 ? 'auto' : '0px'
+            }"
+          >
+            {{ notification.time }}
+          </span>
+        </div>
+      </div>
+      <p 
+        class="text-xs text-gray-400 overflow-hidden whitespace-nowrap"
+        :title="notification.description"
+        :style="{ 
+          width: getDescriptionWidth() + 'px'
+        }"
+      >
+        {{ truncateText(notification.description, getDescriptionMaxLength()) }}
+      </p>
+    </div>
+
+    <div class="flex gap-2 items-center ml-2">
+      <button class="p-1 rounded hover:bg-gray-700" @click.stop="$emit('edit-notification', notification)">
+        <Icon name="uil:edit" class="w-4 h-4 text-gray-300" />
+      </button>
+      <button class="p-1 rounded hover:bg-gray-700" @click.stop="$emit('confirm-delete', notification)">
+        <Icon name="uil:trash" class="w-4 h-4 text-gray-300" />
+      </button>
+    </div>
+
+    <div 
+      class="flex-shrink-0 transition-all duration-200"
+      :style="{ 
+        opacity: sidebarWidth <= 70 ? 1 : 0,
+        transform: sidebarWidth <= 70 ? 'scale(1)' : 'scale(0)'
+      }"
+    >
+      <div class="w-2 h-2 rounded-full bg-blue-400"></div>
+    </div>
+  </div>
+</template>
+
+<style scoped>
+.bg-gray-750 {
+  background-color: #374151;
+}
+</style>
