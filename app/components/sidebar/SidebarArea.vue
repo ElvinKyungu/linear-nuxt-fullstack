@@ -82,13 +82,13 @@ const sidebarVisibility = computed(() => {
     // Sur mobile/tablet, on se base sur isSidebarOpen
     return {
       'translate-x-0': sidebarStore.isSidebarOpen,
-      '-translate-x-full': !sidebarStore.isSidebarOpen
+      '-translate-x-full': !sidebarStore.isSidebarOpen,
     }
   } else {
     // Sur desktop, elle est toujours visible (gérée par le layout parent)
     return {
       'translate-x-0': true,
-      '-translate-x-full': false
+      '-translate-x-full': false,
     }
   }
 })
@@ -112,7 +112,7 @@ const sidebarVisibility = computed(() => {
         />
         <span class="mt-1">Project Hub</span>
       </NuxtLink>
-      
+
       <!-- Bouton de fermeture pour mobile/tablet -->
       <UButton
         icon="uil:times"
@@ -151,8 +151,8 @@ const sidebarVisibility = computed(() => {
                 class="py-2 flex items-center gap-3 cursor-pointer hover:bg-gray-800 rounded px-3 transition-colors"
               >
                 <UIcon :name="item.icon" class="w-5 h-5" />
-                <NuxtLink 
-                  :to="item.to" 
+                <NuxtLink
+                  :to="item.to"
                   class="flex-1 hover:text-white transition-colors"
                   @click="sidebarStore.isMobileOrTablet && closeSidebar()"
                 >
@@ -205,9 +205,7 @@ const sidebarVisibility = computed(() => {
       </div>
 
       <!-- Boutons du bas -->
-      <div
-        class="w-full flex items-center justify-between mt-4 gap-2"
-      >
+      <div class="w-full flex items-center justify-between mt-4 gap-2">
         <UButton
           class="text-gray-400 bg-gray-400/20 hover:text-white hover:bg-gray-400/30 flex-1"
           variant="ghost"

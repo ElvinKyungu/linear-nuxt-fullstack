@@ -34,14 +34,24 @@ const priorities = [
     icon: resolveComponent('IconsIconTaskStatus'),
     count: 10,
   },
-  { id: 3, name: 'To Do', icon: resolveComponent('IconsIconTaskStatus'), count: 6 },
+  {
+    id: 3,
+    name: 'To Do',
+    icon: resolveComponent('IconsIconTaskStatus'),
+    count: 6,
+  },
   {
     id: 4,
     name: 'Backlog',
     icon: resolveComponent('IconsIconTaskStatus'),
     count: 0,
   },
-  { id: 5, name: 'Paused', icon: resolveComponent('IconsIconTaskStatus'), count: 0 },
+  {
+    id: 5,
+    name: 'Paused',
+    icon: resolveComponent('IconsIconTaskStatus'),
+    count: 0,
+  },
 ]
 
 const selected = ref(priorities[1])

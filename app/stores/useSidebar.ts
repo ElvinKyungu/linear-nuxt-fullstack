@@ -6,7 +6,7 @@ export const useSidebarStore = defineStore('sidebar', () => {
   const isExtended = ref(false) // true = fermé, false = ouvert
   const isSidebarOpen = ref(false) // pour la version mobile overlay
   const screenSize = ref<'mobile' | 'tablet' | 'desktop'>('desktop')
-  
+
   // État précédent pour la restauration
   const previousDesktopState = ref(false)
 
@@ -22,7 +22,7 @@ export const useSidebarStore = defineStore('sidebar', () => {
     if (typeof window !== 'undefined') {
       const width = window.innerWidth
       const oldSize = screenSize.value
-      
+
       if (width < 768) {
         screenSize.value = 'mobile'
       } else if (width < 1024) {
@@ -34,13 +34,19 @@ export const useSidebarStore = defineStore('sidebar', () => {
       // Gestion des changements de taille d'écran
       if (oldSize !== screenSize.value) {
         // Si on passe de mobile/tablet à desktop, restaurer l'état précédent
-        if ((oldSize === 'mobile' || oldSize === 'tablet') && screenSize.value === 'desktop') {
+        if (
+          (oldSize === 'mobile' || oldSize === 'tablet') &&
+          screenSize.value === 'desktop'
+        ) {
           isExtended.value = previousDesktopState.value
           isSidebarOpen.value = false // Fermer l'overlay mobile
         }
-        
+
         // Si on passe à mobile/tablet, sauvegarder l'état desktop et fermer
-        if (oldSize === 'desktop' && (screenSize.value === 'mobile' || screenSize.value === 'tablet')) {
+        if (
+          oldSize === 'desktop' &&
+          (screenSize.value === 'mobile' || screenSize.value === 'tablet')
+        ) {
           previousDesktopState.value = isExtended.value
           isExtended.value = true // Fermer sur mobile/tablet
           isSidebarOpen.value = false
@@ -95,13 +101,13 @@ export const useSidebarStore = defineStore('sidebar', () => {
   // Initialisation
   const initializeLayout = () => {
     updateScreenSize()
-    
+
     // Configuration initiale
     if (isMobileOrTablet.value) {
       isExtended.value = true // Fermé par défaut sur mobile/tablet
       isSidebarOpen.value = false
     }
-    
+
     // Écouter les changements de taille
     if (typeof window !== 'undefined') {
       window.addEventListener('resize', updateScreenSize)
@@ -126,14 +132,14 @@ export const useSidebarStore = defineStore('sidebar', () => {
     isSidebarOpen: readonly(isSidebarOpen),
     screenSize: readonly(screenSize),
     previousDesktopState: readonly(previousDesktopState),
-    
+
     // États calculés
     isMobile,
     isTablet,
     isDesktop,
     isMobileOrTablet,
     shouldShowSidebar,
-    
+
     // Actions
     toggleExtend,
     setSidebarState,
@@ -142,6 +148,6 @@ export const useSidebarStore = defineStore('sidebar', () => {
     toggleMobileSidebar,
     updateScreenSize,
     initializeLayout,
-    destroyLayout
+    destroyLayout,
   }
 })

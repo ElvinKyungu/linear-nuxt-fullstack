@@ -8,7 +8,7 @@ export const notifications: Notifications[] = [
     isReaded: true,
     icon: 'uil:refresh',
     color: '#10b981',
-    assignee: 'ELVIN-CODE-910'
+    assignee: 'ELVIN-CODE-910',
   },
   {
     id: 2,
@@ -18,7 +18,7 @@ export const notifications: Notifications[] = [
     isReaded: true,
     icon: 'uil:play',
     color: '#ec4899',
-    assignee: 'ELVIN-CODE-101'
+    assignee: 'ELVIN-CODE-101',
   },
   {
     id: 3,
@@ -28,7 +28,7 @@ export const notifications: Notifications[] = [
     isReaded: false,
     icon: 'uil:moon',
     color: '#84cc16',
-    assignee: 'ELVIN-CODE-671'
+    assignee: 'ELVIN-CODE-671',
   },
   {
     id: 4,
@@ -38,7 +38,7 @@ export const notifications: Notifications[] = [
     isReaded: false,
     icon: 'uil:layer-group',
     color: '#8b5cf6',
-    assignee: 'ELVIN-CODE-401'
+    assignee: 'ELVIN-CODE-401',
   },
   {
     id: 5,
@@ -48,7 +48,7 @@ export const notifications: Notifications[] = [
     isReaded: true,
     icon: 'uil:mobile-android',
     color: '#10b981',
-    assignee: 'ELVIN-CODE-001'
+    assignee: 'ELVIN-CODE-001',
   },
   {
     id: 6,
@@ -58,7 +58,7 @@ export const notifications: Notifications[] = [
     isReaded: true,
     icon: 'uil:rocket',
     color: '#10b981',
-    assignee: 'ELVIN-CODE-910'
+    assignee: 'ELVIN-CODE-910',
   },
   {
     id: 7,
@@ -68,7 +68,7 @@ export const notifications: Notifications[] = [
     isReaded: false,
     icon: 'uil:sidebar',
     color: '#84cc16',
-    assignee: 'ELVIN-CODE-401'
+    assignee: 'ELVIN-CODE-401',
   },
   {
     id: 8,
@@ -78,7 +78,7 @@ export const notifications: Notifications[] = [
     isReaded: true,
     icon: 'uil:credit-card',
     color: '#84cc16',
-    assignee: 'ELVIN-CODE-001'
+    assignee: 'ELVIN-CODE-001',
   },
   {
     id: 9,
@@ -88,6 +88,6 @@ export const notifications: Notifications[] = [
     isReaded: false,
     icon: 'uil:dashboard',
     color: '#10b981',
-    assignee: 'ELVIN-CODE-401'
-  }
+    assignee: 'ELVIN-CODE-401',
+  },
 ]

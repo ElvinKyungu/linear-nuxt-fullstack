@@ -17,12 +17,15 @@ export default defineEventHandler(async (event) => {
 
   const idx = notifications.findIndex((n) => n.id === id)
   if (idx === -1) {
-    throw createError({ statusCode: 404, statusMessage: 'Notification not found' })
+    throw createError({
+      statusCode: 404,
+      statusMessage: 'Notification not found',
+    })
   }
 
   notifications[idx] = { ...notifications[idx], ...body }
 
   return {
-    data: notifications[idx]
+    data: notifications[idx],
   }
 })

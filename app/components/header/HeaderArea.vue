@@ -1,11 +1,13 @@
 <!-- HeaderArea.vue -->
 <template>
-  <div class="flex items-center justify-between p-4 bg-primary border-b border-bordercolor">
+  <div
+    class="flex items-center justify-between p-4 bg-primary border-b border-bordercolor"
+  >
     <!-- Section gauche avec toggle sidebar -->
     <div class="flex items-center gap-4">
       <!-- Bouton toggle sidebar (visible uniquement sur desktop) -->
       <slot name="sidebar-toggle" />
-      
+
       <!-- Titre ou breadcrumb -->
       <div class="flex items-center gap-2">
         <h1 class="text-xl font-semibold text-white">
@@ -23,11 +25,7 @@
     <div class="flex items-center gap-3">
       <!-- Recherche (optionnelle) -->
       <div class="hidden lg:block">
-        <UInput
-          placeholder="Search..."
-          class="w-64"
-          variant="outline"
-        >
+        <UInput placeholder="Search..." class="w-64" variant="outline">
           <template #leading>
             <UIcon name="uil:search" class="w-4 h-4 text-gray-400" />
           </template>
@@ -75,7 +73,7 @@ interface Props {
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  pageTitle: 'Dashboard'
+  pageTitle: 'Dashboard',
 })
 
 // Vous pouvez ajouter d'autres logiques spécifiques au header ici

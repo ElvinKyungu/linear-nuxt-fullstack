@@ -13,7 +13,9 @@ export default defineEventHandler(async (event) => {
   await new Promise((r) => setTimeout(r, DELAY))
 
   const body = await readBody<Partial<Notifications>>(event)
-  const nextId = notifications.length ? Math.max(...notifications.map((n) => n.id)) + 1 : 1
+  const nextId = notifications.length
+    ? Math.max(...notifications.map((n) => n.id)) + 1
+    : 1
 
   const newItem: Notifications = {
     id: nextId,
@@ -23,12 +25,12 @@ export default defineEventHandler(async (event) => {
     isReaded: !!body.isReaded,
     icon: body.icon || 'uil:bell',
     color: body.color || '#6b7280',
-    assignee: body.assignee || 'unknown'
+    assignee: body.assignee || 'unknown',
   }
 
   notifications.unshift(newItem)
 
   return {
-    data: newItem
+    data: newItem,
   }
 })

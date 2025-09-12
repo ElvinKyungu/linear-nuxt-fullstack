@@ -15,24 +15,29 @@ onMounted(async () => {
 })
 
 const getDisplayedMembers = (team: Team) => team.members.slice(0, 4)
-const getRemainingCount  = (team: Team) => Math.max(team.members.length - 4, 0)
+const getRemainingCount = (team: Team) => Math.max(team.members.length - 4, 0)
 
 const getComponentName = (componentId: string) => {
-  const component = components.value.find(c => c.id === componentId)
+  const component = components.value.find((c) => c.id === componentId)
   return component?.name || componentId
 }
 
 /** --- Tooltip global state --- */
 const activeTeamId = ref<string | null>(null)
-const activeTeam   = computed(() => teams.value.find(t => t.identifier === activeTeamId.value) || null)
+const activeTeam = computed(
+  () => teams.value.find((t) => t.identifier === activeTeamId.value) || null
+)
 
 const anchorRect = reactive({ x: 0, y: 0, w: 0, h: 0 })
-const placement  = ref<'top' | 'bottom'>('top')
+const placement = ref<'top' | 'bottom'>('top')
 
 let hideTimer: number | undefined
 
 function openTooltip(teamId: string, el: HTMLElement) {
-  if (hideTimer) { clearTimeout(hideTimer); hideTimer = undefined }
+  if (hideTimer) {
+    clearTimeout(hideTimer)
+    hideTimer = undefined
+  }
   activeTeamId.value = teamId
   const r = el.getBoundingClientRect()
   anchorRect.x = r.left + r.width / 2
@@ -40,14 +45,19 @@ function openTooltip(teamId: string, el: HTMLElement) {
   anchorRect.w = r.width
   anchorRect.h = r.height
   // 280px ≈ hauteur max du tooltip
-  placement.value = (r.top > 280) ? 'top' : 'bottom'
+  placement.value = r.top > 280 ? 'top' : 'bottom'
 }
 
 function scheduleClose() {
-  hideTimer = window.setTimeout(() => { activeTeamId.value = null }, 120)
+  hideTimer = window.setTimeout(() => {
+    activeTeamId.value = null
+  }, 120)
 }
 function cancelClose() {
-  if (hideTimer) { clearTimeout(hideTimer); hideTimer = undefined }
+  if (hideTimer) {
+    clearTimeout(hideTimer)
+    hideTimer = undefined
+  }
 }
 
 const tooltipStyle = computed(() => {
@@ -57,18 +67,17 @@ const tooltipStyle = computed(() => {
       position: 'fixed',
       left: `${anchorRect.x}px`,
       top: `${anchorRect.y - 8}px`,
-      transform: 'translate(-50%, -100%)'
+      transform: 'translate(-50%, -100%)',
     }
   }
   return {
     position: 'fixed',
     left: `${anchorRect.x}px`,
     top: `${anchorRect.y + anchorRect.h + 8}px`,
-    transform: 'translate(-50%, 0)'
+    transform: 'translate(-50%, 0)',
   }
 })
 </script>
-
 
 <template>
   <NuxtLayout>
@@ -136,7 +145,9 @@ const tooltipStyle = computed(() => {
                 :key="team.identifier"
                 class="hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors duration-200 border-b border-bordercolor/10"
               >
-                <div class="grid grid-cols-12 gap-4 px-6 py-4 items-center w-full">
+                <div
+                  class="grid grid-cols-12 gap-4 px-6 py-4 items-center w-full"
+                >
                   <!-- Name - Toujours visible -->
                   <div
                     class="col-span-6 flex justify-start w-full items-end sm:col-span-6 lg:col-span-4 xl:col-span-4"
@@ -185,7 +196,13 @@ const tooltipStyle = computed(() => {
                       <div
                         :ref="`teamMemberTrigger-${team.identifier}`"
                         class="flex items-center -space-x-2 cursor-pointer"
-                         @mouseenter="(e) => openTooltip(team.identifier, e.currentTarget as HTMLElement)"
+                        @mouseenter="
+                          (e) =>
+                            openTooltip(
+                              team.identifier,
+                              e.currentTarget as HTMLElement
+                            )
+                        "
                         @mouseleave="scheduleClose"
                       >
                         <UAvatar

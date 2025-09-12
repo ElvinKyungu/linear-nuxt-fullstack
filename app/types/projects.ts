@@ -4,7 +4,13 @@ export interface Project {
   health: Health | ''
   priority: number
   lead: string
-  status: 'Todo' | 'In progress' | 'Technical Review' | 'Completed' | 'Backlog' | 'Paused'
+  status:
+    | 'Todo'
+    | 'In progress'
+    | 'Technical Review'
+    | 'Completed'
+    | 'Backlog'
+    | 'Paused'
   startDate: string
   percentComplete: number
 }

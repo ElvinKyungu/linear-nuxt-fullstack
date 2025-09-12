@@ -8,7 +8,11 @@ const props = defineProps<{
   selectedNotification: Notifications | null
 }>()
 
-const emit = defineEmits(['selectNotification', 'editNotification', 'confirmDelete'])
+const emit = defineEmits([
+  'selectNotification',
+  'editNotification',
+  'confirmDelete',
+])
 
 const selectNotification = (notification: Notifications) => {
   emit('selectNotification', notification)
@@ -16,7 +20,9 @@ const selectNotification = (notification: Notifications) => {
 </script>
 <template>
   <div class="flex-1 overflow-y-auto overflow-x-hidden">
-    <div v-if="loading" class="p-4 text-center text-gray-400">Chargement...</div>
+    <div v-if="loading" class="p-4 text-center text-gray-400">
+      Chargement...
+    </div>
     <div v-else>
       <InboxNotificationListItem
         v-for="notification in visibleNotifications"

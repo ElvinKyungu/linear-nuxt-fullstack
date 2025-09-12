@@ -15,10 +15,13 @@ export default defineEventHandler(async (event) => {
   const item = notifications.find((n) => n.id === id)
 
   if (!item) {
-    throw createError({ statusCode: 404, statusMessage: 'Notification not found' })
+    throw createError({
+      statusCode: 404,
+      statusMessage: 'Notification not found',
+    })
   }
 
   return {
-    data: item
+    data: item,
   }
 })

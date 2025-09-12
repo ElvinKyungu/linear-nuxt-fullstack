@@ -43,50 +43,63 @@ const animateSidebar = (hide: boolean) => {
     // Fermer/cacher la sidebar
     gsap
       .timeline()
-      .to(aside, { 
-        x: '-100%', 
-        duration: 0.3, 
-        ease: 'power2.inOut' 
-      }, 0)
-      .to(wrap, { 
-        width: 0, 
-        opacity: 0,
-        duration: 0.35, 
-        ease: 'power2.inOut' 
-      }, 0)
+      .to(
+        aside,
+        {
+          x: '-100%',
+          duration: 0.3,
+          ease: 'power2.inOut',
+        },
+        0
+      )
+      .to(
+        wrap,
+        {
+          width: 0,
+          opacity: 0,
+          duration: 0.35,
+          ease: 'power2.inOut',
+        },
+        0
+      )
   } else {
     // Réouvrir/afficher la sidebar
     gsap
       .timeline()
-      .to(wrap, { 
-        width: '20rem', 
-        opacity: 1,
-        duration: 0.35, 
-        ease: 'power2.inOut' 
-      }, 0)
-      .to(aside, { 
-        x: '0%', 
-        duration: 0.3, 
-        ease: 'power2.inOut' 
-      }, 0.05)
+      .to(
+        wrap,
+        {
+          width: '20rem',
+          opacity: 1,
+          duration: 0.35,
+          ease: 'power2.inOut',
+        },
+        0
+      )
+      .to(
+        aside,
+        {
+          x: '0%',
+          duration: 0.3,
+          ease: 'power2.inOut',
+        },
+        0.05
+      )
   }
 }
 
 // Watcher pour les changements d'état de la sidebar
-watch(
-  shouldSidebarBeHidden,
-  (hide) => {
-    if (isInitialized.value) {
-      animateSidebar(hide)
-    }
+watch(shouldSidebarBeHidden, (hide) => {
+  if (isInitialized.value) {
+    animateSidebar(hide)
   }
-)
+})
 
 // Gestion du redimensionnement de la fenêtre
 const handleResize = () => {
   const oldScreenSize = screenSize.value
   updateScreenSize()
-  
+
   // Si on change de catégorie d'écran, on réinitialise
   if (oldScreenSize !== screenSize.value && isInitialized.value) {
     // Sur mobile/tablet, on force la fermeture
@@ -106,7 +119,7 @@ const handleResize = () => {
 // Initialisation
 onMounted(() => {
   updateScreenSize()
-  
+
   // Configuration initiale basée sur la taille d'écran
   if (isMobileOrTablet.value) {
     // Sur mobile, la sidebar est cachée par défaut
@@ -132,9 +145,9 @@ onMounted(() => {
       }
     }
   }
-  
+
   isInitialized.value = true
-  
+
   // Écouter les changements de taille
   window.addEventListener('resize', handleResize)
 })
@@ -151,7 +164,7 @@ const toggleSidebar = () => {
 // Classes réactives pour le contenu principal
 const mainContentClasses = computed(() => ({
   'w-full': shouldSidebarBeHidden.value,
-  'transition-all duration-300 ease-in-out': true
+  'transition-all duration-300 ease-in-out': true,
 }))
 
 // Déterminer l'icône du bouton toggle
@@ -169,12 +182,12 @@ const toggleIcon = computed(() => {
 <template>
   <div class="flex h-screen overflow-hidden bg-background">
     <!-- Sidebar Container -->
-    <div 
-      ref="sidebarWrapRef" 
+    <div
+      ref="sidebarWrapRef"
       class="shrink-0 overflow-hidden relative"
       :class="{
         'w-80': !shouldSidebarBeHidden,
-        'w-0': shouldSidebarBeHidden
+        'w-0': shouldSidebarBeHidden,
       }"
     >
       <SidebarArea />
@@ -195,10 +208,7 @@ const toggleIcon = computed(() => {
               class="lg:inline-flex text-white hover:bg-white/10 cursor-pointer"
               @click="toggleSidebar"
             >
-              <UIcon 
-                :name="'uil:bars'"
-                class="w-5 h-5"
-              />
+              <UIcon :name="'uil:bars'" class="w-5 h-5" />
             </UButton>
           </template>
         </HeaderArea>
@@ -218,10 +228,12 @@ const toggleIcon = computed(() => {
       class="fixed inset-0 bg-black/90 z-40 lg:hidden"
       @click="sidebarStore.closeSidebar()"
     >
-      <p class="text-white absolute right-3/12 translate-x-1/2 top-1/2 -translate-y-1/2">
+      <p
+        class="text-white absolute right-3/12 translate-x-1/2 top-1/2 -translate-y-1/2"
+      >
         {{ 'Click outside to close' }}
       </p>
-    </div>  
+    </div>
   </div>
 </template>
 

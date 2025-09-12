@@ -13,6 +13,6 @@ export default defineEventHandler(async (event) => {
   await new Promise((r) => setTimeout(r, DELAY))
 
   return {
-    data: notifications
+    data: notifications,
   }
 })

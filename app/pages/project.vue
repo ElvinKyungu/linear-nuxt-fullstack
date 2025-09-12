@@ -26,7 +26,9 @@ const filteredPriorities = computed(() =>
 
 const filteredUsers = computed(() =>
   users.filter((u) =>
-    `${u.name} ${u.lastName}`.toLowerCase().includes(userSearch.value.toLowerCase())
+    `${u.name} ${u.lastName}`
+      .toLowerCase()
+      .includes(userSearch.value.toLowerCase())
   )
 )
 
@@ -56,11 +58,11 @@ const getHealthIcon = (health: any) => {
 }
 
 const getStatusConfig = (status: string) => {
-  return statusConfig.find(s => s.id === status) || statusConfig[0]
+  return statusConfig.find((s) => s.id === status) || statusConfig[0]
 }
 
 const getPriorityConfig = (priority: number) => {
-  return priorityLevels.find(p => p.id === priority) || priorityLevels[0]
+  return priorityLevels.find((p) => p.id === priority) || priorityLevels[0]
 }
 const getPriorityIcon = (priority: number) => {
   const config = getPriorityConfig(priority)
@@ -88,13 +90,17 @@ onMounted(async () => {
                 :key="project.id"
                 class="hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors duration-200 border-b border-bordercolor/10"
               >
-                <div class="grid grid-cols-12 gap-4 px-6 py-4 items-center w-full">
+                <div
+                  class="grid grid-cols-12 gap-4 px-6 py-4 items-center w-full"
+                >
                   <!-- Title Column -->
                   <div
                     class="col-span-6 flex justify-start w-full items-end sm:col-span-6 lg:col-span-3 xl:col-span-6"
                   >
-                    <div class="flex items-center gap-3 text-gray-300 font-medium text-lg">
-                      <IconsIconComponent/>
+                    <div
+                      class="flex items-center gap-3 text-gray-300 font-medium text-lg"
+                    >
+                      <IconsIconComponent />
                       <span>{{ project.title }}</span>
                     </div>
                   </div>
@@ -108,41 +114,80 @@ onMounted(async () => {
                         variant="soft"
                         size="md"
                         class="text-white hover:bg-bordercolor/70 flex p-2 gap-2 max-w-max items-center cursor-pointer"
-                        :style="{ backgroundColor: project.health.color + '20', borderColor: project.health.color }"
+                        :style="{
+                          backgroundColor: project.health.color + '20',
+                          borderColor: project.health.color,
+                        }"
                       >
                         <UIcon
-                          :name="getHealthIcon(project.health)" 
-                          :style="{ color: project.health.color }" 
-                          class="text-lg" />
+                          :name="getHealthIcon(project.health)"
+                          :style="{ color: project.health.color }"
+                          class="text-lg"
+                        />
                         <span>{{ project.health.title }}</span>
                       </UBadge>
                       <template #content>
-                        <div class="bg-primary border border-bordercolor text-white rounded-lg shadow-lg p-3 min-w-64">
+                        <div
+                          class="bg-primary border border-bordercolor text-white rounded-lg shadow-lg p-3 min-w-64"
+                        >
                           <div class="space-y-3">
-                            <div class="flex justify-between items-center gap-3">
-                              <h4 class="text-sm font-medium">{{ project.title }}</h4>
+                            <div
+                              class="flex justify-between items-center gap-3"
+                            >
+                              <h4 class="text-sm font-medium">
+                                {{ project.title }}
+                              </h4>
                               <div class="flex gap-2">
-                                <UButton size="xs" label="Subscribe" class="text-white border border-bordercolor hover:bg-bordercolor/70"/>
-                                <UButton size="xs" icon="i-heroicons-bell" class="text-white border border-bordercolor hover:bg-bordercolor/70"/>
+                                <UButton
+                                  size="xs"
+                                  label="Subscribe"
+                                  class="text-white border border-bordercolor hover:bg-bordercolor/70"
+                                />
+                                <UButton
+                                  size="xs"
+                                  icon="i-heroicons-bell"
+                                  class="text-white border border-bordercolor hover:bg-bordercolor/70"
+                                />
                               </div>
                             </div>
                             <USeparator />
-                            <div class="flex items-center gap-2 text-gray-400 text-sm">
-                              <UIcon :name="getHealthIcon(project.health)" :style="{ color: project.health.color }" />
-                              <span class="text-gray-200">{{ project.health?.title }}</span>
+                            <div
+                              class="flex items-center gap-2 text-gray-400 text-sm"
+                            >
+                              <UIcon
+                                :name="getHealthIcon(project.health)"
+                                :style="{ color: project.health.color }"
+                              />
+                              <span class="text-gray-200">{{
+                                project.health?.title
+                              }}</span>
                               <UAvatar
-                                :src="users.find((u) => u.id === project.lead)?.avatarUrl"
-                                :alt="users.find((u) => u.id === project.lead)?.name"
+                                :src="
+                                  users.find((u) => u.id === project.lead)
+                                    ?.avatarUrl
+                                "
+                                :alt="
+                                  users.find((u) => u.id === project.lead)?.name
+                                "
                                 size="xs"
                                 class="ring-2 ring-black"
                               />
                               <span>
-                                {{ users.find((u) => u.id === project.lead)?.name?.toLowerCase() }}.{{
-                                users.find((u) => u.id === project.lead)?.lastName?.toLowerCase() }}
+                                {{
+                                  users
+                                    .find((u) => u.id === project.lead)
+                                    ?.name?.toLowerCase()
+                                }}.{{
+                                  users
+                                    .find((u) => u.id === project.lead)
+                                    ?.lastName?.toLowerCase()
+                                }}
                               </span>
                               <span>{{ project.startDate }}</span>
                             </div>
-                            <p class="text-gray-400 text-sm">{{ project.health.description }}</p>
+                            <p class="text-gray-400 text-sm">
+                              {{ project.health.description }}
+                            </p>
                           </div>
                         </div>
                       </template>
@@ -151,17 +196,24 @@ onMounted(async () => {
                   </div>
 
                   <!-- Priority Column -->
-                  <div class="hidden md:block md:col-span-3 lg:col-span-1 xl:col-span-1">
+                  <div
+                    class="hidden md:block md:col-span-3 lg:col-span-1 xl:col-span-1"
+                  >
                     <UPopover v-model:open="priorityPopovers[project.id]">
                       <UBadge
                         variant="soft"
                         size="md"
                         class="text-white hover:bg-bordercolor/70 flex p-2 gap-1 max-w-max items-center cursor-pointer"
                       >
-                        <component :is="getPriorityIcon(project.priority)" class="text-lg"/>
+                        <component
+                          :is="getPriorityIcon(project.priority)"
+                          class="text-lg"
+                        />
                       </UBadge>
                       <template #content>
-                        <div class="bg-primary border border-bordercolor text-white rounded-lg shadow-lg p-3 max-w-64">
+                        <div
+                          class="bg-primary border border-bordercolor text-white rounded-lg shadow-lg p-3 max-w-64"
+                        >
                           <div class="flex flex-col gap-2 mb-3">
                             <h2 class="text-sm font-medium">Priority Level</h2>
                             <UInput
@@ -179,10 +231,13 @@ onMounted(async () => {
                               @click="selectPriority(item, project.id)"
                             >
                               <div class="flex items-center gap-3">
-                                <component :is="priorityIcons[item.icon]" class="text-lg"/>
+                                <component
+                                  :is="priorityIcons[item.icon]"
+                                  class="text-lg"
+                                />
                                 <span>{{ item.name }}</span>
                               </div>
-                              <UIcon 
+                              <UIcon
                                 v-if="project.priority === item.id"
                                 name="i-heroicons-check"
                                 class="text-green-500"
@@ -197,21 +252,33 @@ onMounted(async () => {
                   <!-- Lead Column -->
                   <div class="hidden lg:block lg:col-span-2 xl:col-span-2">
                     <UPopover v-model:open="userPopovers[project.id]">
-                      <div class="flex gap-2 items-center cursor-pointer hover:bg-gray-800/50 rounded p-1">
+                      <div
+                        class="flex gap-2 items-center cursor-pointer hover:bg-gray-800/50 rounded p-1"
+                      >
                         <UAvatar
-                          :src="users.find((u) => u.id === project.lead)?.avatarUrl"
+                          :src="
+                            users.find((u) => u.id === project.lead)?.avatarUrl
+                          "
                           :alt="users.find((u) => u.id === project.lead)?.name"
                           size="xs"
                           class="ring-2 ring-black"
                         />
                         <span class="text-gray-300 fontt-medium">
-                          {{ users.find((u) => u.id === project.lead)?.name?.toLowerCase() }}.{{ 
-                            users.find((u) => u.id === project.lead)?.lastName?.toLowerCase() 
+                          {{
+                            users
+                              .find((u) => u.id === project.lead)
+                              ?.name?.toLowerCase()
+                          }}.{{
+                            users
+                              .find((u) => u.id === project.lead)
+                              ?.lastName?.toLowerCase()
                           }}
                         </span>
                       </div>
                       <template #content>
-                        <div class="bg-primary border border-bordercolor text-white rounded-lg shadow-lg p-3 max-w-64">
+                        <div
+                          class="bg-primary border border-bordercolor text-white rounded-lg shadow-lg p-3 max-w-64"
+                        >
                           <div class="flex flex-col gap-2 mb-3">
                             <h2 class="text-sm font-medium">Assign Lead</h2>
                             <UInput
@@ -236,11 +303,15 @@ onMounted(async () => {
                                   class="ring-2 ring-black"
                                 />
                                 <div class="flex flex-col items-start">
-                                  <span class="text-white">{{ user.name }} {{ user.lastName }}</span>
-                                  <span class="text-xs text-gray-400">{{ user.email }}</span>
+                                  <span class="text-white"
+                                    >{{ user.name }} {{ user.lastName }}</span
+                                  >
+                                  <span class="text-xs text-gray-400">{{
+                                    user.email
+                                  }}</span>
                                 </div>
                               </div>
-                              <UIcon 
+                              <UIcon
                                 v-if="project.lead === user.id"
                                 name="i-heroicons-check"
                                 class="text-green-500"
@@ -253,39 +324,58 @@ onMounted(async () => {
                   </div>
 
                   <!-- Date Column -->
-                  <div class="col-span-6 text-gray-300 text-sm flex sm:col-span-6 lg:col-span-2 xl:col-span-1 relative">
+                  <div
+                    class="col-span-6 text-gray-300 text-sm flex sm:col-span-6 lg:col-span-2 xl:col-span-1 relative"
+                  >
                     <UPopover v-model:open="datePopovers[project.id]">
-                      <div class="cursor-pointer hover:bg-gray-800/50 rounded p-1">
+                      <div
+                        class="cursor-pointer hover:bg-gray-800/50 rounded p-1"
+                      >
                         {{ formatDate(project.startDate) }}
                       </div>
                       <template #content>
-                        <div class="bg-primary border border-bordercolor rounded-lg shadow-lg p-3">
-                          <UCalendar                           />
+                        <div
+                          class="bg-primary border border-bordercolor rounded-lg shadow-lg p-3"
+                        >
+                          <UCalendar />
                         </div>
                       </template>
                     </UPopover>
                   </div>
 
                   <!-- Status/Percent Column -->
-                  <div class="hidden xl:block lg:flex justify-start xl:col-span-1">
+                  <div
+                    class="hidden xl:block lg:flex justify-start xl:col-span-1"
+                  >
                     <UPopover v-model:open="statusPopovers[project.id]">
-                      <div class="cursor-pointer hover:bg-gray-800/50 rounded p-1">
-                        <UBadge 
-                          variant="outline" 
-                          class="text-gray-300 flex items-center gap-2" 
+                      <div
+                        class="cursor-pointer hover:bg-gray-800/50 rounded p-1"
+                      >
+                        <UBadge
+                          variant="outline"
+                          class="text-gray-300 flex items-center gap-2"
                           size="md"
-                          :style="{ borderColor: getStatusConfig(project.status)?.color }"
+                          :style="{
+                            borderColor: getStatusConfig(project.status)?.color,
+                          }"
                         >
-                          <UIcon 
-                            :name="getStatusConfig(project?.status)?.icon || 'i-heroicons-question-mark-circle'" 
-                            :style="{ color: getStatusConfig(project?.status)?.color }"
+                          <UIcon
+                            :name="
+                              getStatusConfig(project?.status)?.icon ||
+                              'i-heroicons-question-mark-circle'
+                            "
+                            :style="{
+                              color: getStatusConfig(project?.status)?.color,
+                            }"
                             class="text-lg"
                           />
                           <span>{{ project.percentComplete }}%</span>
                         </UBadge>
                       </div>
                       <template #content>
-                        <div class="bg-primary border border-bordercolor text-white rounded-lg shadow-lg p-3 min-w-48">
+                        <div
+                          class="bg-primary border border-bordercolor text-white rounded-lg shadow-lg p-3 min-w-48"
+                        >
                           <div class="flex flex-col gap-2 mb-3">
                             <h3 class="text-sm font-medium">Change Status</h3>
                           </div>
@@ -297,10 +387,14 @@ onMounted(async () => {
                               @click="selectStatus(status, project.id)"
                             >
                               <div class="flex items-center gap-3">
-                                <UIcon :name="status.icon" :style="{ color: status.color }" class="text-lg" />
+                                <UIcon
+                                  :name="status.icon"
+                                  :style="{ color: status.color }"
+                                  class="text-lg"
+                                />
                                 <span>{{ status.name }}</span>
                               </div>
-                              <UIcon 
+                              <UIcon
                                 v-if="project.status === status.id"
                                 name="i-heroicons-check"
                                 class="text-green-500"
@@ -315,14 +409,23 @@ onMounted(async () => {
               </div>
             </div>
           </div>
-          
+
           <div v-if="loading" class="flex justify-center items-center py-8">
-            <UIcon name="i-heroicons-arrow-path" class="animate-spin w-6 h-6 text-gray-400" />
+            <UIcon
+              name="i-heroicons-arrow-path"
+              class="animate-spin w-6 h-6 text-gray-400"
+            />
             <span class="ml-2 text-gray-500">Chargement...</span>
           </div>
-          <div v-else-if="projects.length === 0" class="flex justify-center items-center py-8">
+          <div
+            v-else-if="projects.length === 0"
+            class="flex justify-center items-center py-8"
+          >
             <div class="text-center">
-              <UIcon name="i-heroicons-users" class="w-12 h-12 text-gray-300 mx-auto mb-2" />
+              <UIcon
+                name="i-heroicons-users"
+                class="w-12 h-12 text-gray-300 mx-auto mb-2"
+              />
               <p class="text-gray-500">Aucun projet trouvé</p>
             </div>
           </div>
@@ -332,6 +435,4 @@ onMounted(async () => {
   </NuxtLayout>
 </template>
 
-<style scoped>
-
-</style>                          
+<style scoped></style>

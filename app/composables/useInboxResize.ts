@@ -9,7 +9,9 @@ export function useInboxResize() {
     containerWidth.value = window.innerWidth
   }
 
-  const mainContentWidth = computed(() => Math.max(0, containerWidth.value - sidebarWidth.value - 1))
+  const mainContentWidth = computed(() =>
+    Math.max(0, containerWidth.value - sidebarWidth.value - 1)
+  )
 
   const startResize = (e: MouseEvent) => {
     isResizing.value = true
@@ -19,7 +21,10 @@ export function useInboxResize() {
     const handleMouseMove = (moveEvent: MouseEvent) => {
       if (!isResizing.value) return
       const deltaX = moveEvent.clientX - startX
-      const newWidth = Math.max(48, Math.min(containerWidth.value - 100, startSidebarWidth + deltaX))
+      const newWidth = Math.max(
+        48,
+        Math.min(containerWidth.value - 100, startSidebarWidth + deltaX)
+      )
       sidebarWidth.value = newWidth
     }
 
@@ -51,6 +56,6 @@ export function useInboxResize() {
     sidebarWidth,
     isResizing,
     mainContentWidth,
-    startResize
+    startResize,
   }
 }

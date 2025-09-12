@@ -2,12 +2,8 @@
 import type { Notifications } from '@/types/inbox'
 
 /* Layout / Resize Logic */
-const {
-  sidebarWidth,
-  isResizing,
-  mainContentWidth,
-  startResize
-} = useInboxResize()
+const { sidebarWidth, isResizing, mainContentWidth, startResize } =
+  useInboxResize()
 
 /* Store */
 const store = useInboxStore()
@@ -28,7 +24,7 @@ const form = reactive<Partial<Notifications>>({
   color: '#6b7280',
   assignee: '',
   status: 'info',
-  url: ''
+  url: '',
 })
 
 /* Methods */
@@ -58,7 +54,7 @@ const openCreateModal = () => {
     color: '#6b7280',
     assignee: '',
     status: 'info',
-    url: ''
+    url: '',
   })
   showModal.value = true
 }
@@ -119,7 +115,9 @@ async function doDelete(id: number) {
 async function markSelectedRead() {
   if (!selectedNotification.value) return
   try {
-    const updated = await store.update(selectedNotification.value.id, { isReaded: true })
+    const updated = await store.update(selectedNotification.value.id, {
+      isReaded: true,
+    })
     selectedNotification.value = updated
   } catch (e) {
     console.error(e)
@@ -147,7 +145,9 @@ onMounted(() => {
         :class="{ '!bg-orange-500': isResizing }"
       >
         <div class="absolute inset-0 w-4 -left-1.5 bg-transparent"></div>
-        <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+        <div
+          class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+        >
           <div class="flex flex-col items-center gap-1">
             <div class="w-1 h-3 bg-white rounded-full"></div>
             <div class="w-1 h-1 bg-white rounded-full"></div>
@@ -156,14 +156,19 @@ onMounted(() => {
             <div class="w-1 h-3 bg-white rounded-full"></div>
           </div>
         </div>
-        <div v-if="isResizing" class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-          <div class="flex items-center gap-1 text-white text-xs whitespace-nowrap">
+        <div
+          v-if="isResizing"
+          class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+        >
+          <div
+            class="flex items-center gap-1 text-white text-xs whitespace-nowrap"
+          >
             <Icon name="uil:arrows-h-alt" class="w-3 h-3" />
           </div>
         </div>
       </div>
 
-      <InboxMainContent 
+      <InboxMainContent
         :selected-notification="selectedNotification"
         :main-content-width="mainContentWidth"
         @mark-read="markSelectedRead"

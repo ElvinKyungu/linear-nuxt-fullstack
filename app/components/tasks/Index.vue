@@ -644,7 +644,7 @@ textarea,
   .drag-handle {
     padding: 2px;
   }
-  
+
   .drag-delay {
     transition-delay: 200ms;
   }
