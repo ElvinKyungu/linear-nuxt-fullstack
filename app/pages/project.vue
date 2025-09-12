@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { UAvatar } from '#components'
 import { users } from '@/data/users'
-import { statusConfig, priorityLevels } from '@/data/projects'
+import { statusConfig } from '@/data/projects'
+import { priorityLevels } from '@/data/priority'
 import IconHigh from '~/components/icons/IconHigh.vue'
 import IconMedium from '~/components/icons/IconMedium.vue'
 import IconLow from '~/components/icons/IconLow.vue'
@@ -54,12 +54,6 @@ const selectUser = (user: any, projectId: string) => {
 const selectStatus = (status: any, projectId: string) => {
   projectsStore.updateStatus(projectId, status.id)
   statusPopovers.value[projectId] = false
-}
-
-const updateDate = (date: Date, projectId: string) => {
-  const formattedDate = date.toISOString().split('T')[0]
-  projectsStore.updateProject(projectId, { startDate: formattedDate })
-  datePopovers.value[projectId] = false
 }
 
 const getHealthIcon = (health: any) => {
