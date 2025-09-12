@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { Notifications } from '@/types/inbox'
+import { users } from '~/data/users'
 
 const props = defineProps<{
   notification: Notifications
@@ -47,19 +48,19 @@ const getDescriptionWidth = () => Math.max(0, props.sidebarWidth - 100)
 </script>
 <template>
   <div
-    @click="$emit('select-notification', notification)"
     class="flex items-center gap-3 p-3 border-b border-gray-700 hover:bg-gray-750 cursor-pointer transition-all duration-150 relative"
     :class="{ 'bg-gray-700': isSelected }"
+    @click="$emit('select-notification', notification)"
   >
-    <div class="flex-shrink-0">
-      <div
-        class="w-8 h-8 rounded-full flex items-center justify-center transition-all duration-200"
-        :style="{
-          backgroundColor: notification.color,
-          transform: sidebarWidth < 70 ? 'scale(0.8)' : 'scale(1)',
-        }"
-      >
-        <Icon :name="notification.icon" class="w-4 h-4 text-white" />
+    <div class="flex-shrink-0 relative">
+      <UAvatar
+        :src="users.find((u) => u.id === notification.assignee)?.avatarUrl || '/images/gab.jpg'"
+        :alt="users.find((u) => u.id === notification.assignee)?.name || 'Aucun utilisateur'"
+        size="lg"
+        class="ring-2 ring-black"
+      />
+      <div class="w-6 flex justify-center items-center h-6 absolute -bottom-1 -right-1 bg-[#222] rounded-full p-1">
+        <Icon :name="notification.icon" class="w-5 h-5 text-white " :style="`color:${notification.color} `"/>
       </div>
     </div>
 

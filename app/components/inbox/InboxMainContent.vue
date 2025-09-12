@@ -118,17 +118,6 @@ const emit = defineEmits(['mark-read', 'open-edit-modal', 'confirm-delete'])
             </div>
           </div>
         </div>
-        <div
-          v-if="selectedNotification.url && mainContentWidth > 250"
-          class="text-sm text-gray-400 transition-all duration-200"
-        >
-          <a
-            :href="selectedNotification.url"
-            class="text-blue-400 hover:text-blue-300 transition-colors break-all"
-          >
-            {{ selectedNotification.url }}
-          </a>
-        </div>
       </div>
       <div v-else class="flex items-center justify-center h-64 text-gray-500">
         <div class="text-center">

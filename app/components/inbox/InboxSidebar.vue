@@ -90,12 +90,12 @@ const confirmDelete = (notification: Notifications) => {
       <button
         v-for="tab in tabs"
         :key="tab.id"
-        @click="activeTab = tab.id"
         class="flex items-center gap-2 px-4 py-3 text-sm font-medium transition-all duration-200 hover:bg-gray-700 whitespace-nowrap"
         :class="{
-          'text-white border-b-2 border-orange-500': activeTab === tab.id,
+          'text-white border-b-2 border-teal-500': activeTab === tab.id,
           'text-gray-400': activeTab !== tab.id,
         }"
+        @click="activeTab = tab.id"
       >
         <Icon :name="tab.icon" class="w-4 h-4 flex-shrink-0" />
         <span
