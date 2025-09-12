@@ -6,7 +6,22 @@ const props = defineProps<{
   selectedNotification: Notifications | null
 }>()
 
-const emit = defineEmits(['select-notification', 'open-create-modal'])
+const emit = defineEmits([
+  'select-notification',
+  'open-create-modal',
+  'confirm-delete',
+])
+
+/* Delete confirmation */
+const showDeleteModal = ref(false)
+const notificationToDelete = ref<Notifications | null>(null)
+
+/* Toast */
+const { showSuccess, showError } = useInboxToast()
+
+/* Store pour la suppression */
+const store = useInboxStore()
+const { items } = storeToRefs(store)
 
 /* Tabs */
 const tabs = [
@@ -16,8 +31,7 @@ const tabs = [
 const activeTab = ref<string>('inbox')
 
 /* Store */
-const store = useInboxStore()
-const { items, loading } = storeToRefs(store)
+const { loading } = storeToRefs(store)
 const visibleNotifications = computed(() => items.value)
 
 /* Methods */
@@ -32,9 +46,32 @@ const editNotification = (notification: Notifications) => {
 }
 
 const confirmDelete = (notification: Notifications) => {
-  // La suppression se passe dans le parent
-  // On remonte l'événement
-  emit('confirm-delete', notification)
+  notificationToDelete.value = notification
+  showDeleteModal.value = true
+}
+
+const cancelDelete = () => {
+  showDeleteModal.value = false
+  notificationToDelete.value = null
+}
+
+const proceedDelete = async () => {
+  if (!notificationToDelete.value) return
+
+  try {
+    await store.remove(notificationToDelete.value.id)
+
+    // Informer le parent que la suppression est effectuée
+    emit('confirm-delete', notificationToDelete.value)
+
+    showSuccess('Succès', 'Notification supprimée avec succès')
+  } catch (e) {
+    console.error(e)
+    showError('Erreur', 'Impossible de supprimer la notification')
+  }
+
+  showDeleteModal.value = false
+  notificationToDelete.value = null
 }
 </script>
 <template>
@@ -71,7 +108,7 @@ const confirmDelete = (notification: Notifications) => {
       >
         <button
           class="p-1 rounded hover:bg-gray-700"
-          @click="$emit('openCreateModal')"
+          @click="$emit('open-create-modal')"
         >
           <Icon name="uil:plus" class="w-4 h-4 text-gray-300" />
         </button>
@@ -119,6 +156,54 @@ const confirmDelete = (notification: Notifications) => {
       @edit-notification="editNotification"
       @confirm-delete="confirmDelete"
     />
+
+    <!-- Modal de confirmation de suppression -->
+    <!-- <UModal v-model="showDeleteModal">
+      <UCard :ui="{ 
+        background: 'bg-white dark:bg-gray-900',
+        body: { padding: 'px-4 py-5 sm:p-6' }
+      }">
+        <template #header>
+          <div class="flex items-center gap-2">
+            <UIcon name="i-heroicons-exclamation-triangle" class="text-red-500 w-5 h-5" />
+            <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
+              Confirmer la suppression
+            </h3>
+          </div>
+        </template>
+
+        <div class="space-y-3">
+          <p class="text-gray-600 dark:text-gray-300">
+            Êtes-vous sûr de vouloir supprimer la notification 
+            <span class="font-semibold text-gray-900 dark:text-white">
+              "{{ notificationToDelete?.title }}"
+            </span> ?
+          </p>
+          <p class="text-sm text-gray-500 dark:text-gray-400">
+            Cette action est irréversible et supprimera définitivement cette notification.
+          </p>
+        </div>
+
+        <template #footer>
+          <div class="flex justify-end gap-3">
+            <UButton
+              @click="cancelDelete"
+              color="gray"
+              variant="ghost"
+              label="Annuler"
+              size="sm"
+            />
+            <UButton
+              @click="proceedDelete"
+              color="red"
+              label="Supprimer"
+              icon="i-heroicons-trash"
+              size="sm"
+            />
+          </div>
+        </template>
+      </UCard>
+    </UModal> -->
   </div>
 </template>
 

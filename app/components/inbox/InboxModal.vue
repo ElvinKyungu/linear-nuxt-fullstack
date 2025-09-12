@@ -1,3 +1,77 @@
+<script setup lang="ts">
+import type { Notifications } from '@/types/inbox'
+import { users } from '@/data/users'
+
+const props = defineProps<{
+  formData: Partial<Notifications>
+  editItem: Notifications | null
+}>()
+
+const emit = defineEmits(['close-modal', 'submit-modal'])
+
+const createTaskPopover = ref(false)
+const localForm = reactive<Partial<Notifications>>({
+  title: '',
+  description: '',
+  time: '',
+  isReaded: false,
+  icon: 'uil:bell',
+  color: '#6b7280',
+  assignee: '',
+  status: 'info',
+  url: '',
+})
+
+watch(
+  () => props.formData,
+  (newVal) => {
+    Object.assign(localForm, newVal)
+  },
+  { immediate: true }
+)
+
+const show = ref(true)
+const modalContent = ref<HTMLElement | null>(null)
+
+const userSearch = ref('')
+const filteredUsers = computed(() =>
+  users.filter((u) =>
+    `${u.name} ${u.lastName}`
+      .toLowerCase()
+      .includes(userSearch.value.toLowerCase())
+  )
+)
+
+const selectUser = (user: any) => {
+  localForm.assignee = user.id
+  createTaskPopover.value = false
+}
+
+const { showModal, hideModal } = useGsapModal()
+
+const statusOptions = ['info', 'warning', 'completed', 'error']
+
+const submit = () => {
+  emit('submit-modal', localForm)
+}
+
+const closeModal = () => {
+  show.value = false
+  hideModal(modalContent.value!, () => {
+    emit('close-modal')
+  })
+}
+
+const onEnter = (el: Element, done: () => void) => {
+  showModal(el as HTMLElement)
+  done()
+}
+
+const onLeave = (el: Element, done: () => void) => {
+  hideModal(el as HTMLElement, done)
+}
+</script>
+
 <template>
   <Transition appear @enter="onEnter" @leave="onLeave" :css="false">
     <div
@@ -166,80 +240,6 @@
     </div>
   </Transition>
 </template>
-
-<script setup lang="ts">
-import type { Notifications } from '@/types/inbox'
-import { users } from '@/data/users'
-import { ref, reactive, watch, computed } from 'vue'
-import { useGsapModal } from '@/composables/useGsapModal'
-
-const props = defineProps<{
-  formData: Partial<Notifications>
-  editItem: Notifications | null
-}>()
-
-const emit = defineEmits(['close-modal', 'submit-modal'])
-
-const createTaskPopover = ref(false)
-const localForm = reactive<Partial<Notifications>>({
-  title: '',
-  description: '',
-  time: '',
-  isReaded: false,
-  icon: 'uil:bell',
-  color: '#6b7280',
-  assignee: '',
-  status: 'info',
-  url: '',
-})
-
-watch(
-  () => props.formData,
-  (newVal) => {
-    Object.assign(localForm, newVal)
-  },
-  { immediate: true }
-)
-
-const show = ref(true)
-const modalContent = ref<HTMLElement | null>(null)
-
-const userSearch = ref('')
-const filteredUsers = computed(() =>
-  users.filter((u) =>
-    `${u.name} ${u.lastName}`.toLowerCase().includes(userSearch.value.toLowerCase())
-  )
-)
-
-const selectUser = (user: any) => {
-  localForm.assignee = user.id
-  createTaskPopover.value = false
-}
-
-const { showModal, hideModal } = useGsapModal()
-
-const statusOptions = ['info', 'warning', 'completed', 'error']
-
-const submit = () => {
-  emit('submit-modal', localForm)
-}
-
-const closeModal = () => {
-  show.value = false
-  hideModal(modalContent.value!, () => {
-    emit('close-modal')
-  })
-}
-
-const onEnter = (el: Element, done: () => void) => {
-  showModal(el as HTMLElement)
-  done()
-}
-
-const onLeave = (el: Element, done: () => void) => {
-  hideModal(el as HTMLElement, done)
-}
-</script>
 
 <style scoped>
 :deep(.u-input input, .u-input textarea, .u-input select) {

@@ -66,23 +66,18 @@ const openEditSelectedModal = () => {
   showModal.value = true
 }
 
-const editNotification = (notification: Notifications) => {
-  editItem.value = notification
-  Object.assign(form, { ...notification })
-  showModal.value = true
-}
-
-async function submitModal() {
+// Le problème était ici - on n'utilisait pas les données du modal
+async function submitModal(formData: Partial<Notifications>) {
   if (editItem.value) {
     try {
-      const updated = await store.update(editItem.value.id, form)
+      const updated = await store.update(editItem.value.id, formData)
       selectedNotification.value = updated
     } catch (e) {
       console.error(e)
     }
   } else {
     try {
-      const created = await store.create(form)
+      const created = await store.create(formData)
       selectedNotification.value = created
     } catch (e) {
       console.error(e)

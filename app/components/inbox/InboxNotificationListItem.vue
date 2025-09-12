@@ -54,13 +54,25 @@ const getDescriptionWidth = () => Math.max(0, props.sidebarWidth - 100)
   >
     <div class="flex-shrink-0 relative">
       <UAvatar
-        :src="users.find((u) => u.id === notification.assignee)?.avatarUrl || '/images/gab.jpg'"
-        :alt="users.find((u) => u.id === notification.assignee)?.name || 'Aucun utilisateur'"
+        :src="
+          users.find((u) => u.id === notification.assignee)?.avatarUrl ||
+          '/images/gab.jpg'
+        "
+        :alt="
+          users.find((u) => u.id === notification.assignee)?.name ||
+          'Aucun utilisateur'
+        "
         size="lg"
         class="ring-2 ring-black"
       />
-      <div class="w-6 flex justify-center items-center h-6 absolute -bottom-1 -right-1 bg-[#222] rounded-full p-1">
-        <Icon :name="notification.icon" class="w-5 h-5 text-white " :style="`color:${notification.color} `"/>
+      <div
+        class="w-6 flex justify-center items-center h-6 absolute -bottom-1 -right-1 bg-[#222] rounded-full p-1"
+      >
+        <Icon
+          :name="notification.icon"
+          class="w-5 h-5 text-white"
+          :style="`color:${notification.color} `"
+        />
       </div>
     </div>
 
@@ -82,25 +94,33 @@ const getDescriptionWidth = () => Math.max(0, props.sidebarWidth - 100)
           {{ truncateText(notification.title, getTitleMaxLength()) }}
         </h4>
         <div class="flex items-center gap-1 flex-shrink-0 ml-2">
-          <Icon
+          <IconTaskStatus
             v-if="notification.status === 'completed'"
-            name="uil:check-circle"
-            class="w-4 h-4 text-green-400"
+            stroke-color="#8b5cf6"
+            transform-status="rotate(-90 7 7)"
           />
-          <Icon
-            v-else-if="notification.status === 'error'"
-            name="uil:exclamation-triangle"
-            class="w-4 h-4 text-red-400"
+          <IconTaskStatus
+            v-else-if="notification.status === 'paused'"
+            stroke-color="#e11d48"
+            transform-status="rotate(-90 7 7)"
           />
-          <Icon
-            v-else-if="notification.status === 'info'"
-            name="uil:info-circle"
-            class="w-4 h-4 text-blue-400"
+          <IconTaskStatus
+            v-else-if="notification.status === 'in progress'"
+            stroke-color="#facc15"
+            transform-status="rotate(-90 7 7)"
           />
-          <Icon
-            v-else-if="notification.status === 'warning'"
-            name="uil:exclamation-circle"
-            class="w-4 h-4 text-yellow-400"
+          <IconTaskStatus
+            v-else-if="notification.status === 'technical review'"
+            stroke-color="#22c55e"
+            transform-status="rotate(-90 7 7)"
+          />
+          <IconBacklog
+            v-else-if="notification.status === 'backlog'"
+            class="text-[#22c55e]"
+          />
+          <IconTodo
+            v-else-if="notification.status === 'todo'"
+            class="text-[#22c55e]"
           />
           <span
             class="text-xs text-gray-400 transition-all duration-200 whitespace-nowrap overflow-hidden"
@@ -123,22 +143,6 @@ const getDescriptionWidth = () => Math.max(0, props.sidebarWidth - 100)
         {{ truncateText(notification.description, getDescriptionMaxLength()) }}
       </p>
     </div>
-
-    <div class="flex gap-2 items-center ml-2">
-      <button
-        class="p-1 rounded hover:bg-gray-700"
-        @click.stop="$emit('edit-notification', notification)"
-      >
-        <Icon name="uil:edit" class="w-4 h-4 text-gray-300" />
-      </button>
-      <button
-        class="p-1 rounded hover:bg-gray-700"
-        @click.stop="$emit('confirm-delete', notification)"
-      >
-        <Icon name="uil:trash" class="w-4 h-4 text-gray-300" />
-      </button>
-    </div>
-
     <div
       class="flex-shrink-0 transition-all duration-200"
       :style="{

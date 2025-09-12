@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { Notifications } from '@/types/inbox'
+import { users } from '@/data/users'
 
 const props = defineProps<{
   selectedNotification: Notifications | null
@@ -82,13 +83,18 @@ const emit = defineEmits(['mark-read', 'open-edit-modal', 'confirm-delete'])
           class="bg-gray-800 rounded-lg p-6 mb-6 transition-all duration-200"
         >
           <div class="flex items-start gap-4">
-            <div
-              class="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0"
-              :style="{ backgroundColor: selectedNotification.color }"
-            >
-              <Icon
-                :name="selectedNotification.icon"
-                class="w-5 h-5 text-white"
+            <div class="flex-shrink-0 relative">
+              <UAvatar
+                :src="
+                  users.find((u) => u.id === selectedNotification?.assignee)?.avatarUrl ||
+                  '/images/gab.jpg'
+                "
+                :alt="
+                  users.find((u) => u.id === selectedNotification?.assignee)?.name ||
+                  'Aucun utilisateur'
+                "
+                size="lg"
+                class="ring-2 ring-black"
               />
             </div>
             <div class="flex-1 min-w-0">

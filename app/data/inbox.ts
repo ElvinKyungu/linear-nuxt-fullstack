@@ -9,6 +9,7 @@ export const notifications: Notifications[] = [
     icon: 'uil:refresh',
     color: '#10b981',
     assignee: 'ELVIN-CODE-910',
+    status: 'in progress',
   },
   {
     id: 2,
@@ -19,6 +20,7 @@ export const notifications: Notifications[] = [
     icon: 'uil:play',
     color: '#ec4899',
     assignee: 'ELVIN-CODE-101',
+    status: 'technical review',
   },
   {
     id: 3,
@@ -29,6 +31,7 @@ export const notifications: Notifications[] = [
     icon: 'uil:moon',
     color: '#84cc16',
     assignee: 'ELVIN-CODE-671',
+    status: 'backlog',
   },
   {
     id: 4,
@@ -39,6 +42,7 @@ export const notifications: Notifications[] = [
     icon: 'uil:layer-group',
     color: '#8b5cf6',
     assignee: 'ELVIN-CODE-401',
+    status: 'todo',
   },
   {
     id: 5,
@@ -49,6 +53,7 @@ export const notifications: Notifications[] = [
     icon: 'uil:mobile-android',
     color: '#10b981',
     assignee: 'ELVIN-CODE-001',
+    status: 'paused',
   },
   {
     id: 6,
@@ -59,6 +64,7 @@ export const notifications: Notifications[] = [
     icon: 'uil:rocket',
     color: '#10b981',
     assignee: 'ELVIN-CODE-910',
+    status: 'backlog',
   },
   {
     id: 7,
@@ -66,9 +72,10 @@ export const notifications: Notifications[] = [
     description: 'Closed by Linear',
     time: '4w',
     isReaded: false,
-    icon: 'uil:sidebar',
+    icon: 'uil:cake',
     color: '#84cc16',
     assignee: 'ELVIN-CODE-401',
+    status: 'technical review',
   },
   {
     id: 8,
@@ -79,6 +86,7 @@ export const notifications: Notifications[] = [
     icon: 'uil:credit-card',
     color: '#84cc16',
     assignee: 'ELVIN-CODE-001',
+    status: 'completed',
   },
   {
     id: 9,
@@ -89,5 +97,6 @@ export const notifications: Notifications[] = [
     icon: 'uil:dashboard',
     color: '#10b981',
     assignee: 'ELVIN-CODE-401',
+    status: 'in progress',
   },
 ]

@@ -19,7 +19,8 @@ export const useInboxStore = defineStore('inbox', {
         this.loading = false
       }
     },
-    async create(payload: Partial<Notification>) {
+    async create(payload: Partial<Notifications>) {
+      // Corrigé: Notifications au lieu de Notification
       const res = await $fetch<{ data: Notifications }>('/api/inbox', {
         method: 'POST',
         body: payload,

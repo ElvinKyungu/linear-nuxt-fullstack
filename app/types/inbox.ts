@@ -6,5 +6,6 @@ export interface Notifications {
   time: string
   icon: string
   color: string
+  status: string
   isReaded: boolean
 }

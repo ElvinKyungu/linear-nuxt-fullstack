@@ -19,13 +19,15 @@ export default defineEventHandler(async (event) => {
 
   const newItem: Notifications = {
     id: nextId,
-    title: body.title || 'Untitled',
+    title: body.title || 'Nouvelle notification', // Corrigé: titre par défaut en français
     description: body.description || '',
     time: body.time || 'now',
     isReaded: !!body.isReaded,
     icon: body.icon || 'uil:bell',
     color: body.color || '#6b7280',
-    assignee: body.assignee || 'unknown',
+    assignee: body.assignee || '',
+    status: body.status || 'info', // Ajouté: propriété status manquante
+    url: body.url || '', // Ajouté: propriété url manquante
   }
 
   notifications.unshift(newItem)
