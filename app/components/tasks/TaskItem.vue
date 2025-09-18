@@ -50,11 +50,11 @@ const handleLevelSelect = () => {
 
 const priorityIcon = computed(() => {
   const priorityMap: Record<string, any> = {
-    'No priority': resolveComponent('IconsIconNoPriority'),
-    Low: resolveComponent('IconsIconLow'),
-    Medium: resolveComponent('IconsIconMedium'),
-    High: resolveComponent('IconsIconHigh'),
-    Urgent: resolveComponent('IconsIconUrgent'),
+    'No priority': resolveComponent('IconNoPriority'),
+    Low: resolveComponent('IconLow'),
+    Medium: resolveComponent('IconMedium'),
+    High: resolveComponent('IconHigh'),
+    Urgent: resolveComponent('IconUrgent'),
   }
   return priorityMap[props.task.priority] || resolveComponent('NoPriority')
 })
@@ -113,7 +113,7 @@ const openStatusPopup = () => {
           class="hover:bg-white/10 p-2 cursor-pointer rounded-xl"
           @click="openStatusPopup"
         >
-          <IconsIconTaskStatus
+          <IconTaskStatus
             :stroke-color="statusColor"
             transform-status="rotate(-90 7 7)"
           />
