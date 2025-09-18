@@ -1,29 +1,16 @@
-// middleware/auth.global.ts - Version corrigée
 export default defineNuxtRouteMiddleware(async (to) => {
-  // Ne pas exécuter le middleware côté serveur pour éviter les problèmes d'hydratation
-  if (import.meta.server) return
+  if (import.meta.server) return   // ⬅️ Prevents redirect loop on SSR
 
   const authStore = useAuthStore()
-
-  // Routes publiques - sortir immédiatement
   const publicRoutes = ['/login', '/signup']
-  if (publicRoutes.includes(to.path)) {
-    return
-  }
+  if (publicRoutes.includes(to.path)) return
 
-  // Si on a déjà un utilisateur dans le store, pas besoin de vérifier
-  if (authStore.user) {
-    return
-  }
-
-  try {
-    const user = await authStore.checkAuth()
-    if (user) {
-      return
-    } else {
+  if (!authStore.user) {
+    try {
+      const user = await authStore.checkAuth()
+      if (!user) return navigateTo('/login')
+    } catch {
       return navigateTo('/login')
     }
-  } catch {
-    return navigateTo('/login')
   }
 })

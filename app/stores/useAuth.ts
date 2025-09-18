@@ -70,16 +70,19 @@ export const useAuthStore = defineStore('auth', () => {
     }
   }
 
-  const checkAuth = async () => {
-    try {
-      const { user: authUser } = await $fetch('/api/auth/me')
-      user.value = authUser
-      return authUser
-    } catch {
-      user.value = null
-      return null
+    const checkAuth = async () => {
+      try {
+        const { user: authUser } = await $fetch('/api/auth/me', {
+          headers: useRequestHeaders(['cookie']), // important for SSR
+        })
+        user.value = authUser
+        return authUser
+      } catch {
+        user.value = null
+        return null
+      }
     }
-  }
+
 
   const updateProfile = async (updates: Partial<User>) => {
     loading.value = true
