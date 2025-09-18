@@ -8,7 +8,7 @@ const props = defineProps<{
   isSelected: boolean
 }>()
 
-const emit = defineEmits([
+defineEmits([
   'select-notification',
   'edit-notification',
   'confirm-delete',
@@ -150,7 +150,7 @@ const getDescriptionWidth = () => Math.max(0, props.sidebarWidth - 100)
         transform: sidebarWidth <= 70 ? 'scale(1)' : 'scale(0)',
       }"
     >
-      <div class="w-2 h-2 rounded-full bg-blue-400"></div>
+      <div class="w-2 h-2 rounded-full bg-blue-400" />
     </div>
   </div>
 </template>

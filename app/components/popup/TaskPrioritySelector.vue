@@ -14,7 +14,7 @@ const popup = ref<HTMLElement | null>(null)
 const search = ref('')
 const isOpen = ref(false)
 
-const priorityMap = [
+const priorityMap: Priority[] = [
   { id: 0, name: 'No priority', icon: resolveComponent('IconsIconNoPriority') },
   { id: 1, name: 'Urgent', icon: resolveComponent('IconsIconUrgent') },
   { id: 2, name: 'High', icon: resolveComponent('IconsIconHigh') },
@@ -27,7 +27,7 @@ const filtered = computed(() =>
     p.name.toLowerCase().includes(search.value.toLowerCase())
   )
 )
-const selectLevel = (level: any) => {
+const selectLevel = (level: Priority) => {
   gsap.to(popup.value, {
     opacity: 0,
     y: -10,

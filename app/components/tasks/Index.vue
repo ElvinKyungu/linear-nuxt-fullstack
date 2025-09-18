@@ -91,7 +91,7 @@ function updateTaskOptimistically(taskId: string, updates: Partial<Task>) {
 }
 
 // Fonction de rollback en cas d'erreur
-async function rollbackTask(taskId: string) {
+async function rollbackTask() {
   try {
     // Recharger les données depuis le serveur
     await tasksStore.fetchTasks()
@@ -474,7 +474,7 @@ onMounted(async () => {
                     class="border-2 border-dashed border-gray-600 rounded-lg p-8 text-center text-gray-400 min-h-[200px] flex items-center justify-center"
                   >
                     <span class="text-sm"
-                      >Drop tasks here<br />{{ status.label }} is empty</span
+                      >Drop tasks here<br >{{ status.label }} is empty</span
                     >
                   </div>
                 </div>

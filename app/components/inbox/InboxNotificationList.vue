@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { Notifications } from '@/types/inbox'
 
-const props = defineProps<{
+defineProps<{
   visibleNotifications: Notifications[]
   loading: boolean
   sidebarWidth: number

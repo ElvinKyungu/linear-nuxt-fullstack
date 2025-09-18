@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { Notifications } from '@/types/inbox'
 
-const props = defineProps<{
+defineProps<{
   sidebarWidth: number
   selectedNotification: Notifications | null
 }>()
@@ -10,6 +10,7 @@ const emit = defineEmits([
   'select-notification',
   'open-create-modal',
   'confirm-delete',
+  'open-edit-modal',
 ])
 
 /* Delete confirmation */
@@ -17,7 +18,6 @@ const showDeleteModal = ref(false)
 const notificationToDelete = ref<Notifications | null>(null)
 
 /* Toast */
-const { showSuccess, showError } = useInboxToast()
 
 /* Store pour la suppression */
 const store = useInboxStore()
@@ -50,29 +50,7 @@ const confirmDelete = (notification: Notifications) => {
   showDeleteModal.value = true
 }
 
-const cancelDelete = () => {
-  showDeleteModal.value = false
-  notificationToDelete.value = null
-}
 
-const proceedDelete = async () => {
-  if (!notificationToDelete.value) return
-
-  try {
-    await store.remove(notificationToDelete.value.id)
-
-    // Informer le parent que la suppression est effectuée
-    emit('confirm-delete', notificationToDelete.value)
-
-    showSuccess('Succès', 'Notification supprimée avec succès')
-  } catch (e) {
-    console.error(e)
-    showError('Erreur', 'Impossible de supprimer la notification')
-  }
-
-  showDeleteModal.value = false
-  notificationToDelete.value = null
-}
 </script>
 <template>
   <div

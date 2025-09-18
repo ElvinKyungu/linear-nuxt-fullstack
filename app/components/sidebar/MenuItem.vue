@@ -90,31 +90,31 @@ function checkActiveRoute(item) {
     <a
       v-if="(!item.to || item.items) && item.visible !== false"
       :href="item.url"
-      @click="itemClick($event, item, index)"
       :class="item.class"
       :target="item.target"
       tabindex="0"
+      @click="itemClick($event, item, index)"
     >
-      <i :class="item.icon" class="layout-menuitem-icon"></i>
+      <i :class="item.icon" class="layout-menuitem-icon" />
       <span class="layout-menuitem-text">{{ item.label }}</span>
       <i
-        class="pi pi-fw pi-angle-down layout-submenu-toggler"
         v-if="item.items"
-      ></i>
+        class="pi pi-fw pi-angle-down layout-submenu-toggler"
+      />
     </a>
     <router-link
       v-if="item.to && !item.items && item.visible !== false"
-      @click="itemClick($event, item, index)"
       :class="[item.class, { 'active-route': checkActiveRoute(item) }]"
       tabindex="0"
       :to="item.to"
+      @click="itemClick($event, item, index)"
     >
-      <i :class="item.icon" class="layout-menuitem-icon"></i>
+      <i :class="item.icon" class="layout-menuitem-icon" />
       <span class="layout-menuitem-text mt-1">{{ item.label }}</span>
       <i
-        class="pi pi-fw pi-angle-down layout-submenu-toggler"
         v-if="item.items"
-      ></i>
+        class="pi pi-fw pi-angle-down layout-submenu-toggler"
+      />
     </router-link>
   </li>
 </template>

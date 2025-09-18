@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { Notifications } from '@/types/inbox'
 import { users } from '@/data/users'
+import type { User } from '~/types/users';
 
 const props = defineProps<{
   formData: Partial<Notifications>
@@ -42,7 +43,7 @@ const filteredUsers = computed(() =>
   )
 )
 
-const selectUser = (user: any) => {
+const selectUser = (user: User) => {
   localForm.assignee = user.id
   createTaskPopover.value = false
 }
@@ -73,7 +74,7 @@ const onLeave = (el: Element, done: () => void) => {
 </script>
 
 <template>
-  <Transition appear @enter="onEnter" @leave="onLeave" :css="false">
+  <Transition :css="false" appear @enter="onEnter" @leave="onLeave">
     <div
       v-if="show"
       class="fixed inset-0 flex items-center justify-center z-50 p-4"
@@ -223,17 +224,17 @@ const onLeave = (el: Element, done: () => void) => {
 
         <div class="mt-4 flex justify-end gap-2">
           <UButton
-            @click="closeModal"
             label="Annuler"
             variant="ghost"
             icon="i-heroicons-x-mark"
             class="bg-white hover:bg-white cursor-pointer"
+            @click="closeModal"
           />
           <UButton
-            @click="submit"
             :label="editItem ? 'Enregistrer' : 'Créer'"
             icon="i-heroicons-check"
             class="bg-white hover:bg-white cursor-pointer"
+            @click="submit"
           />
         </div>
       </div>

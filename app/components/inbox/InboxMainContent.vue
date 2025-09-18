@@ -2,12 +2,12 @@
 import type { Notifications } from '@/types/inbox'
 import { users } from '@/data/users'
 
-const props = defineProps<{
+defineProps<{
   selectedNotification: Notifications | null
   mainContentWidth: number
 }>()
 
-const emit = defineEmits(['mark-read', 'open-edit-modal', 'confirm-delete'])
+defineEmits(['mark-read', 'open-edit-modal', 'confirm-delete'])
 </script>
 <template>
   <div
@@ -52,15 +52,15 @@ const emit = defineEmits(['mark-read', 'open-edit-modal', 'confirm-delete'])
         >
           <button
             class="p-2 hover:bg-gray-700 rounded-md transition-colors"
-            @click="$emit('mark-read')"
             :disabled="!selectedNotification"
+            @click="$emit('mark-read')"
           >
             <Icon name="uil:check" class="w-4 h-4 text-gray-400" />
           </button>
           <button
             class="p-2 hover:bg-gray-700 rounded-md transition-colors"
-            @click="$emit('open-edit-modal')"
             :disabled="!selectedNotification"
+            @click="$emit('open-edit-modal')"
           >
             <Icon name="uil:edit" class="w-4 h-4 text-gray-400" />
           </button>

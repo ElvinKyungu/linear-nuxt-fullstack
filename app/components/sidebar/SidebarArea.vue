@@ -2,6 +2,19 @@
 <script setup lang="ts">
 import gsap from 'gsap'
 
+interface MenuItem {
+  label: string
+  icon: string
+  to: string
+}
+
+interface MenuGroup {
+  label: string
+  icon?: string
+  isOpen: boolean
+  items: MenuItem[]
+}
+
 const sidebarRef = ref(null)
 const sidebarStore = useSidebarStore()
 
@@ -12,7 +25,7 @@ onClickOutside(sidebarRef, () => {
   }
 })
 
-const menuGroups = ref([
+const menuGroups: ref<MenuGroup[]> = ref([
   {
     label: 'Home',
     isOpen: true,
@@ -52,7 +65,7 @@ const setSubmenuRef = (el: HTMLElement | null, key: string) => {
 }
 
 // toggle + animation gsap
-const toggleGroup = (group: any, key: string) => {
+const toggleGroup = (group: MenuGroup, key: string) => {
   group.isOpen = !group.isOpen
 
   if (group.isOpen) {
@@ -181,8 +194,8 @@ const sidebarVisibility = computed(() => {
             stroke-linejoin="round"
             class="lucide lucide-x size-4 hover:text-gray-300 transition-colors"
           >
-            <path d="M18 6 6 18"></path>
-            <path d="m6 6 12 12"></path>
+            <path d="M18 6 6 18" />
+            <path d="m6 6 12 12" />
           </svg>
         </div>
         <div

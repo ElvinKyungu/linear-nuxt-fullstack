@@ -55,7 +55,7 @@ const handleSubmit = async () => {
     await authStore.updateProfile(form)
     success.value = 'Profil mis à jour avec succès!'
     setTimeout(() => close(), 1500)
-  } catch (err) {
+  } catch {
     error.value = authStore.error || 'Erreur lors de la mise à jour'
   } finally {
     loading.value = false
@@ -70,7 +70,7 @@ const handleAvatarChange = async () => {
     // Pour cette démo, on change juste l'avatar aléatoirement
     await authStore.uploadAvatar(new File([], 'avatar'))
     success.value = 'Avatar mis à jour!'
-  } catch (err) {
+  } catch {
     error.value = authStore.error || "Erreur lors de la mise à jour de l'avatar"
   } finally {
     loading.value = false
@@ -120,7 +120,7 @@ const handleAvatarChange = async () => {
         </div>
 
         <!-- Form -->
-        <form @submit.prevent="handleSubmit" class="space-y-4">
+        <form class="space-y-4" @submit.prevent="handleSubmit">
           <UFormGroup label="Prénom">
             <UInput
               v-model="form.name"
@@ -167,8 +167,8 @@ const handleAvatarChange = async () => {
               type="button"
               variant="outline"
               class="flex-1 border-bordercolor text-white"
-              @click="close"
               :disabled="loading"
+              @click="close"
             >
               Annuler
             </UButton>

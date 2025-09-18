@@ -14,7 +14,7 @@ const popup = ref<HTMLElement | null>(null)
 const search = ref('')
 const isOpen = ref(false)
 
-const priorities = [
+const priorities: Priority[] = [
   { id: 0, name: 'No Project', icon: 'uil:folder', count: 3 },
   { id: 1, name: 'Navigation', icon: 'uil:bolt-alt', count: 11 },
   { id: 2, name: 'Dropdown', icon: 'uil:signal-alt-3', count: 10 },
@@ -36,7 +36,7 @@ const filtered = computed(() =>
   )
 )
 
-const selectLevel = (level: any) => {
+const selectLevel = (level: Priority) => {
   selected.value = level
   gsap.to(popup.value, {
     opacity: 0,
