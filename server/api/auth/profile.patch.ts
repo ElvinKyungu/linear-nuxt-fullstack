@@ -2,6 +2,12 @@
 import { users } from '@/data/users'
 import { jwtVerify } from 'jose'
 
+interface UserUpdates {
+  name?: string
+  lastName?: string
+  email?: string
+}
+
 const config = useRuntimeConfig()
 const JWT_SECRET = config.jwtSecret
 
@@ -37,9 +43,9 @@ export default defineEventHandler(async (event) => {
     const filteredUpdates = Object.keys(updates)
       .filter((key) => allowedFields.includes(key))
       .reduce((obj, key) => {
-        obj[key] = updates[key]
+        obj[key as keyof UserUpdates] = updates[key]
         return obj
-      }, {} as any)
+      }, {} as UserUpdates)
 
     // Vérifier l'unicité de l'email si changé
     if (
@@ -78,7 +84,7 @@ export default defineEventHandler(async (event) => {
         avatarUrl: users[userIndex].avatarUrl,
       },
     }
-  } catch (error: any) {
+  } catch {
     throw createError({
       statusCode: 401,
       statusMessage: 'Invalid token',

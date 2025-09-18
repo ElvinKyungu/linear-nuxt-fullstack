@@ -13,8 +13,12 @@ export const useInboxStore = defineStore('inbox', {
       try {
         const res = await $fetch<{ data: Notifications[] }>('/api/inbox')
         this.items = res.data
-      } catch (e: any) {
-        this.error = e.message || String(e)
+      } catch (e: unknown) {
+        if (e instanceof Error) {
+          this.error = e.message
+        } else {
+          this.error = String(e)
+        }
       } finally {
         this.loading = false
       }
