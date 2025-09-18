@@ -100,7 +100,7 @@ onMounted(async () => {
                     <div
                       class="flex items-center gap-3 text-gray-300 font-medium text-lg"
                     >
-                      <IconsIconComponent />
+                      <IconComponent />
                       <span class="lg:text-base text-sm">{{ project.title }}</span>
                     </div>
                   </div>
