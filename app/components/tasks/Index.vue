@@ -1,5 +1,20 @@
 <script setup lang="ts">
 import draggable from 'vuedraggable'
+interface DraggableEvent<T = any> {
+  added?: {
+    element: T
+    newIndex: number
+  }
+  moved?: {
+    element: T
+    oldIndex: number
+    newIndex: number
+  }
+  removed?: {
+    element: T
+    oldIndex: number
+  }
+}
 
 const tasksStore = useTasksStore()
 const usersStore = useUsersStore()
@@ -117,7 +132,7 @@ async function syncTaskUpdate(taskId: string, updates: Partial<Task>) {
 }
 
 // Gestion du drag and drop avec mise à jour optimiste
-function handleDragChange(evt: any, targetStatus: string) {
+function handleDragChange(evt: DraggableEvent<Task>, targetStatus: string) {
   if (evt.added) {
     const task = evt.added.element as Task
     const oldStatus = task.status

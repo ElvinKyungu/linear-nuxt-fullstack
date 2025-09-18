@@ -166,17 +166,6 @@ const mainContentClasses = computed(() => ({
   'w-full': shouldSidebarBeHidden.value,
   'transition-all duration-300 ease-in-out': true,
 }))
-
-// Déterminer l'icône du bouton toggle
-const toggleIcon = computed(() => {
-  if (isMobileOrTablet.value) {
-    // Sur mobile, toujours afficher l'icône "bars" car on ouvre un overlay
-    return 'uil:bars'
-  } else {
-    // Sur desktop, changer selon l'état
-    return sidebarStore.isExtended ? 'uil:bars' : 'uil:times'
-  }
-})
 </script>
 
 <template>

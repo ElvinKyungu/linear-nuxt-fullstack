@@ -77,18 +77,6 @@ const openStatusPopup = () => {
   isOpenStatusPopup.value = true
 }
 
-// Fonction pour obtenir la couleur du statut
-const getStatusColor = () => {
-  const statusColors: Record<string, string> = {
-    'In progress': '#facc15',
-    'Technical Review': '#22c55e',
-    Completed: '#8b5cf6',
-    Todo: '#0ea5e9',
-    Backlog: '#f97316',
-    Paused: '#e11d48',
-  }
-  return statusColors[props.task.status] || '#6b7280'
-}
 </script>
 
 <template>

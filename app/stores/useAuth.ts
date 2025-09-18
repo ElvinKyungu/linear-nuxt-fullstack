@@ -9,7 +9,7 @@ export const useAuthStore = defineStore('auth', () => {
   const handleError = (err: unknown, fallback = 'Erreur') => {
     if (err instanceof Error) return err.message
     if (typeof err === 'object' && err !== null && 'data' in err) {
-      // @ts-ignore
+      //"@ts-expect-error"
       return err.data?.message || fallback
     }
     return fallback

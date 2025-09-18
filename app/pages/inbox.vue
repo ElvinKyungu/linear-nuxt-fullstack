@@ -7,7 +7,7 @@ const { sidebarWidth, isResizing, mainContentWidth, startResize } =
 
 /* Store */
 const store = useInboxStore()
-const { items, loading } = storeToRefs(store)
+const { items } = storeToRefs(store)
 
 /* Selection */
 const selectedNotification = ref<Notifications | null>(null)
