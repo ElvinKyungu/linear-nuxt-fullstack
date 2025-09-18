@@ -47,7 +47,7 @@ export default defineEventHandler(async (event) => {
         avatarUrl: users[userIndex].avatarUrl,
       },
     }
-  } catch (error: any) {
+  } catch {
     throw createError({
       statusCode: 401,
       statusMessage: 'Invalid token',

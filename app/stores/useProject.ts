@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
-import type { Project, Health } from '~/types/projects'
-import { health } from '~/data/projects'
-import { users } from '~/data/users'
+import type { Project } from '@/types/projects'
+import { health } from '@/data/projects'
+import { users } from '@/data/users'
 
 export const useProjectStore = defineStore('projects', {
   state: () => ({
