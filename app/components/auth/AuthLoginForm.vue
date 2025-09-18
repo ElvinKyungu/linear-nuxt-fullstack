@@ -10,7 +10,7 @@ const handleLogin = async () => {
     error.value = ''
     loading.value = true
     await authStore.login(email.value, password.value)
-  } catch (err: any) {
+  } catch {
     error.value = authStore.error || 'Erreur de connexion'
   } finally {
     loading.value = false
