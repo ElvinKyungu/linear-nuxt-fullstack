@@ -50,11 +50,11 @@ const handleLevelSelect = () => {
 
 const priorityIcon = computed(() => {
   const priorityMap: Record<string, any> = {
-    'No priority': resolveComponent('IconsIconNoPriority'),
-    Low: resolveComponent('IconsIconLow'),
-    Medium: resolveComponent('IconsIconMedium'),
-    High: resolveComponent('IconsIconHigh'),
-    Urgent: resolveComponent('IconsIconUrgent'),
+    'No priority': resolveComponent('IconNoPriority'),
+    Low: resolveComponent('IconLow'),
+    Medium: resolveComponent('IconMedium'),
+    High: resolveComponent('IconHigh'),
+    Urgent: resolveComponent('IconUrgent'),
   }
   return priorityMap[props.task.priority] || resolveComponent('NoPriority')
 })
@@ -77,18 +77,6 @@ const openStatusPopup = () => {
   isOpenStatusPopup.value = true
 }
 
-// Fonction pour obtenir la couleur du statut
-const getStatusColor = () => {
-  const statusColors: Record<string, string> = {
-    'In progress': '#facc15',
-    'Technical Review': '#22c55e',
-    Completed: '#8b5cf6',
-    Todo: '#0ea5e9',
-    Backlog: '#f97316',
-    Paused: '#e11d48',
-  }
-  return statusColors[props.task.status] || '#6b7280'
-}
 </script>
 
 <template>
@@ -125,7 +113,7 @@ const getStatusColor = () => {
           class="hover:bg-white/10 p-2 cursor-pointer rounded-xl"
           @click="openStatusPopup"
         >
-          <IconsIconTaskStatus
+          <IconTaskStatus
             :stroke-color="statusColor"
             transform-status="rotate(-90 7 7)"
           />

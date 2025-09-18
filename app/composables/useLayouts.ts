@@ -6,6 +6,8 @@ interface LayoutConfig {
   menuMode: string
 }
 
+type MenuItem = { value?: any } | HTMLElement
+
 interface LayoutState {
   staticMenuDesktopInactive: boolean
   overlayMenuActive: boolean
@@ -13,7 +15,7 @@ interface LayoutState {
   configSidebarVisible: boolean
   staticMenuMobileActive: boolean
   menuHoverActive: boolean
-  activeMenuItem: any | null
+  activeMenuItem: MenuItem | null
 }
 
 const layoutConfig: LayoutConfig = reactive({
@@ -47,8 +49,8 @@ export function useLayout() {
     layoutConfig.preset = value
   }
 
-  const setActiveMenuItem = (item: any) => {
-    layoutState.activeMenuItem = item.value || item
+  const setActiveMenuItem = (item: MenuItem) => {
+    layoutState.activeMenuItem = (item as any).value || item
   }
 
   const setMenuMode = (mode: string) => {

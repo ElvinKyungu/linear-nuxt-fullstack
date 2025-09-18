@@ -6,7 +6,6 @@ import { priorityLevels } from '@/data/priority'
 const projectsStore = useProjectStore()
 const componentsStore = useComponentsStore()
 const { projects, loading } = storeToRefs(projectsStore)
-const { components } = storeToRefs(componentsStore)
 
 const search = ref('')
 const userSearch = ref('')

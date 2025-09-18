@@ -1,10 +1,19 @@
 // stores/auth.ts
 import { defineStore } from 'pinia'
-// import type { User } from '~/types/users'
+
 export const useAuthStore = defineStore('auth', () => {
   const user = ref<User | null>(null)
   const loading = ref(false)
   const error = ref<string | null>(null)
+
+  const handleError = (err: unknown, fallback = 'Erreur') => {
+    if (err instanceof Error) return err.message
+    if (typeof err === 'object' && err !== null && 'data' in err) {
+      //"@ts-expect-error"
+      return err.data?.message || fallback
+    }
+    return fallback
+  }
 
   const login = async (email: string, password: string) => {
     loading.value = true
@@ -17,8 +26,8 @@ export const useAuthStore = defineStore('auth', () => {
       user.value = loggedUser
       await navigateTo('/')
       return loggedUser
-    } catch (err: any) {
-      error.value = err.data?.message || 'Erreur de connexion'
+    } catch (err: unknown) {
+      error.value = handleError(err, 'Erreur de connexion')
       throw err
     } finally {
       loading.value = false
@@ -40,8 +49,8 @@ export const useAuthStore = defineStore('auth', () => {
       })
       user.value = newUser
       return newUser
-    } catch (err: any) {
-      error.value = err.data?.message || "Erreur lors de l'inscription"
+    } catch (err: unknown) {
+      error.value = handleError(err, "Erreur lors de l'inscription")
       throw err
     } finally {
       loading.value = false
@@ -54,8 +63,8 @@ export const useAuthStore = defineStore('auth', () => {
       await $fetch('/api/auth/logout', { method: 'POST' })
       user.value = null
       await navigateTo('/login')
-    } catch (error) {
-      console.error('Logout error:', error)
+    } catch (err: unknown) {
+      console.error('Logout error:', handleError(err))
     } finally {
       loading.value = false
     }
@@ -82,8 +91,8 @@ export const useAuthStore = defineStore('auth', () => {
       })
       user.value = updatedUser
       return updatedUser
-    } catch (err: any) {
-      error.value = err.data?.message || 'Erreur lors de la mise à jour'
+    } catch (err: unknown) {
+      error.value = handleError(err, 'Erreur lors de la mise à jour')
       throw err
     } finally {
       loading.value = false
@@ -102,8 +111,8 @@ export const useAuthStore = defineStore('auth', () => {
       })
       user.value = updatedUser
       return updatedUser
-    } catch (err: any) {
-      error.value = err.data?.message || "Erreur lors de l'upload"
+    } catch (err: unknown) {
+      error.value = handleError(err, "Erreur lors de l'upload")
       throw err
     } finally {
       loading.value = false

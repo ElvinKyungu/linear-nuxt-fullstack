@@ -265,8 +265,8 @@ const tooltipStyle = computed(() => {
           :team="activeTeam"
           :placement="placement"
           :style="tooltipStyle"
-          @mouseenter.native="cancelClose"
-          @mouseleave.native="scheduleClose"
+          @mouseenter="cancelClose"
+          @mouseleave="scheduleClose"
         />
       </Teleport>
     </div>
