@@ -81,4 +81,4 @@ If you like this project:
 
 ## 📄 License
 
-MIT © [Elvin Kyungu](https://github.com/ElvinKyungu)
+This project is licensed under the MIT License – see the [LICENSE](./LICENSE) file for details.
