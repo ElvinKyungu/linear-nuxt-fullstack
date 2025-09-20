@@ -100,7 +100,9 @@ onMounted(async () => {
                       class="flex items-center gap-3 text-gray-300 font-medium text-lg"
                     >
                       <IconComponent />
-                      <span class="lg:text-base text-sm">{{ project.title }}</span>
+                      <span class="lg:text-base text-sm">{{
+                        project.title
+                      }}</span>
                     </div>
                   </div>
 
@@ -123,7 +125,9 @@ onMounted(async () => {
                           :style="{ color: project.health.color }"
                           class="text-lg"
                         />
-                        <span class="lg:text-base text-sm">{{ project.health.title }}</span>
+                        <span class="lg:text-base text-sm">{{
+                          project.health.title
+                        }}</span>
                       </UBadge>
                       <template #content>
                         <div
@@ -249,10 +253,8 @@ onMounted(async () => {
                   </div>
 
                   <!-- Lead Column -->
-                  <div 
-                    class="col-span-6 flex items-center lg:justify-start justify-end 
-                    sm:col-span-6 
-                    md:col-span-2 lg:col-span-2 xl:col-span-2"
+                  <div
+                    class="col-span-6 flex items-center lg:justify-start justify-end sm:col-span-6 md:col-span-2 lg:col-span-2 xl:col-span-2"
                   >
                     <UPopover v-model:open="userPopovers[project.id]">
                       <div

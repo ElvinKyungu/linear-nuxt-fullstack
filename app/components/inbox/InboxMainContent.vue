@@ -86,12 +86,12 @@ defineEmits(['mark-read', 'open-edit-modal', 'confirm-delete'])
             <div class="flex-shrink-0 relative">
               <UAvatar
                 :src="
-                  users.find((u) => u.id === selectedNotification?.assignee)?.avatarUrl ||
-                  '/images/gab.jpg'
+                  users.find((u) => u.id === selectedNotification?.assignee)
+                    ?.avatarUrl || '/images/gab.jpg'
                 "
                 :alt="
-                  users.find((u) => u.id === selectedNotification?.assignee)?.name ||
-                  'Aucun utilisateur'
+                  users.find((u) => u.id === selectedNotification?.assignee)
+                    ?.name || 'Aucun utilisateur'
                 "
                 size="lg"
                 class="ring-2 ring-black"

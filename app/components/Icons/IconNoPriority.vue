@@ -12,13 +12,6 @@
   >
     <rect x="1.5" y="7.25" width="3" height="1.5" rx="0.5" opacity="0.9" />
     <rect x="6.5" y="7.25" width="3" height="1.5" rx="0.5" opacity="0.9" />
-    <rect
-      x="11.5"
-      y="7.25"
-      width="3"
-      height="1.5"
-      rx="0.5"
-      opacity="0.9"
-    />
+    <rect x="11.5" y="7.25" width="3" height="1.5" rx="0.5" opacity="0.9" />
   </svg>
 </template>

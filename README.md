@@ -1,75 +1,84 @@
-# Nuxt Minimal Starter
+# 📌 Linear Nuxt Fullstack
 
-Look at the [Nuxt documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+A **minimal Linear clone** built with **Nuxt 3**, **Pinia**, and **Nuxt UI**.  
+**Why?** → To provide a modern, fast, and open-source base for project & task management, inspired by [Linear](https://linear.app).
 
-## Setup
+## 👀 Project Views
 
-Make sure to install dependencies:
+Here are the two modes available:
+
+1. **List mode**  
+![List mode](./public/images/preview1.png)
+
+2. **Grid mode**  
+![Grid mode](./public/images/preview2.png)
+
+## 🚀 Features
+
+- 📂 Real-time task & project management  
+- 📱 Responsive layout with sidebar  
+- 🔔 Inbox & notifications  
+- 🎯 Priorities, assignees & drag & drop  
+- 🔑 Simple JWT authentication (demo-ready)  
+- 🎨 Modern & customizable UI (Nuxt UI)  
+- ⚡ Smooth animations with GSAP  
+
+## 🛠️ Installation
+
+Clone and run locally:
 
 ```bash
-# npm
+git clone https://github.com/ElvinKyungu/linear-nuxt-fullstack.git
+cd linear-nuxt-fullstack
 npm install
-
-# pnpm
-pnpm install
-
-# yarn
-yarn install
-
-# bun
-bun install
-```
-
-## Development Server
-
-Start the development server on `http://localhost:3000`:
-
-```bash
-# npm
 npm run dev
-
-# pnpm
-pnpm dev
-
-# yarn
-yarn dev
-
-# bun
-bun run dev
 ```
 
-## Production
+👉 Then open [http://localhost:3000](http://localhost:3000).
 
-Build the application for production:
+## ✨ Usage Examples
 
-```bash
-# npm
-npm run build
+Create a task:
 
-# pnpm
-pnpm build
-
-# yarn
-yarn build
-
-# bun
-bun run build
+```ts
+await $fetch('/api/tasks', {
+  method: 'POST',
+  body: { title: 'New task' }
+})
 ```
 
-Locally preview production build:
+Fetch notifications:
 
-```bash
-# npm
-npm run preview
-
-# pnpm
-pnpm preview
-
-# yarn
-yarn preview
-
-# bun
-bun run preview
+```ts
+const { data } = await $fetch('/api/inbox')
 ```
 
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
+## 🤝 Contributing
+
+Contributions are welcome!
+
+* For small fixes → just open a PR 🚦
+* For new features → check [CONTRIBUTING.md](./CONTRIBUTING.md) for guidelines
+
+**TL;DR:**
+
+* Keep PRs small & focused
+* Always explain the **why** behind your change
+* Run linting before pushing → `npm run lint`
+
+## 🧪 Tests & CI
+
+* ✅ Integration tests are being added for critical features
+* 🔄 GitHub Actions CI validates build on each PR
+
+## 💡 Support
+
+If you like this project:
+
+* ⭐ Star the repo
+* 🔗 Share it with others
+* 💌 Reach out for sponsorship → [elvincode.com](https://elvincode.com)
+
+## 📄 License
+
+MIT © [Elvin Kyungu](https://github.com/ElvinKyungu)
