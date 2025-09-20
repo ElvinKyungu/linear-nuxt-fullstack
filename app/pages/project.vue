@@ -2,6 +2,7 @@
 import { users } from '@/data/users'
 import { statusConfig } from '@/data/projects'
 import { priorityLevels } from '@/data/priority'
+import { getUserFullName } from '~/helpers/getUserFullName'
 
 const projectsStore = useProjectStore()
 const componentsStore = useComponentsStore()
@@ -113,8 +114,8 @@ onMounted(async () => {
                     <UPopover v-if="project.health">
                       <UBadge
                         variant="soft"
-                        size="md"
-                        class="text-white hover:bg-bordercolor/70 flex p-2 gap-2 max-w-max items-center cursor-pointer"
+                        size="lg"
+                        class="text-white hover:bg-bordercolor/70 flex p-2 gap-2 items-center cursor-pointer"
                         :style="{
                           backgroundColor: project.health.color + '20',
                           borderColor: project.health.color,
@@ -125,7 +126,7 @@ onMounted(async () => {
                           :style="{ color: project.health.color }"
                           class="text-lg"
                         />
-                        <span class="lg:text-base text-sm">{{
+                        <span class="text-sm xl:text-base">{{
                           project.health.title
                         }}</span>
                       </UBadge>
@@ -175,18 +176,10 @@ onMounted(async () => {
                                 size="xs"
                                 class="ring-2 ring-black"
                               />
-                              <span>
-                                {{
-                                  users
-                                    .find((u) => u.id === project.lead)
-                                    ?.name?.toLowerCase()
-                                }}.{{
-                                  users
-                                    .find((u) => u.id === project.lead)
-                                    ?.lastName?.toLowerCase()
-                                }}
+                              <span class="text-gray-300 text-sm lg:text-base font-medium">
+                                {{ getUserFullName(users, project.lead) }}
                               </span>
-                              <span>{{ project.startDate }}</span>
+                              <span class="text-gray-300 text-sm lg:text-base font-medium">{{ project.startDate }}</span>
                             </div>
                             <p class="text-gray-400 text-sm">
                               {{ project.health.description }}
@@ -238,7 +231,7 @@ onMounted(async () => {
                                   :is="priorityIcons[item.icon]"
                                   class="text-lg"
                                 />
-                                <span>{{ item.name }}</span>
+                                <span class="text-gray-300 text-sm lg:text-base font-medium">{{ item.name }}</span>
                               </div>
                               <UIcon
                                 v-if="project.priority === item.id"
@@ -268,16 +261,8 @@ onMounted(async () => {
                           size="xs"
                           class="ring-2 ring-black"
                         />
-                        <span class="text-gray-300 fontt-medium">
-                          {{
-                            users
-                              .find((u) => u.id === project.lead)
-                              ?.name?.toLowerCase()
-                          }}.{{
-                            users
-                              .find((u) => u.id === project.lead)
-                              ?.lastName?.toLowerCase()
-                          }}
+                        <span class="text-gray-300 text-sm lg:text-base font-medium">
+                          {{ getUserFullName(users, project.lead) }}
                         </span>
                       </div>
                       <template #content>
@@ -342,7 +327,7 @@ onMounted(async () => {
                         <div
                           class="bg-primary border border-bordercolor rounded-lg shadow-lg p-3"
                         >
-                          <UCalendar />
+                          <UCalendar class="text-white" color="neutral" />
                         </div>
                       </template>
                     </UPopover>
