@@ -49,8 +49,6 @@ const confirmDelete = (notification: Notifications) => {
   notificationToDelete.value = notification
   showDeleteModal.value = true
 }
-
-
 </script>
 <template>
   <div

@@ -76,7 +76,6 @@ const getTagBgClass = (tag: string) => {
 const openStatusPopup = () => {
   isOpenStatusPopup.value = true
 }
-
 </script>
 
 <template>
@@ -87,43 +86,69 @@ const openStatusPopup = () => {
   >
     <div class="flex items-center gap-4">
       <div class="flex items-center gap-2 relative">
-        <UButton
-          ref="triggerElementRef"
-          variant="ghost"
-          class="hover:bg-white/10 p-2 text-white cursor-pointer rounded-xl"
-          @click="openLevelSelector"
-        >
-          <component :is="priorityIcon" />
-        </UButton>
-        <TaskPrioritySelector
-          v-if="isLevelSelectorOpen"
-          :tasks="[props.task]"
-          :trigger-element="triggerElementRef?.$el ?? triggerElementRef"
-          @update:model-value="handleLevelSelect"
-          @close="isLevelSelectorOpen = false"
-        />
-        <span class="text-gray-400 font-medium hidden md:block">{{
-          task?.leadId
-        }}</span>
+         <UPopover>
+          <UBadge
+            variant="soft"
+            size="md"
+            class="text-white hover:bg-bordercolor/70 cursor-pointer flex p-2 gap-1 max-w-max items-center"
+          >
+            <IconTaskStatus
+              :stroke-color="statusColor"
+              transform-status="rotate(-90 7 7)"
+            />
+          </UBadge>
+          <template #content>
+            <div
+              class="bg-primary border border-bordercolor text-white rounded-lg shadow-lg p-3 max-w-64"
+            >
+              <div class="flex flex-col gap-2 mb-3">
+                <h2 class="text-sm font-medium">Priority Level</h2>
+                <UInput
+                  icon="i-heroicons-magnifying-glass"
+                  placeholder="Search priority..."
+                  size="sm"
+                />
+              </div>
+              <div class="space-y-1 max-h-64 overflow-y-auto">
+                <!-- Afficher les priorités filtrées -->
+              </div>
+            </div>
+          </template>
+        </UPopover>
+        <span class="text-gray-400 font-medium hidden md:block">
+          {{ task?.leadId }}
+        </span>
       </div>
       <div class="flex items-center gap-2 font-medium relative">
-        <UButton
-          ref="priorityTrigger"
-          variant="ghost"
-          class="hover:bg-white/10 p-2 cursor-pointer rounded-xl"
-          @click="openStatusPopup"
-        >
-          <IconTaskStatus
-            :stroke-color="statusColor"
-            transform-status="rotate(-90 7 7)"
-          />
-        </UButton>
-        <span>{{ task?.title }}</span>
-        <TaskStatusSelector
-          v-if="isOpenStatusPopup"
-          :trigger-element="priorityTrigger"
-          @close="isOpenStatusPopup = false"
-        />
+        <UPopover>
+          <UBadge
+            variant="soft"
+            size="md"
+            class="text-white hover:bg-bordercolor/70 flex p-2 gap-1 max-w-max items-center cursor-pointer"
+          >
+            <IconTaskStatus
+              :stroke-color="statusColor"
+              transform-status="rotate(-90 7 7)"
+            />
+          </UBadge>
+          <template #content>
+            <div
+              class="bg-primary border border-bordercolor text-white rounded-lg shadow-lg p-3 max-w-64"
+            >
+              <div class="flex flex-col gap-2 mb-3">
+                <h2 class="text-sm font-medium">Status Level</h2>
+                <UInput
+                  icon="i-heroicons-magnifying-glass"
+                  placeholder="Search status..."
+                  size="sm"
+                />
+              </div>
+              <div class="space-y-1 max-h-64 overflow-y-auto">
+                <!-- Afficher les statuts filtrés -->
+              </div>
+            </div>
+          </template>
+        </UPopover>
       </div>
     </div>
 
@@ -171,26 +196,35 @@ const openStatusPopup = () => {
       </div>
 
       <div class="flex justify-end relative">
-        <UChip position="bottom-right">
+        <UPopover>
           <UAvatar
             ref="assigneeTrigger"
             :src="assigneeUser?.avatarUrl"
             :alt="assigneeUser?.name || 'default'"
             size="sm"
+            chip
+            color="success"
             class="cursor-pointer hover:ring-2 hover:ring-primary"
             @click="openAssigneePopup"
           />
-        </UChip>
-        <TaskAssignSelect
-          v-if="isAssigneePopupOpen"
-          :users="props.users"
-          :model-value="leadId"
-          :trigger-element="
-            assigneeTrigger ? { $el: assigneeTrigger } : undefined
-          "
-          @update:model-value="handleAssigneeSelect"
-          @close="isAssigneePopupOpen = false"
-        />
+          <template #content>
+            <div
+              class="bg-primary border border-bordercolor text-white rounded-lg shadow-lg p-3 max-w-64"
+            >
+              <div class="flex flex-col gap-2 mb-3">
+                <h2 class="text-sm font-medium">Status Level</h2>
+                <UInput
+                  icon="i-heroicons-magnifying-glass"
+                  placeholder="Search status..."
+                  size="sm"
+                />
+              </div>
+              <div class="space-y-1 max-h-64 overflow-y-auto">
+                <!-- Afficher les statuts filtrés -->
+              </div>
+            </div>
+          </template>
+        </UPopover>
       </div>
     </div>
   </div>

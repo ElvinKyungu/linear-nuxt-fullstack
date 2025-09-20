@@ -8,11 +8,7 @@ const props = defineProps<{
   isSelected: boolean
 }>()
 
-defineEmits([
-  'select-notification',
-  'edit-notification',
-  'confirm-delete',
-])
+defineEmits(['select-notification', 'edit-notification', 'confirm-delete'])
 
 /* Helper Functions */
 const truncateText = (text: string | undefined, maxLength: number) => {

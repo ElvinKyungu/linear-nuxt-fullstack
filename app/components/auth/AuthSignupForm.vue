@@ -31,7 +31,7 @@ const handleSignup = async () => {
       successMessage.value = 'Inscription réussie ! Vérifiez votre boîte mail.'
       await navigateTo('/login')
     }
-  } catch{
+  } catch {
     errorMessage.value = auth.error
   } finally {
     loading.value = false

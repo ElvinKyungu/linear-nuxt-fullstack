@@ -70,21 +70,20 @@ export const useAuthStore = defineStore('auth', () => {
     }
   }
 
-    const checkAuth = async (ssrHeaders?: Record<string, string>) => {
-      try {
-        const opts: Record<string, any> = {}
-        if (import.meta.server && ssrHeaders) {
-          opts.headers = ssrHeaders
-        }
-        const { user: authUser } = await $fetch('/api/auth/me', opts)
-        user.value = authUser
-        return authUser
-      } catch {
-        user.value = null
-        return null
+  const checkAuth = async (ssrHeaders?: Record<string, string>) => {
+    try {
+      const opts: Record<string, any> = {}
+      if (import.meta.server && ssrHeaders) {
+        opts.headers = ssrHeaders
       }
+      const { user: authUser } = await $fetch('/api/auth/me', opts)
+      user.value = authUser
+      return authUser
+    } catch {
+      user.value = null
+      return null
     }
-
+  }
 
   const updateProfile = async (updates: Partial<User>) => {
     loading.value = true

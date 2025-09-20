@@ -139,16 +139,16 @@ onMounted(() => {
         :class="{ '!bg-orange-500': isResizing }"
         @mousedown="startResize"
       >
-        <div class="absolute inset-0 w-4 -left-1.5 bg-transparent"/>
+        <div class="absolute inset-0 w-4 -left-1.5 bg-transparent" />
         <div
           class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-200"
         >
           <div class="flex flex-col items-center gap-1">
-            <div class="w-1 h-3 bg-white rounded-full"/>
-            <div class="w-1 h-1 bg-white rounded-full"/>
-            <div class="w-1 h-1 bg-white rounded-full"/>
-            <div class="w-1 h-1 bg-white rounded-full"/>
-            <div class="w-1 h-3 bg-white rounded-full"/>
+            <div class="w-1 h-3 bg-white rounded-full" />
+            <div class="w-1 h-1 bg-white rounded-full" />
+            <div class="w-1 h-1 bg-white rounded-full" />
+            <div class="w-1 h-1 bg-white rounded-full" />
+            <div class="w-1 h-3 bg-white rounded-full" />
           </div>
         </div>
         <div

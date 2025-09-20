@@ -8,7 +8,9 @@ export default defineNuxtRouteMiddleware(async (to) => {
 
   try {
     // Forward cookie header when running on server (SSR)
-    const ssrHeaders = import.meta.server ? useRequestHeaders(['cookie']) : undefined
+    const ssrHeaders = import.meta.server
+      ? useRequestHeaders(['cookie'])
+      : undefined
     const user = await authStore.checkAuth(ssrHeaders)
     if (!user) return navigateTo('/login')
   } catch {

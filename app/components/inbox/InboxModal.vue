@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { Notifications } from '@/types/inbox'
 import { users } from '@/data/users'
-import type { User } from '~/types/users';
+import type { User } from '~/types/users'
 
 const props = defineProps<{
   formData: Partial<Notifications>
