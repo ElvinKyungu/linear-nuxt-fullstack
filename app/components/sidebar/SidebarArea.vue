@@ -38,7 +38,7 @@ const menuGroups: ref<MenuGroup[]> = ref([
     items: [
       { label: 'Landing', icon: 'uil:globe', to: '/' },
       { label: 'Team', icon: 'uil:user', to: '/team' },
-      { label: 'Not Found', icon: 'uil:exclamation-circle', to: '/' },
+      { label: 'Not Found', icon: 'uil:exclamation-circle', to: '/notfound' },
       { label: 'Table', icon: 'uil:table', to: '/' },
       { label: 'Images', icon: 'uil:image', to: '/' },
       { label: 'File', icon: 'uil:file-alt', to: '/' },
