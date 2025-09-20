@@ -70,11 +70,13 @@ export const useAuthStore = defineStore('auth', () => {
     }
   }
 
-    const checkAuth = async () => {
+    const checkAuth = async (ssrHeaders?: Record<string, string>) => {
       try {
-        const { user: authUser } = await $fetch('/api/auth/me', {
-          headers: useRequestHeaders(['cookie']), // important for SSR
-        })
+        const opts: Record<string, any> = {}
+        if (import.meta.server && ssrHeaders) {
+          opts.headers = ssrHeaders
+        }
+        const { user: authUser } = await $fetch('/api/auth/me', opts)
         user.value = authUser
         return authUser
       } catch {
