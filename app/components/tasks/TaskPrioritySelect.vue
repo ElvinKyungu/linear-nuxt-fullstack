@@ -3,10 +3,16 @@ const props = defineProps<{
   taskId: string
   modelValue: string
   triggerElement?: any
-}>
+}>()
 
 const emit = defineEmits(['update:model-value', 'close'])
-
+const priorityMap: Priority[] = [
+  { id: 0, name: 'No priority', icon: resolveComponent('IconsIconNoPriority') },
+  { id: 1, name: 'Urgent', icon: resolveComponent('IconsIconUrgent') },
+  { id: 2, name: 'High', icon: resolveComponent('IconsIconHigh') },
+  { id: 3, name: 'Medium', icon: resolveComponent('IconsIconMedium') },
+  { id: 4, name: 'Low', icon: resolveComponent('IconsIconLow') },
+]
 const filter = ref('')
 const priorities = ['No priority', 'Low', 'Medium', 'High', 'Urgent']
 const filtered = computed(() =>
@@ -32,7 +38,12 @@ const handleSelect = async (priority: string) => {
         class="cursor-pointer p-1 hover:bg-white/10 rounded"
         @click="handleSelect(p)"
       >
-        {{ p }}
+        <div class="flex items-center gap-3">
+          <UButton variant="ghost" class="cursor-pointer text-white">
+            <component :is="p.icon" />
+          </UButton>
+          <span>{{ p.name }}</span>
+        </div>
       </div>
     </div>
   </div>

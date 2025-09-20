@@ -259,16 +259,7 @@ const tooltipStyle = computed(() => {
           </div>
         </div>
       </UCard>
-      <Teleport to="body">
-        <TeamMembersTooltip
-          v-if="activeTeam"
-          :team="activeTeam"
-          :placement="placement"
-          :style="tooltipStyle"
-          @mouseenter="cancelClose"
-          @mouseleave="scheduleClose"
-        />
-      </Teleport>
+      
     </div>
   </NuxtLayout>
 </template>

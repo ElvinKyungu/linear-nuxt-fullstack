@@ -1,12 +1,13 @@
 <script setup lang="ts">
 import type { User } from '@/types/user'
+import { getUserFullName } from '~/helpers/getUserFullName';
 
 const props = defineProps<{
   users: User[]
   taskId: string
   modelValue: string | null
   triggerElement?: any
-}>
+}>()
 
 const emit = defineEmits(['update:model-value', 'close'])
 
@@ -28,6 +29,7 @@ const handleSelect = async (user: User) => {
 
 <template>
   <div class="bg-primary border border-bordercolor text-white rounded-lg shadow-lg p-3 max-w-64">
+    <h2 class="font-bold text-lg mb-2">Select Assignee</h2>
     <UInput v-model="filter" icon="i-heroicons-magnifying-glass" placeholder="Search assignee..." size="sm" />
     <div class="space-y-1 max-h-64 overflow-y-auto mt-2">
       <div
@@ -37,7 +39,12 @@ const handleSelect = async (user: User) => {
         @click="handleSelect(user)"
       >
         <UAvatar :src="user.avatarUrl" size="sm" />
-        {{ user.name }}
+        <span>{{ user.name.toString() }} {{ user.lastName.toString() }}</span>
+        <UIcon
+          v-if="user.id === modelValue"
+          name="i-heroicons-check"
+          class="text-green-400"
+        />
       </div>
     </div>
   </div>

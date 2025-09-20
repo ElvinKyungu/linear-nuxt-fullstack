@@ -25,11 +25,11 @@ const taskComponent = computed(() => props.components.find(c => c.id === props.t
 
 const priorityIcon = computed(() => {
   const map: Record<string, any> = {
-    'No priority': resolveComponent('IconNoPriority'),
-    Low: resolveComponent('IconLow'),
-    Medium: resolveComponent('IconMedium'),
-    High: resolveComponent('IconHigh'),
-    Urgent: resolveComponent('IconUrgent'),
+    'No priority': resolveComponent('IconsIconNoPriority'),
+    Low: resolveComponent('IconsIconLow'),
+    Medium: resolveComponent('IconsIconMedium'),
+    High: resolveComponent('IconsIconHigh'),
+    Urgent: resolveComponent('IconsIconUrgent'),
   }
   return map[priority.value] || resolveComponent('IconNoPriority')
 })
@@ -56,7 +56,7 @@ const getTagBgClass = (tag: string) => {
       <!-- Status -->
       <UPopover v-model:open="isOpenStatusPopup" :trigger-element="statusTrigger">
         <UBadge ref="statusTrigger" @click="isOpenStatusPopup=true" class="cursor-pointer text-white">
-          {{ status }}
+          <component :is="priorityIcon" />
         </UBadge>
         <template #content>
           <TaskStatusSelect v-model:model-value="status" :task-id="task.id" />
@@ -68,8 +68,11 @@ const getTagBgClass = (tag: string) => {
       <!-- Priority -->
       <UPopover v-model:open="isLevelSelectorOpen" :trigger-element="priorityTrigger">
         <UBadge ref="priorityTrigger" @click="isLevelSelectorOpen=true" class="cursor-pointer flex items-center gap-1 text-white">
-          <component :is="priorityIcon" />
-          {{ priority }}
+          
+          <IconsIconTaskStatus
+            :stroke-color="status.color"
+            transform-status="rotate(-90 7 7)"
+          />
         </UBadge>
         <template #content>
           <TaskPrioritySelect v-model:model-value="priority" :task-id="task.id" />
@@ -98,7 +101,7 @@ const getTagBgClass = (tag: string) => {
         {{ formatDate(task.targetDate) }}
       </div>
       <UPopover v-model:open="isAssigneePopupOpen" :trigger-element="assigneeTrigger">
-        <UAvatar ref="assigneeTrigger" :src="assigneeUser?.avatarUrl" @click="isAssigneePopupOpen=true" />
+        <UAvatar ref="assigneeTrigger" :src="assigneeUser?.avatarUrl" @click="isAssigneePopupOpen=true" class="cursor-pointer"/>
         <template #content>
           <TaskAssigneeSelect v-model:model-value="leadId" :task-id="task.id" :users="users" />
         </template>

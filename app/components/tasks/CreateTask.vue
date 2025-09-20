@@ -111,11 +111,7 @@ onMounted(() => {
               <IconTaskStatus />
               <span class="text-[15px] font-medium">In progress</span>
             </UButton>
-            <TaskStatusSelector
-              v-if="isOpenStatusPopup"
-              :trigger-element="statusTrigger"
-              @close="isOpenStatusPopup = false"
-            />
+            
           </div>
           <div class="flex relative">
             <UButton
@@ -126,11 +122,7 @@ onMounted(() => {
               <IconNoPriority />
               <span class="text-[15px] font-medium">No priority</span>
             </UButton>
-            <TaskPrioritySelector
-              v-if="isOpenPriorityPopup"
-              :trigger-element="priorityTrigger"
-              @close="isOpenPriorityPopup = false"
-            />
+            
           </div>
           <div class="flex relative">
             <UButton
@@ -140,12 +132,7 @@ onMounted(() => {
               <UIcon name="uil:folder" class="text-lg" />
               <span class="text-[15px] font-medium">Project</span>
             </UButton>
-            <TaskProjectSelector
-              v-if="isOpenProjectPopup"
-              :component="componentsStore.components"
-              :trigger-element="ProjectTriggerElement"
-              @close="isOpenProjectPopup = false"
-            />
+            
           </div>
           <div class="flex relative">
             <UButton
@@ -156,14 +143,7 @@ onMounted(() => {
               <UIcon name="uil:user" class="text-lg" />
               <span class="text-[15px] font-medium">Unassigned</span>
             </UButton>
-            <TaskAssignSelect
-              v-if="isAssigneePopupOpen"
-              :users="props.users"
-              :trigger-element="
-                assigneeTrigger ? { $el: assigneeTrigger } : undefined
-              "
-              @close="isAssigneePopupOpen = false"
-            />
+            
           </div>
         </UFormGroup>
         <div class="flex justify-end">

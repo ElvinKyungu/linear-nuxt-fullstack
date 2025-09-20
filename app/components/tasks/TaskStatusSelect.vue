@@ -3,7 +3,7 @@ const props = defineProps<{
   taskId: string
   modelValue: string
   triggerElement?: any
-}>
+}>()
 
 const emit = defineEmits(['update:model-value', 'close'])
 
@@ -29,9 +29,10 @@ const handleSelect = async (status: string) => {
       <div
         v-for="s in filtered"
         :key="s"
-        class="cursor-pointer p-1 hover:bg-white/10 rounded"
+        class="cursor-pointer p-1 hover:bg-white/10 rounded text-white"
         @click="handleSelect(s)"
       >
+        
         {{ s }}
       </div>
     </div>
