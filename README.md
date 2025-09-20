@@ -3,7 +3,14 @@
 A **minimal Linear clone** built with **Nuxt 3**, **Pinia**, and **Nuxt UI**.  
 **Why?** → To provide a modern, fast, and open-source base for project & task management, inspired by [Linear](https://linear.app).
 
+## 👀 Project Views
+
+Here are the two modes available:
+
+1. **List mode**  
 ![List mode](./public/images/preview1.png)
+
+2. **Grid mode**  
 ![Grid mode](./public/images/preview2.png)
 
 ## 🚀 Features
