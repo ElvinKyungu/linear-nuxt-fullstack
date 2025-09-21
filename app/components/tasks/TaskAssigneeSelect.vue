@@ -1,12 +1,10 @@
 <script setup lang="ts">
 import type { User } from '@/types/user'
-import { getUserFullName } from '~/helpers/getUserFullName';
 
 const props = defineProps<{
   users: User[]
   taskId: string
   modelValue: string | null
-  triggerElement?: any
 }>()
 
 const emit = defineEmits(['update:model-value', 'close'])

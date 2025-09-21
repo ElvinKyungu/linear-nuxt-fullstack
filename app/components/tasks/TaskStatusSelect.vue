@@ -32,7 +32,9 @@ const handleSelect = async (status: string) => {
         class="cursor-pointer p-1 hover:bg-white/10 rounded text-white"
         @click="handleSelect(s)"
       >
-        
+        <UButton variant="ghost" class="cursor-pointer text-white">
+          <component :is="s" />
+        </UButton>
         {{ s }}
       </div>
     </div>
