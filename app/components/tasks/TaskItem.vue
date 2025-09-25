@@ -91,7 +91,7 @@ const getTagBgClass = (tag: string) => {
     <span v-if="displayMode !== 'list'" class="font-medium text-white">
       {{ task.title }}
     </span>
-    <div class="flex items-center gap-2 text-gray-300 text-sm">
+    <div :class="displayMode==='list' ? 'flex items-center gap-2 text-gray-300 text-sm' : 'flex flex-col justify-between gap-2 text-gray-300 text-sm'" >
       <div class="flex flex-wrap items-center gap-2 text-gray-300">
             <UBadge class="border text-white flex items-center gap-1 px-3 text-xs py-1 border-bordercolor rounded-full bg-black">
               <span class="w-2 h-2 rounded-full" :class="getTagBgClass(task.type)" />

@@ -1,4 +1,104 @@
 <!-- HeaderArea.vue -->
+ <script setup lang="ts">
+interface Props {
+  pageTitle?: string
+}
+
+withDefaults(defineProps<Props>(), {
+  pageTitle: 'Dashboard',
+})
+import type { DropdownMenuItem } from '@nuxt/ui'
+
+const items = ref<DropdownMenuItem[][]>([
+  [
+    {
+      label: 'Benjamin',
+      avatar: {
+        src: 'https://github.com/benjamincanac.png'
+      },
+      type: 'label'
+    }
+  ],
+  [
+    {
+      label: 'Profile',
+      icon: 'i-lucide-user'
+    },
+    {
+      label: 'Billing',
+      icon: 'i-lucide-credit-card'
+    },
+    {
+      label: 'Settings',
+      icon: 'i-lucide-cog',
+      kbds: [',']
+    },
+    {
+      label: 'Keyboard shortcuts',
+      icon: 'i-lucide-monitor'
+    }
+  ],
+  [
+    {
+      label: 'Team',
+      icon: 'i-lucide-users'
+    },
+    {
+      label: 'Invite users',
+      icon: 'i-lucide-user-plus',
+      children: [
+        [
+          {
+            label: 'Email',
+            icon: 'i-lucide-mail'
+          },
+          {
+            label: 'Message',
+            icon: 'i-lucide-message-square'
+          }
+        ],
+        [
+          {
+            label: 'More',
+            icon: 'i-lucide-circle-plus'
+          }
+        ]
+      ]
+    },
+    {
+      label: 'New team',
+      icon: 'i-lucide-plus',
+      kbds: ['meta', 'n']
+    }
+  ],
+  [
+    {
+      label: 'GitHub',
+      icon: 'i-simple-icons-github',
+      to: 'https://github.com/nuxt/ui',
+      target: '_blank'
+    },
+    {
+      label: 'Support',
+      icon: 'i-lucide-life-buoy',
+      to: '/docs/components/dropdown-menu'
+    },
+    {
+      label: 'API',
+      icon: 'i-lucide-cloud',
+      disabled: true
+    }
+  ],
+  [
+    {
+      label: 'Logout',
+      icon: 'i-lucide-log-out',
+      kbds: ['shift', 'meta', 'q']
+    }
+  ]
+])
+// Vous pouvez ajouter d'autres logiques spécifiques au header ici
+</script>
 <template>
   <div
     class="flex items-center justify-between p-4 bg-primary border-b border-bordercolor"
@@ -25,7 +125,7 @@
     <div class="flex items-center gap-3">
       <!-- Recherche (optionnelle) -->
       <div class="hidden lg:block">
-        <UInput placeholder="Search..." class="w-64" variant="outline">
+        <UInput placeholder="Search..." class="w-64 bg-background input">
           <template #leading>
             <UIcon name="uil:search" class="w-4 h-4 text-gray-400" />
           </template>
@@ -38,46 +138,25 @@
       </UButton>
 
       <!-- Menu utilisateur -->
-      <UDropdown>
-        <template #trigger>
-          <UButton variant="ghost" class="text-white hover:bg-white/10">
-            <UIcon name="uil:user-circle" class="w-6 h-6" />
-          </UButton>
-        </template>
-
-        <template #content>
-          <div class="p-2">
-            <UButton variant="ghost" class="w-full justify-start">
-              <UIcon name="uil:user" class="w-4 h-4 mr-2" />
-              Profile
-            </UButton>
-            <UButton variant="ghost" class="w-full justify-start">
-              <UIcon name="uil:setting" class="w-4 h-4 mr-2" />
-              Settings
-            </UButton>
-            <UDivider class="my-2" />
-            <UButton variant="ghost" class="w-full justify-start text-red-400">
-              <UIcon name="uil:sign-out-alt" class="w-4 h-4 mr-2" />
-              Logout
-            </UButton>
-          </div>
-        </template>
-      </UDropdown>
+      <UDropdownMenu
+        :items="items"
+        :ui="{
+          content: 'w-48 bg-background text-white border border-black',
+          label: 'text-white',
+          separator: 'border-bordercolor bg-bordercolor',
+          itemLeadingIcon: 'shrink-0 text-white',
+          item: 'text-white',
+          itemTrailingIcon: 'shrink-0 text-white',
+        }"
+        
+        color="primary"
+        class="bg-bordercolor/70 text-white cursor-pointer"
+      >
+        <UButton icon="i-lucide-user" class="bg-bordercolor/70 text-white cursor-pointer" variant="outline" />
+      </UDropdownMenu>
     </div>
   </div>
 </template>
-
-<script setup lang="ts">
-interface Props {
-  pageTitle?: string
-}
-
-withDefaults(defineProps<Props>(), {
-  pageTitle: 'Dashboard',
-})
-
-// Vous pouvez ajouter d'autres logiques spécifiques au header ici
-</script>
 
 <style scoped>
 /* Styles spécifiques au header si nécessaire */

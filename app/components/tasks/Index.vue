@@ -399,21 +399,7 @@ onMounted(async () => {
 
         <!-- Mode Grille -->
         <div v-if="displayMode === 'grid'" class="h-full flex flex-col">
-          <!-- Bouton d'ajout de tâche en position fixe -->
-          <div class="flex-shrink-0 p-4 pb-2">
-            <div class="relative w-full flex flex-end justify-end">
-              <UButton
-                variant="ghost"
-                class="hover:bg-white/10 p-2 cursor-pointer rounded-xl mr-2 text-white"
-                @click="showTaskPopup = true"
-              >
-                <UIcon name="uil:plus" class="text-2xl" />
-              </UButton>
-            </div>
-          </div>
-
-          <!-- Conteneur des colonnes avec hauteur calculée -->
-          <div class="flex-1 overflow-hidden px-4 pb-4">
+          <div class="flex-1 overflow-hidden px-4 py-4">
             <div class="flex gap-4 overflow-x-auto h-full">
               <div
                 v-for="status in taskStatuses"
