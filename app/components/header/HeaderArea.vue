@@ -137,23 +137,22 @@ const items = ref<DropdownMenuItem[][]>([
         <UIcon name="uil:bell" class="w-5 h-5" />
       </UButton>
 
-      <!-- Menu utilisateur -->
-      <UDropdownMenu
-        :items="items"
-        :ui="{
-          content: 'w-48 bg-background text-white border border-black',
-          label: 'text-white',
-          separator: 'border-bordercolor bg-bordercolor',
-          itemLeadingIcon: 'shrink-0 text-white',
-          item: 'text-white',
-          itemTrailingIcon: 'shrink-0 text-white',
-        }"
-        
-        color="primary"
-        class="bg-bordercolor/70 text-white cursor-pointer"
-      >
-        <UButton icon="i-lucide-user" class="bg-bordercolor/70 text-white cursor-pointer" variant="outline" />
-      </UDropdownMenu>
+     <UDropdownMenu
+      :items="items"
+      :ui="{
+        content: 'w-48 bg-background text-white border border-bordercolor divide-bordercolor',
+        label: 'text-white',
+        separator: 'border-bordercolor',
+        itemLeadingIcon: 'shrink-0 text-white',
+        item: 'text-white',
+        itemTrailingIcon: 'shrink-0 text-white',
+      }"
+      color="primary"
+      class="bg-bordercolor/70 text-white cursor-pointer"
+    >
+      <UButton icon="i-lucide-user" class="bg-bordercolor/70 text-white cursor-pointer" variant="outline" />
+    </UDropdownMenu>
+
     </div>
   </div>
 </template>
