@@ -21,9 +21,9 @@ const filtered = computed(() =>
 
 const store = useTasksStore()
 
-const handleSelect = async (priority: string) => {
-  await store.updateTaskOptimized(props.taskId, { priority })
-  emit('update:model-value', priority)
+const handleSelect = async (priority: Priority) => {
+  await store.updateTaskOptimized(props.taskId, { priority: priority.name })
+  emit('update:model-value', priority.name)
   emit('close')
 }
 </script>
@@ -34,7 +34,7 @@ const handleSelect = async (priority: string) => {
     <div class="space-y-1 max-h-64 overflow-y-auto mt-2">
       <div
         v-for="p in filtered"
-        :key="p"
+        :key="p.id"
         class="cursor-pointer p-1 hover:bg-white/10 rounded"
         @click="handleSelect(p)"
       >

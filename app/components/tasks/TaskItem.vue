@@ -64,7 +64,7 @@ const getTagBgClass = (tag: string) => {
             <component :is="priorityIcon" />
           </UBadge>
           <template #content>
-            <TaskPrioritySelect v-model:model-value="priority" :task-id="task.id" />
+            <TaskPrioritySelect v-model:model-value="priority" :task-id="task.id" @close="isOpenStatusPopup = false" />
           </template>
         </UPopover>
 
