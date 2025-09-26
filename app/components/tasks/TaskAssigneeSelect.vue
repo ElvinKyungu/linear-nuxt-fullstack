@@ -19,8 +19,7 @@ const filteredUsers = computed(() =>
 const store = useTasksStore()
 
 const handleSelect = async (user: User) => {
-  await store.updateTaskOptimized(props.taskId, { leadId: user.id })
-  emit('update:model-value', user.id)
+  await store.updateTask(props.taskId, { leadId: user.id })
   emit('close')
 }
 </script>

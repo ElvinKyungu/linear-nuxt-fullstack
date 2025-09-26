@@ -8,8 +8,6 @@ const props = defineProps<{
   statusColor?: string
 }>()
 
-const leadId = ref<string | null>(props.task.leadId || null)
-const priority = ref(props.task.priority)
 
 const assigneeTrigger = ref<HTMLElement | null>(null)
 const priorityTrigger = ref<HTMLElement | null>(null)
@@ -19,7 +17,7 @@ const isAssigneePopupOpen = ref(false)
 const isLevelSelectorOpen = ref(false)
 const isOpenStatusPopup = ref(false)
 
-const assigneeUser = computed(() => props.users.find(u => u.id === leadId.value) || null)
+const assigneeUser = computed(() => props.users.find(u => u.id === props.task.leadId) || null)
 const taskComponent = computed(() => props.components.find(c => c.id === props.task.componentId) || null)
 
 const priorityIcon = computed(() => {
@@ -30,7 +28,7 @@ const priorityIcon = computed(() => {
     High: resolveComponent('IconsIconHigh'),
     Urgent: resolveComponent('IconsIconUrgent'),
   }
-  return map[priority.value] || resolveComponent('IconsIconNoPriority')
+  return map[props.task.priority] || resolveComponent('IconsIconNoPriority')
 })
 
 const statusIcon = computed(() => {
@@ -86,7 +84,7 @@ const getTagBgClass = (tag: string) => {
             <component :is="priorityIcon" />
           </UBadge>
           <template #content>
-            <TaskPrioritySelect v-model:model-value="priority" :task-id="task.id" @close="isLevelSelectorOpen = false" />
+            <TaskPrioritySelect :model-value="task.priority" :task-id="task.id" @close="isLevelSelectorOpen = false" />
           </template>
         </UPopover>
 
@@ -149,7 +147,7 @@ const getTagBgClass = (tag: string) => {
                 @click="isAssigneePopupOpen = true"
               />
               <template #content>
-                <TaskAssigneeSelect v-model:model-value="leadId" :task-id="task.id" :users="users" @close="isAssigneePopupOpen = false"/>
+                <TaskAssigneeSelect :model-value="task.leadId" :task-id="task.id" :users="users" @close="isAssigneePopupOpen = false"/>
               </template>
             </UPopover>
           </div>
