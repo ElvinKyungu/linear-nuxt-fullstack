@@ -38,7 +38,7 @@ const handleSelect = async (status: Status) => {
 
 <template>
   <div class="bg-primary border border-bordercolor text-white rounded-lg shadow-lg p-3 max-w-64">
-    h2
+    <h2 class="font-bold text-lg">Select Status</h2>
     <UInput v-model="filter" icon="i-heroicons-magnifying-glass" placeholder="Search status..." size="sm" />
     <div class="space-y-1 max-h-64 overflow-y-auto mt-2">
       <div
