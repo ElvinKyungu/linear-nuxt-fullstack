@@ -31,7 +31,19 @@ const priorityIcon = computed(() => {
     High: resolveComponent('IconsIconHigh'),
     Urgent: resolveComponent('IconsIconUrgent'),
   }
-  return map[priority.value] || resolveComponent('IconNoPriority')
+  return map[priority.value] || resolveComponent('IconsIconNoPriority')
+})
+
+const statusIcon = computed(() => {
+  const map: Record<string, any> = {
+    'Todo': resolveComponent('IconsIconTodo'),
+    'In progress': resolveComponent('IconsIconTaskStatus'),
+    'Technical Review': resolveComponent('IconsIconTaskStatus'),
+    'Completed': resolveComponent('IconsIconTaskStatus'),
+    'Backlog': resolveComponent('IconsIconBacklog'),
+    'Paused': resolveComponent('IconsIconTaskStatus'),
+  }
+  return map[status.value] || resolveComponent('IconsIconTaskStatus')
 })
 
 const getTagBgClass = (tag: string) => {
@@ -75,7 +87,7 @@ const getTagBgClass = (tag: string) => {
       <!-- Priority -->
       <UPopover v-model:open="isOpenStatusPopup" :trigger-element="statusTrigger">
         <UBadge ref="statusTrigger" class="cursor-pointer flex items-center gap-1 text-white" @click="isOpenStatusPopup = true">
-          <IconsIconTaskStatus
+          <component :is="statusIcon"
             :stroke-color="status.color"
             transform-status="rotate(-90 7 7)"
           />

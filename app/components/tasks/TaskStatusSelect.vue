@@ -3,6 +3,7 @@ interface Status {
   id: number
   name: 'Todo' | 'In progress' | 'Technical Review' | 'Completed' | 'Backlog' | 'Paused'
   icon: any
+  color: string
 }
 
 const props = defineProps<{
@@ -14,12 +15,12 @@ const props = defineProps<{
 const emit = defineEmits(['update:model-value', 'close'])
 
 const statusMap: Status[] = [
-  { id: 0, name: 'Todo', icon: resolveComponent('IconsIconTodo') },
-  { id: 1, name: 'In progress', icon: resolveComponent('IconsIconTaskStatus') },
-  { id: 2, name: 'Technical Review', icon: resolveComponent('IconsIconTaskStatus') },
-  { id: 3, name: 'Completed', icon: resolveComponent('IconsIconTaskStatus') },
-  { id: 4, name: 'Backlog', icon: resolveComponent('IconsIconBacklog') },
-  { id: 5, name: 'Paused', icon: resolveComponent('IconsIconTaskStatus') },
+  { id: 0, name: 'Todo', icon: resolveComponent('IconsIconTodo'), color: '#0ea5e9' },
+  { id: 1, name: 'In progress', icon: resolveComponent('IconsIconTaskStatus'), color: '#facc15' },
+  { id: 2, name: 'Technical Review', icon: resolveComponent('IconsIconTaskStatus'), color: '#22c55e' },
+  { id: 3, name: 'Completed', icon: resolveComponent('IconsIconTaskStatus'), color: '#8b5cf6' },
+  { id: 4, name: 'Backlog', icon: resolveComponent('IconsIconBacklog'), color: '#f97316' },
+  { id: 5, name: 'Paused', icon: resolveComponent('IconsIconTaskStatus'), color: '#e11d48' },
 ]
 const filter = ref('')
 const filtered = computed(() =>
@@ -47,7 +48,7 @@ const handleSelect = async (status: Status) => {
       >
         <div class="flex items-center gap-3">
           <UButton variant="ghost" class="cursor-pointer text-white">
-            <component :is="s.icon" />
+            <component :is="s.icon" :stroke-color="s.color" transform-status="rotate(-90 7 7)" />
           </UButton>
           <span class="text-white">{{ s.name }}</span>
         </div>
