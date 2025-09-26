@@ -58,13 +58,12 @@ const getTagBgClass = (tag: string) => {
   >
     <div class="flex items-center gap-1" :class="displayMode !== 'list' ? 'justify-between' : ''">
       <div class="flex items-center gap-2">
-        <!-- Status -->
-        <UPopover v-model:open="isOpenStatusPopup" :trigger-element="statusTrigger">
-          <UBadge ref="statusTrigger" class="cursor-pointer text-white" @click="isOpenStatusPopup = true">
+        <UPopover v-model:open="isLevelSelectorOpen" :trigger-element="priorityTrigger">
+          <UBadge ref="priorityTrigger" class="cursor-pointer text-white" @click="isLevelSelectorOpen = true">
             <component :is="priorityIcon" />
           </UBadge>
           <template #content>
-            <TaskPrioritySelect v-model:model-value="priority" :task-id="task.id" @close="isOpenStatusPopup = false" />
+            <TaskPrioritySelect v-model:model-value="priority" :task-id="task.id" @close="isLevelSelectorOpen = false" />
           </template>
         </UPopover>
 
@@ -74,15 +73,15 @@ const getTagBgClass = (tag: string) => {
         </span>
       </div>
       <!-- Priority -->
-      <UPopover v-model:open="isLevelSelectorOpen" :trigger-element="priorityTrigger">
-        <UBadge ref="priorityTrigger" class="cursor-pointer flex items-center gap-1 text-white" @click="isLevelSelectorOpen = true">
+      <UPopover v-model:open="isOpenStatusPopup" :trigger-element="statusTrigger">
+        <UBadge ref="statusTrigger" class="cursor-pointer flex items-center gap-1 text-white" @click="isOpenStatusPopup = true">
           <IconsIconTaskStatus
             :stroke-color="status.color"
             transform-status="rotate(-90 7 7)"
           />
         </UBadge>
         <template #content>
-          <TaskStatusSelect v-model:model-value="status" :task-id="task.id" @close="isLevelSelectorOpen = false" />
+          <TaskStatusSelect v-model:model-value="status" :task-id="task.id" @close="isOpenStatusPopup = false" />
         </template>
       </UPopover>
       <span v-if="displayMode === 'list'" class="font-medium text-white">
