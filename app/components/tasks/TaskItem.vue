@@ -82,7 +82,7 @@ const getTagBgClass = (tag: string) => {
           />
         </UBadge>
         <template #content>
-          <TaskStatusSelect v-model:model-value="status" :task-id="task.id" />
+          <TaskStatusSelect v-model:model-value="status" :task-id="task.id" @close="isLevelSelectorOpen = false" />
         </template>
       </UPopover>
       <span v-if="displayMode === 'list'" class="font-medium text-white">
