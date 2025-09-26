@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type { Priority } from '@/types/priority'
 const props = defineProps<{
   taskId: string
   modelValue: string
@@ -14,9 +15,8 @@ const priorityMap: Priority[] = [
   { id: 4, name: 'Low', icon: resolveComponent('IconsIconLow') },
 ]
 const filter = ref('')
-const priorities = ['No priority', 'Low', 'Medium', 'High', 'Urgent']
 const filtered = computed(() =>
-  priorities.filter(p => p.toLowerCase().includes(filter.value.toLowerCase()))
+  priorityMap.filter(p => p.name.toLowerCase().includes(filter.value.toLowerCase()))
 )
 
 const store = useTasksStore()
@@ -42,7 +42,7 @@ const handleSelect = async (priority: string) => {
           <UButton variant="ghost" class="cursor-pointer text-white">
             <component :is="p.icon" />
           </UButton>
-          <span>{{ p.name }}</span>
+          <span class="text-white">{{ p.name }}</span>
         </div>
       </div>
     </div>

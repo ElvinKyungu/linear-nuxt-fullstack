@@ -34,8 +34,8 @@ export default defineNuxtConfig({
       pathPrefix: false,
     },
     {
-      path: '~/components/icons',
-      prefix: 'icons',
+      path: '~/components/Icons',
+      prefix: 'Icons',
     },
   ],
 })
