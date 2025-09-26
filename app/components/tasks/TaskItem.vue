@@ -51,11 +51,12 @@ const getTagBgClass = (tag: string) => {
 
 <template>
   <div
+    class="w-full"
     :class="displayMode === 'list'
       ? 'flex justify-between text-white hover:bg-white/5 rounded-md p-2 transition-colors'
       : 'bg-background border border-bordercolor rounded-lg p-4 hover:bg-black/30 transition-colors cursor-pointer flex flex-col gap-2'"
   >
-    <div class="flex items-center gap-4" :class="displayMode !== 'list' ? 'justify-between' : ''">
+    <div class="flex items-center gap-1" :class="displayMode !== 'list' ? 'justify-between' : ''">
       <div class="flex items-center gap-2">
         <!-- Status -->
         <UPopover v-model:open="isOpenStatusPopup" :trigger-element="statusTrigger">
@@ -68,7 +69,7 @@ const getTagBgClass = (tag: string) => {
         </UPopover>
 
         <!-- ID -->
-        <span class="text-gray-400 font-medium">
+        <span class="text-gray-400 text-sm font-bold" :class="displayMode==='list' ? 'hidden lg:flex' : ''">
           {{ task?.leadId }}
         </span>
       </div>
@@ -91,8 +92,8 @@ const getTagBgClass = (tag: string) => {
     <span v-if="displayMode !== 'list'" class="font-medium text-white">
       {{ task.title }}
     </span>
-    <div :class="displayMode==='list' ? 'flex items-center gap-2 text-gray-300 text-sm' : 'flex flex-col justify-between gap-2 text-gray-300 text-sm'" >
-      <div class="flex flex-wrap items-center gap-2 text-gray-300">
+    <div :class="displayMode==='list' ? 'flex items-center gap-2 text-gray-300 text-sm' : 'flex flex-col justify-between gap-2 text-gray-300 text-sm space-y-2'" >
+      <div class="flex flex-wrap items-center gap-2 text-gray-300" :class="displayMode==='list' ? 'hidden lg:flex' : 'pt-2'">
             <UBadge class="border text-white flex items-center gap-1 px-3 text-xs py-1 border-bordercolor rounded-full bg-black">
               <span class="w-2 h-2 rounded-full" :class="getTagBgClass(task.type)" />
               {{ task.type }}
@@ -108,7 +109,7 @@ const getTagBgClass = (tag: string) => {
             </UBadge>
           </div>
           <div class="flex items-center justify-between gap-2 text-gray-300">
-            <div class="text-xs text-gray-400">
+            <div class="text-xs text-gray-400" :class="displayMode==='list' ? 'hidden lg:flex' : ''">
               {{ formatDate(task.targetDate) }}
             </div>
 
