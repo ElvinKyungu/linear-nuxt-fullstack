@@ -1,4 +1,10 @@
 <script setup lang="ts">
+interface Status {
+  id: number
+  name: 'Todo' | 'In progress' | 'Technical Review' | 'Completed' | 'Backlog' | 'Paused'
+  icon: any
+}
+
 const props = defineProps<{
   taskId: string
   modelValue: string
@@ -7,17 +13,24 @@ const props = defineProps<{
 
 const emit = defineEmits(['update:model-value', 'close'])
 
+const statusMap: Status[] = [
+  { id: 0, name: 'Todo', icon: resolveComponent('IconsIconTodo') },
+  { id: 1, name: 'In progress', icon: resolveComponent('IconsIconTaskStatus') },
+  { id: 2, name: 'Technical Review', icon: resolveComponent('IconsIconTaskStatus') },
+  { id: 3, name: 'Completed', icon: resolveComponent('IconsIconTaskStatus') },
+  { id: 4, name: 'Backlog', icon: resolveComponent('IconsIconBacklog') },
+  { id: 5, name: 'Paused', icon: resolveComponent('IconsIconTaskStatus') },
+]
 const filter = ref('')
-const statuses = ['Todo', 'In Progress', 'Done', 'Blocked']
 const filtered = computed(() =>
-  statuses.filter(s => s.toLowerCase().includes(filter.value.toLowerCase()))
+  statusMap.filter(s => s.name.toLowerCase().includes(filter.value.toLowerCase()))
 )
 
 const store = useTasksStore()
 
-const handleSelect = async (status: string) => {
-  await store.updateTaskOptimized(props.taskId, { status })
-  emit('update:model-value', status)
+const handleSelect = async (status: Status) => {
+  await store.updateTaskOptimized(props.taskId, { status: status.name })
+  emit('update:model-value', status.name)
   emit('close')
 }
 </script>
@@ -28,14 +41,16 @@ const handleSelect = async (status: string) => {
     <div class="space-y-1 max-h-64 overflow-y-auto mt-2">
       <div
         v-for="s in filtered"
-        :key="s"
-        class="cursor-pointer p-1 hover:bg-white/10 rounded text-white"
+        :key="s.id"
+        class="cursor-pointer p-1 hover:bg-white/10 rounded"
         @click="handleSelect(s)"
       >
-        <UButton variant="ghost" class="cursor-pointer text-white">
-          <component :is="s" />
-        </UButton>
-        {{ s }}
+        <div class="flex items-center gap-3">
+          <UButton variant="ghost" class="cursor-pointer text-white">
+            <component :is="s.icon" />
+          </UButton>
+          <span class="text-white">{{ s.name }}</span>
+        </div>
       </div>
     </div>
   </div>

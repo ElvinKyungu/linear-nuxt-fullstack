@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type { Priority } from '@/types/priority'
 const props = defineProps<{
   taskId: string
   modelValue: string
@@ -14,16 +15,15 @@ const priorityMap: Priority[] = [
   { id: 4, name: 'Low', icon: resolveComponent('IconsIconLow') },
 ]
 const filter = ref('')
-const priorities = ['No priority', 'Low', 'Medium', 'High', 'Urgent']
 const filtered = computed(() =>
-  priorities.filter(p => p.toLowerCase().includes(filter.value.toLowerCase()))
+  priorityMap.filter(p => p.name.toLowerCase().includes(filter.value.toLowerCase()))
 )
 
 const store = useTasksStore()
 
-const handleSelect = async (priority: string) => {
-  await store.updateTaskOptimized(props.taskId, { priority })
-  emit('update:model-value', priority)
+const handleSelect = async (priority: Priority) => {
+  await store.updateTaskOptimized(props.taskId, { priority: priority.name })
+  emit('update:model-value', priority.name)
   emit('close')
 }
 </script>
@@ -34,7 +34,7 @@ const handleSelect = async (priority: string) => {
     <div class="space-y-1 max-h-64 overflow-y-auto mt-2">
       <div
         v-for="p in filtered"
-        :key="p"
+        :key="p.id"
         class="cursor-pointer p-1 hover:bg-white/10 rounded"
         @click="handleSelect(p)"
       >
@@ -42,7 +42,7 @@ const handleSelect = async (priority: string) => {
           <UButton variant="ghost" class="cursor-pointer text-white">
             <component :is="p.icon" />
           </UButton>
-          <span>{{ p.name }}</span>
+          <span class="text-white">{{ p.name }}</span>
         </div>
       </div>
     </div>
