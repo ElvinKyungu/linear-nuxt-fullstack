@@ -140,12 +140,15 @@ const items = ref<DropdownMenuItem[][]>([
      <UDropdownMenu
       :items="items"
       :ui="{
-        content: 'w-48 bg-background text-white border border-bordercolor divide-bordercolor',
-        label: 'text-white',
-        separator: 'border-bordercolor',
-        itemLeadingIcon: 'shrink-0 text-white',
-        item: 'text-white',
-        itemTrailingIcon: 'shrink-0 text-white',
+        content: 'w-48 bg-background text-white border-none ring-bordercolor border-bordercolor rounded-md overflow-hidden',
+        viewport: 'relative divide-y divide-bordercolor overflow-y-auto',
+        separator: '-mx-2 my-2 h-px bg-bordercolor',
+        item: 'group relative w-full flex items-center p-2 text-sm select-none text-white hover:bg-bordercolor/20',
+         itemContent: 'w-full flex items-center pl-6 hover:text-white',
+         itemKbd: 'ml-auto text-xs font-medium bg-bordercolor/30 rounded px-1.5 py-0.5 text-white',
+         itemSubmenuIndicator: 'ml-auto text-white',
+        label: 'w-full flex items-center font-semibold text-white px-2 py-1',
+         itemLeadingIcon: 'shrink-0 text-white',
       }"
       color="primary"
       class="bg-bordercolor/70 text-white cursor-pointer"
@@ -158,5 +161,6 @@ const items = ref<DropdownMenuItem[][]>([
 </template>
 
 <style scoped>
-/* Styles spécifiques au header si nécessaire */
+
+
 </style>
