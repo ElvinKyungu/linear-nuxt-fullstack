@@ -28,12 +28,6 @@ const currentTask = ref<Task | null>(null)
 const showTaskPopup = ref(false)
 const displayTriggerElement = ref<HTMLElement | null>(null)
 
-// États pour les popups globaux (mode grid)
-const prioritySelectorOpen = ref(false)
-const statusSelectorOpen = ref(false)
-const priorityTriggerElement = ref<HTMLElement | null>(null)
-const statusTriggerElement = ref<HTMLElement | null>(null)
-const popupTask = ref<Task | null>(null)
 
 const isDragging = ref(false)
 // Nouveau: gérer le délai de drag pour éviter les conflits avec le scroll
@@ -65,12 +59,12 @@ watch(
 )
 
 const taskStatuses = [
-  { key: 'Todo', label: 'To Do', color: '#0ea5e9' },
-  { key: 'In progress', label: 'In Progress', color: '#facc15' },
-  { key: 'Technical Review', label: 'Technical Review', color: '#22c55e' },
-  { key: 'Completed', label: 'Completed', color: '#8b5cf6' },
-  { key: 'Backlog', label: 'Backlog', color: '#f97316' },
-  { key: 'Paused', label: 'Paused', color: '#e11d48' },
+  { key: 'Todo', label: 'To Do', color: '#0ea5e9', icon: resolveComponent('IconsIconTodo') },
+  { key: 'In progress', label: 'In Progress', color: '#facc15', icon: resolveComponent('IconsIconTaskStatus') },
+  { key: 'Technical Review', label: 'Technical Review', color: '#22c55e', icon: resolveComponent('IconsIconTaskStatus') },
+  { key: 'Completed', label: 'Completed', color: '#8b5cf6', icon: resolveComponent('IconsIconTaskStatus') },
+  { key: 'Backlog', label: 'Backlog', color: '#f97316', icon: resolveComponent('IconsIconBacklog') },
+  { key: 'Paused', label: 'Paused', color: '#e11d48', icon: resolveComponent('IconsIconTaskStatus') },
 ]
 
 // Computed pour les tâches groupées avec les tâches locales
@@ -253,33 +247,6 @@ function openAssigneeModal(task: Task) {
   assigneeModalOpen.value = true
 }
 
-// Amélioré: positionnement correct des popups
-function openPrioritySelector(data: {
-  task: Task
-  triggerElement: HTMLElement
-}) {
-  popupTask.value = data.task
-  priorityTriggerElement.value = data.triggerElement
-  prioritySelectorOpen.value = true
-}
-
-function openStatusSelector(data: { task: Task; triggerElement: HTMLElement }) {
-  popupTask.value = data.task
-  statusTriggerElement.value = data.triggerElement
-  statusSelectorOpen.value = true
-}
-
-function closePrioritySelector() {
-  prioritySelectorOpen.value = false
-  popupTask.value = null
-  priorityTriggerElement.value = null
-}
-
-function closeStatusSelector() {
-  statusSelectorOpen.value = false
-  popupTask.value = null
-  statusTriggerElement.value = null
-}
 
 const openDisplayMode = () => {
   isdisplayModalOpen.value = true
@@ -345,10 +312,7 @@ onMounted(async () => {
             >
               <h1 class="text-xl text-white flex items-center justify-between">
                 <div class="flex items-center gap-4 relative">
-                  <IconTaskStatus
-                    :stroke-color="status.color"
-                    transform-status="rotate(-90 7 7)"
-                  />
+                  <component :is="status.icon" :stroke-color="status.color" transform-status="rotate(-90 7 7)" />
                   <span class="flex gap-4">
                     <span>{{ status.label }}</span>
                     <span>{{ status.tasks.length }}</span>
@@ -413,10 +377,7 @@ onMounted(async () => {
                     :style="{ backgroundColor: status.color + '20' }"
                   >
                     <div class="flex items-center gap-3">
-                      <IconTaskStatus
-                        :stroke-color="status.color"
-                        transform-status="rotate(-90 7 7)"
-                      />
+                      <component :is="status.icon" :stroke-color="status.color" transform-status="rotate(-90 7 7)" />
                       <span class="text-white font-medium">{{
                         status.label
                       }}</span>
@@ -462,8 +423,6 @@ onMounted(async () => {
                           :components="components"
                           :status-color="status.color"
                           @open-assignee="openAssigneeModal"
-                          @open-priority-selector="openPrioritySelector"
-                          @open-status-selector="openStatusSelector"
                         />
                       </div>
                     </template>
@@ -493,29 +452,12 @@ onMounted(async () => {
       @close="showTaskPopup = false"
     />
 
-    <!-- Popups globaux avec z-index élevé -->
-    <Teleport to="body">
-      <TaskPrioritySelector
-        v-if="prioritySelectorOpen && popupTask"
-        :task="popupTask"
-        :trigger-element="priorityTriggerElement"
-        @close="closePrioritySelector"
-      />
-
-      <TaskStatusSelector
-        v-if="statusSelectorOpen && popupTask"
-        :task="popupTask"
-        :trigger-element="statusTriggerElement"
-        @close="closeStatusSelector"
-      />
-
-      <AssigneeModal
-        v-if="assigneeModalOpen && currentTask"
-        :task="currentTask"
-        :users="users"
-        @close="assigneeModalOpen = false"
-      />
-    </Teleport>
+    <AssigneeModal
+      v-if="assigneeModalOpen && currentTask"
+      :task="currentTask"
+      :users="users"
+      @close="assigneeModalOpen = false"
+    />
   </div>
 </template>
 
