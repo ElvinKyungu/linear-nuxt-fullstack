@@ -22,8 +22,7 @@ const filtered = computed(() =>
 const store = useTasksStore()
 
 const handleSelect = async (priority: Priority) => {
-  await store.updateTaskOptimized(props.taskId, { priority: priority.name })
-  emit('update:model-value', priority.name)
+  await store.updateTask(props.taskId, { priority: priority.name })
   emit('close')
 }
 </script>

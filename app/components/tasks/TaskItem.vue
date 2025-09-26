@@ -8,9 +8,6 @@ const props = defineProps<{
   statusColor?: string
 }>()
 
-const leadId = ref<string | null>(props.task.leadId || null)
-const priority = ref(props.task.priority)
-const status = ref(props.task.status)
 
 const assigneeTrigger = ref<HTMLElement | null>(null)
 const priorityTrigger = ref<HTMLElement | null>(null)
@@ -20,7 +17,7 @@ const isAssigneePopupOpen = ref(false)
 const isLevelSelectorOpen = ref(false)
 const isOpenStatusPopup = ref(false)
 
-const assigneeUser = computed(() => props.users.find(u => u.id === leadId.value) || null)
+const assigneeUser = computed(() => props.users.find(u => u.id === props.task.leadId) || null)
 const taskComponent = computed(() => props.components.find(c => c.id === props.task.componentId) || null)
 
 const priorityIcon = computed(() => {
@@ -31,7 +28,31 @@ const priorityIcon = computed(() => {
     High: resolveComponent('IconsIconHigh'),
     Urgent: resolveComponent('IconsIconUrgent'),
   }
-  return map[priority.value] || resolveComponent('IconNoPriority')
+  return map[props.task.priority] || resolveComponent('IconsIconNoPriority')
+})
+
+const statusIcon = computed(() => {
+  const map: Record<string, any> = {
+    'Todo': resolveComponent('IconsIconTodo'),
+    'In progress': resolveComponent('IconsIconTaskStatus'),
+    'Technical Review': resolveComponent('IconsIconTaskStatus'),
+    'Completed': resolveComponent('IconsIconTaskStatus'),
+    'Backlog': resolveComponent('IconsIconBacklog'),
+    'Paused': resolveComponent('IconsIconTaskStatus'),
+  }
+  return map[props.task.status] || resolveComponent('IconsIconTaskStatus')
+})
+
+const statusColor = computed(() => {
+  const map: Record<string, string> = {
+    'Todo': '#0ea5e9',
+    'In progress': '#facc15',
+    'Technical Review': '#22c55e',
+    'Completed': '#8b5cf6',
+    'Backlog': '#f97316',
+    'Paused': '#e11d48',
+  }
+  return map[props.task.status] || '#0ea5e9'
 })
 
 const getTagBgClass = (tag: string) => {
@@ -63,7 +84,7 @@ const getTagBgClass = (tag: string) => {
             <component :is="priorityIcon" />
           </UBadge>
           <template #content>
-            <TaskPrioritySelect v-model:model-value="priority" :task-id="task.id" @close="isLevelSelectorOpen = false" />
+            <TaskPrioritySelect :model-value="task.priority" :task-id="task.id" @close="isLevelSelectorOpen = false" />
           </template>
         </UPopover>
 
@@ -75,13 +96,13 @@ const getTagBgClass = (tag: string) => {
       <!-- Priority -->
       <UPopover v-model:open="isOpenStatusPopup" :trigger-element="statusTrigger">
         <UBadge ref="statusTrigger" class="cursor-pointer flex items-center gap-1 text-white" @click="isOpenStatusPopup = true">
-          <IconsIconTaskStatus
-            :stroke-color="status.color"
+          <component :is="statusIcon"
+            :stroke-color="statusColor"
             transform-status="rotate(-90 7 7)"
           />
         </UBadge>
         <template #content>
-          <TaskStatusSelect v-model:model-value="status" :task-id="task.id" @close="isOpenStatusPopup = false" />
+          <TaskStatusSelect :model-value="task.status" :task-id="task.id" @close="isOpenStatusPopup = false" />
         </template>
       </UPopover>
       <span v-if="displayMode === 'list'" class="font-medium text-white">
@@ -117,10 +138,16 @@ const getTagBgClass = (tag: string) => {
                 ref="assigneeTrigger"
                 :src="assigneeUser?.avatarUrl"
                 class="cursor-pointer"
+                :chip="{
+                  inset: true,
+                  color: 'success',
+                  position: 'bottom-right',
+                  class: 'border-0 ring-0 border-background ring-2 ring-black',
+                }"
                 @click="isAssigneePopupOpen = true"
               />
               <template #content>
-                <TaskAssigneeSelect v-model:model-value="leadId" :task-id="task.id" :users="users" @close="isAssigneePopupOpen = false"/>
+                <TaskAssigneeSelect :model-value="task.leadId" :task-id="task.id" :users="users" @close="isAssigneePopupOpen = false"/>
               </template>
             </UPopover>
           </div>

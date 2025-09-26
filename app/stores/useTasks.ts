@@ -82,18 +82,6 @@
       }
     }
 
-    const updateTaskOptimized = async (id: string, updates: Partial<Task>) => {
-      try {
-        await $fetch(`/api/tasks/${id}`, {
-          method: 'PATCH',
-          body: updates,
-        })
-        return true
-      } catch (err) {
-        handleError(err)
-        throw err
-      }
-    }
 
     return {
       tasks,
@@ -102,6 +90,5 @@
       addTask,
       updateTask,
       deleteTask,
-      updateTaskOptimized,
     }
   })
