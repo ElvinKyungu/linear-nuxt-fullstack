@@ -10,7 +10,7 @@ const props = defineProps<{
 
 const leadId = ref<string | null>(props.task.leadId || null)
 const priority = ref(props.task.priority)
-const status = ref(props.task.status)
+const status = computed(() => props.task.status)
 
 const assigneeTrigger = ref<HTMLElement | null>(null)
 const priorityTrigger = ref<HTMLElement | null>(null)
@@ -44,6 +44,18 @@ const statusIcon = computed(() => {
     'Paused': resolveComponent('IconsIconTaskStatus'),
   }
   return map[status.value] || resolveComponent('IconsIconTaskStatus')
+})
+
+const statusColor = computed(() => {
+  const map: Record<string, string> = {
+    'Todo': '#0ea5e9',
+    'In progress': '#facc15',
+    'Technical Review': '#22c55e',
+    'Completed': '#8b5cf6',
+    'Backlog': '#f97316',
+    'Paused': '#e11d48',
+  }
+  return map[status.value] || '#0ea5e9'
 })
 
 const getTagBgClass = (tag: string) => {
@@ -88,12 +100,12 @@ const getTagBgClass = (tag: string) => {
       <UPopover v-model:open="isOpenStatusPopup" :trigger-element="statusTrigger">
         <UBadge ref="statusTrigger" class="cursor-pointer flex items-center gap-1 text-white" @click="isOpenStatusPopup = true">
           <component :is="statusIcon"
-            :stroke-color="status.color"
+            :stroke-color="statusColor"
             transform-status="rotate(-90 7 7)"
           />
         </UBadge>
         <template #content>
-          <TaskStatusSelect v-model:model-value="status" :task-id="task.id" @close="isOpenStatusPopup = false" />
+          <TaskStatusSelect :model-value="status" :task-id="task.id" @close="isOpenStatusPopup = false" />
         </template>
       </UPopover>
       <span v-if="displayMode === 'list'" class="font-medium text-white">

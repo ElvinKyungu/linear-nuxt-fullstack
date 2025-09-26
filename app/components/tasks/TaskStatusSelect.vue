@@ -38,6 +38,7 @@ const handleSelect = async (status: Status) => {
 
 <template>
   <div class="bg-primary border border-bordercolor text-white rounded-lg shadow-lg p-3 max-w-64">
+    h2
     <UInput v-model="filter" icon="i-heroicons-magnifying-glass" placeholder="Search status..." size="sm" />
     <div class="space-y-1 max-h-64 overflow-y-auto mt-2">
       <div
@@ -46,7 +47,7 @@ const handleSelect = async (status: Status) => {
         class="cursor-pointer p-1 hover:bg-white/10 rounded"
         @click="handleSelect(s)"
       >
-        <div class="flex items-center gap-3">
+        <div class="flex items-center gap-1">
           <UButton variant="ghost" class="cursor-pointer text-white">
             <component :is="s.icon" :stroke-color="s.color" transform-status="rotate(-90 7 7)" />
           </UButton>

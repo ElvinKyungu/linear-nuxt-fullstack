@@ -84,10 +84,18 @@
 
     const updateTaskOptimized = async (id: string, updates: Partial<Task>) => {
       try {
-        await $fetch(`/api/tasks/${id}`, {
+        const { data } = await $fetch<{ data: Task }>(`/api/tasks/${id}`, {
           method: 'PATCH',
           body: updates,
         })
+
+        // Mettre à jour la tâche dans la liste locale
+        if (data) {
+          const index = tasks.value.findIndex((t: Task) => t.id === id)
+          if (index !== -1) {
+            tasks.value[index] = data
+          }
+        }
         return true
       } catch (err) {
         handleError(err)
