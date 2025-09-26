@@ -10,7 +10,6 @@ const props = defineProps<{
 
 const leadId = ref<string | null>(props.task.leadId || null)
 const priority = ref(props.task.priority)
-const status = computed(() => props.task.status)
 
 const assigneeTrigger = ref<HTMLElement | null>(null)
 const priorityTrigger = ref<HTMLElement | null>(null)
@@ -43,7 +42,7 @@ const statusIcon = computed(() => {
     'Backlog': resolveComponent('IconsIconBacklog'),
     'Paused': resolveComponent('IconsIconTaskStatus'),
   }
-  return map[status.value] || resolveComponent('IconsIconTaskStatus')
+  return map[props.task.status] || resolveComponent('IconsIconTaskStatus')
 })
 
 const statusColor = computed(() => {
@@ -55,7 +54,7 @@ const statusColor = computed(() => {
     'Backlog': '#f97316',
     'Paused': '#e11d48',
   }
-  return map[status.value] || '#0ea5e9'
+  return map[props.task.status] || '#0ea5e9'
 })
 
 const getTagBgClass = (tag: string) => {
@@ -105,7 +104,7 @@ const getTagBgClass = (tag: string) => {
           />
         </UBadge>
         <template #content>
-          <TaskStatusSelect :model-value="status" :task-id="task.id" @close="isOpenStatusPopup = false" />
+          <TaskStatusSelect :model-value="task.status" :task-id="task.id" @close="isOpenStatusPopup = false" />
         </template>
       </UPopover>
       <span v-if="displayMode === 'list'" class="font-medium text-white">
