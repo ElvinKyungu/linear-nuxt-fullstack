@@ -140,6 +140,12 @@ const getTagBgClass = (tag: string) => {
                 ref="assigneeTrigger"
                 :src="assigneeUser?.avatarUrl"
                 class="cursor-pointer"
+                :chip="{
+                  inset: true,
+                  color: 'success',
+                  position: 'bottom-right',
+                  class: 'border-0 ring-0 border-background ring-2 ring-black',
+                }"
                 @click="isAssigneePopupOpen = true"
               />
               <template #content>
