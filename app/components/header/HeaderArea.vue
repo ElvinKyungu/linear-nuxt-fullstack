@@ -9,12 +9,25 @@ withDefaults(defineProps<Props>(), {
 })
 import type { DropdownMenuItem } from '@nuxt/ui'
 
-const items = ref<DropdownMenuItem[][]>([
+const authStore = useAuthStore()
+const { user } = storeToRefs(authStore)
+
+const isProfileModalOpen = ref(false)
+
+const handleItemClick = async (item: DropdownMenuItem) => {
+  if (item.label === 'Profile') {
+    isProfileModalOpen.value = true
+  } else if (item.label === 'Logout') {
+    await authStore.logout()
+  }
+}
+
+const items = computed<DropdownMenuItem[][]>(() => [
   [
     {
-      label: 'Benjamin',
+      label: user.value ? `${user.value.name} ${user.value.lastName}` : 'Utilisateur',
       avatar: {
-        src: 'https://github.com/benjamincanac.png'
+        src: user.value?.avatarUrl || '/default-avatar.png'
       },
       type: 'label'
     }
@@ -22,82 +35,19 @@ const items = ref<DropdownMenuItem[][]>([
   [
     {
       label: 'Profile',
-      icon: 'i-lucide-user'
-    },
-    {
-      label: 'Billing',
-      icon: 'i-lucide-credit-card'
-    },
-    {
-      label: 'Settings',
-      icon: 'i-lucide-cog',
-      kbds: [',']
-    },
-    {
-      label: 'Keyboard shortcuts',
-      icon: 'i-lucide-monitor'
-    }
-  ],
-  [
-    {
-      label: 'Team',
-      icon: 'i-lucide-users'
-    },
-    {
-      label: 'Invite users',
-      icon: 'i-lucide-user-plus',
-      children: [
-        [
-          {
-            label: 'Email',
-            icon: 'i-lucide-mail'
-          },
-          {
-            label: 'Message',
-            icon: 'i-lucide-message-square'
-          }
-        ],
-        [
-          {
-            label: 'More',
-            icon: 'i-lucide-circle-plus'
-          }
-        ]
-      ]
-    },
-    {
-      label: 'New team',
-      icon: 'i-lucide-plus',
-      kbds: ['meta', 'n']
-    }
-  ],
-  [
-    {
-      label: 'GitHub',
-      icon: 'i-simple-icons-github',
-      to: 'https://github.com/ElvinKyungu/linear-nuxt-fullstack/',
-      target: '_blank'
-    },
-    {
-      label: 'Support',
-      icon: 'i-lucide-life-buoy',
-      to: '/docs/components/dropdown-menu'
-    },
-    {
-      label: 'API',
-      icon: 'i-lucide-cloud',
-      disabled: true
+      icon: 'i-lucide-user',
+      click: () => handleItemClick({ label: 'Profile' })
     }
   ],
   [
     {
       label: 'Logout',
       icon: 'i-lucide-log-out',
-      kbds: ['shift', 'meta', 'q']
+      kbds: ['shift', 'meta', 'q'],
+      click: () => handleItemClick({ label: 'Logout' })
     }
   ]
 ])
-// Vous pouvez ajouter d'autres logiques spécifiques au header ici
 </script>
 <template>
   <div
@@ -153,8 +103,32 @@ const items = ref<DropdownMenuItem[][]>([
       color="primary"
       class="bg-bordercolor/70 text-white cursor-pointer"
     >
-      <UButton icon="i-lucide-user" class="bg-bordercolor/70 text-white cursor-pointer" variant="outline" />
+      <UAvatar
+        :src="user?.avatarUrl"
+        :alt="user ? `${user.name} ${user.lastName}` : 'User'"
+        size="sm"
+        class="cursor-pointer"
+      />
     </UDropdownMenu>
+
+    <!-- Modal de modification de profil -->
+    <UModal v-model="isProfileModalOpen">
+      <UCard>
+        <template #header>
+          <div class="flex items-center justify-between">
+            <h3 class="text-lg font-semibold text-white">Modifier le profil</h3>
+            <UButton
+              color="gray"
+              variant="ghost"
+              icon="i-heroicons-x-mark-20-solid"
+              @click="isProfileModalOpen = false"
+            />
+          </div>
+        </template>
+
+        <ProfileEditForm @close="isProfileModalOpen = false" />
+      </UCard>
+    </UModal>
 
     </div>
   </div>
