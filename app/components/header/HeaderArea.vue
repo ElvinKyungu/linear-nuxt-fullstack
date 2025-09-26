@@ -41,12 +41,58 @@ const items = computed<DropdownMenuItem[][]>(() => [
   ],
   [
     {
+      label: 'Team',
+      icon: 'i-lucide-users'
+    },
+    {
+      label: 'Invite users',
+      icon: 'i-lucide-user-plus',
+      children: [
+        [
+          {
+            label: 'Email',
+            icon: 'i-lucide-mail'
+          },
+          {
+            label: 'Message',
+            icon: 'i-lucide-message-square'
+          }
+        ],
+        [
+          {
+            label: 'More',
+            icon: 'i-lucide-circle-plus'
+          }
+        ]
+      ]
+    },
+    {
+      label: 'New team',
+      icon: 'i-lucide-plus',
+      kbds: ['meta', 'n']
+    }
+  ],
+   [
+    {
+      label: 'GitHub',
+      icon: 'i-simple-icons-github',
+      to: 'https://github.com/elvinKyungu/linear-nuxt-fullstack',
+      target: '_blank'
+    },
+    {
+      label: 'API',
+      icon: 'i-lucide-cloud',
+      disabled: true
+    }
+  ],
+  [
+    {
       label: 'Logout',
       icon: 'i-lucide-log-out',
       kbds: ['shift', 'meta', 'q'],
       click: () => handleItemClick({ label: 'Logout' })
     }
-  ]
+  ],
 ])
 </script>
 <template>
@@ -103,16 +149,22 @@ const items = computed<DropdownMenuItem[][]>(() => [
       color="primary"
       class="bg-bordercolor/70 text-white cursor-pointer"
     >
-      <UAvatar
-        :src="user?.avatarUrl"
-        :alt="user ? `${user.name} ${user.lastName}` : 'User'"
-        size="sm"
-        class="cursor-pointer"
-      />
+      <UButton
+        variant="undefined"
+      >
+        <UAvatar
+          :src="user?.avatarUrl"
+          :alt="user ? `${user.name} ${user.lastName}` : 'User'"
+          size="sm"
+          class="cursor-pointer"
+        />
+        <span class="text-white font-bold cursor-pointer">{{ user?.name }} {{ user?.lastName }}</span>
+        <UIcon name="i-heroicons-chevron-down-20-solid" class="w-4 h-4 ml-1 text-white" />
+      </UButton>
     </UDropdownMenu>
 
     <!-- Modal de modification de profil -->
-    <UModal v-model="isProfileModalOpen">
+    <!-- <UModal v-model="isProfileModalOpen">
       <UCard>
         <template #header>
           <div class="flex items-center justify-between">
@@ -128,7 +180,7 @@ const items = computed<DropdownMenuItem[][]>(() => [
 
         <ProfileEditForm @close="isProfileModalOpen = false" />
       </UCard>
-    </UModal>
+    </UModal> -->
 
     </div>
   </div>
