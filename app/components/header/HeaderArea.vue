@@ -132,9 +132,9 @@ const items = computed<DropdownMenuItem[][]>(() => [
       <LanguageSelector />
 
       <!-- Notifications -->
-      <UButton variant="ghost" class="text-white hover:bg-white/10">
+      <!-- <UButton variant="ghost" class="text-white hover:bg-white/10">
         <UIcon name="uil:bell" class="w-5 h-5" />
-      </UButton>
+      </UButton> -->
 
      <UDropdownMenu
       :items="items"
@@ -150,7 +150,7 @@ const items = computed<DropdownMenuItem[][]>(() => [
          itemLeadingIcon: 'shrink-0 text-white',
       }"
       color="primary"
-      class="bg-bordercolor/70 text-white cursor-pointer"
+      class="border border-bordercolor/70 text-white cursor-pointer rounded-full"
     >
       <UButton
         variant="undefined"
@@ -165,26 +165,6 @@ const items = computed<DropdownMenuItem[][]>(() => [
         <UIcon name="i-heroicons-chevron-down-20-solid" class="w-4 h-4 ml-1 text-white" />
       </UButton>
     </UDropdownMenu>
-
-    <!-- Modal de modification de profil -->
-    <!-- <UModal v-model="isProfileModalOpen">
-      <UCard>
-        <template #header>
-          <div class="flex items-center justify-between">
-            <h3 class="text-lg font-semibold text-white">Modifier le profil</h3>
-            <UButton
-              color="gray"
-              variant="ghost"
-              icon="i-heroicons-x-mark-20-solid"
-              @click="isProfileModalOpen = false"
-            />
-          </div>
-        </template>
-
-        <ProfileEditForm @close="isProfileModalOpen = false" />
-      </UCard>
-    </UModal> -->
-
     </div>
   </div>
 </template>
