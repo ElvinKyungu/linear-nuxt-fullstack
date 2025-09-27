@@ -39,5 +39,42 @@
     "error": "Erreur",
     "success": "Succès",
     "language": "Langue"
+  },
+  "sidebar": {
+    "home": "Accueil",
+    "dashboard": "Tableau de bord",
+    "pages": "Pages",
+    "landing": "Page d'accueil",
+    "team": "Équipe",
+    "notFound": "Page non trouvée",
+    "table": "Tableau",
+    "images": "Images",
+    "file": "Fichier",
+    "auth": "Authentification",
+    "login": "Connexion",
+    "profile": "Profil",
+    "accessDenied": "Accès refusé",
+    "list": "Liste",
+    "openSourceLayouts": "Layouts open-source par Elvin Code",
+    "layoutsDescription": "Collection de layouts UI magnifiquement conçus et open-source construits avec NuxtUI."
+  },
+  "status": {
+    "todo": "À faire",
+    "inProgress": "En cours",
+    "technicalReview": "Revue technique",
+    "completed": "Terminé",
+    "done": "Terminé",
+    "backlog": "En attente",
+    "paused": "En pause",
+    "canceled": "Annulé",
+    "selectStatus": "Sélectionner le statut",
+    "searchStatus": "Rechercher un statut..."
+  },
+  "tasks": {
+    "filter": "Filtrer",
+    "display": "Affichage",
+    "loadingTasksAndUsers": "Chargement des tâches et utilisateurs...",
+    "dropTasksHere": "Déposez les tâches ici",
+    "isEmpty": "est vide"
   }
 }

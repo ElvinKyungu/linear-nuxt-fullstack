@@ -158,7 +158,7 @@ const items = computed<DropdownMenuItem[][]>(() => [
         <UAvatar
           :src="user?.avatarUrl"
           :alt="user ? `${user.name} ${user.lastName}` : 'User'"
-          size="sm"
+          size="xs"
           class="cursor-pointer"
         />
         <span class="text-white font-bold cursor-pointer">{{ user?.name }} {{ user?.lastName }}</span>

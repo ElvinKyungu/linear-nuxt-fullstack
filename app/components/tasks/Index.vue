@@ -19,6 +19,7 @@ interface DraggableEvent<T = any> {
 const tasksStore = useTasksStore()
 const usersStore = useUsersStore()
 const componentsStore = useComponentsStore()
+const { t } = useI18n()
 
 const isdisplayModalOpen = ref(false)
 const displayMode = ref<'list' | 'grid'>('list')
@@ -58,18 +59,18 @@ watch(
   { immediate: true, deep: true }
 )
 
-const taskStatuses = [
-  { key: 'Todo', label: 'To Do', color: '#0ea5e9', icon: resolveComponent('IconsIconTodo') },
-  { key: 'In progress', label: 'In Progress', color: '#facc15', icon: resolveComponent('IconsIconTaskStatus') },
-  { key: 'Technical Review', label: 'Technical Review', color: '#22c55e', icon: resolveComponent('IconsIconTaskStatus') },
-  { key: 'Completed', label: 'Completed', color: '#8b5cf6', icon: resolveComponent('IconsIconTaskStatus') },
-  { key: 'Backlog', label: 'Backlog', color: '#f97316', icon: resolveComponent('IconsIconBacklog') },
-  { key: 'Paused', label: 'Paused', color: '#e11d48', icon: resolveComponent('IconsIconTaskStatus') },
-]
+const taskStatuses = computed(() => [
+  { key: 'Todo', labelKey: 'status.todo', color: '#0ea5e9', icon: resolveComponent('IconsIconTodo') },
+  { key: 'In progress', labelKey: 'status.inProgress', color: '#facc15', icon: resolveComponent('IconsIconTaskStatus') },
+  { key: 'Technical Review', labelKey: 'status.technicalReview', color: '#22c55e', icon: resolveComponent('IconsIconTaskStatus') },
+  { key: 'Completed', labelKey: 'status.completed', color: '#8b5cf6', icon: resolveComponent('IconsIconTaskStatus') },
+  { key: 'Backlog', labelKey: 'status.backlog', color: '#f97316', icon: resolveComponent('IconsIconBacklog') },
+  { key: 'Paused', labelKey: 'status.paused', color: '#e11d48', icon: resolveComponent('IconsIconTaskStatus') },
+])
 
 // Computed pour les tâches groupées avec les tâches locales
 const groupedTasks = computed(() =>
-  taskStatuses.map((status) => ({
+  taskStatuses.value.map((status) => ({
     ...status,
     tasks: tasks.value.filter((task: Task) => task.status === status.key),
   }))
@@ -271,7 +272,7 @@ onMounted(async () => {
           @click="filterOpen = true"
         >
           <UIcon name="uil:filter" class="text-2xl" />
-          <span class="text-base">Filter</span>
+          <span class="text-base">{{ t('tasks.filter') }}</span>
         </UButton>
       </div>
       <div class="flex gap-3 items-center relative">
@@ -282,7 +283,7 @@ onMounted(async () => {
           @click="openDisplayMode"
         >
           <UIcon name="uil:sliders-v" class="text-xl" />
-          <span class="text-base">Display</span>
+          <span class="text-base">{{ t('tasks.display') }}</span>
         </UButton>
         <DisplayMode
           v-if="isdisplayModalOpen"
@@ -299,7 +300,7 @@ onMounted(async () => {
         v-if="tasksLoading && !tasks.length"
         class="text-center text-gray-400 p-4"
       >
-        Loading tasks and users...
+        {{ t('tasks.loadingTasksAndUsers') }}
       </div>
       <template v-else>
         <!-- Mode Liste -->
@@ -314,7 +315,7 @@ onMounted(async () => {
                 <div class="flex items-center gap-4 relative">
                   <component :is="status.icon" :stroke-color="status.color" transform-status="rotate(-90 7 7)" />
                   <span class="flex gap-4">
-                    <span>{{ status.label }}</span>
+                    <span>{{ t(status.labelKey) }}</span>
                     <span>{{ status.tasks.length }}</span>
                   </span>
                 </div>
@@ -379,7 +380,7 @@ onMounted(async () => {
                     <div class="flex items-center gap-3">
                       <component :is="status.icon" :stroke-color="status.color" transform-status="rotate(-90 7 7)" />
                       <span class="text-white font-medium">{{
-                        status.label
+                        t(status.labelKey)
                       }}</span>
                       <span class="text-gray-400 text-sm">{{
                         taskLists[status.key].value.length
@@ -434,7 +435,7 @@ onMounted(async () => {
                     class="border-2 border-dashed border-gray-600 rounded-lg p-8 text-center text-gray-400 min-h-[200px] flex items-center justify-center"
                   >
                     <span class="text-sm"
-                      >Drop tasks here<br />{{ status.label }} is empty</span
+                      >{{ t('tasks.dropTasksHere') }}<br />{{ t(status.labelKey) }} {{ t('tasks.isEmpty') }}</span
                     >
                   </div>
                 </div>
