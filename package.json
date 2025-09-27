@@ -27,6 +27,7 @@
     "@vueuse/nuxt": "^13.7.0",
     "bcryptjs": "^3.0.2",
     "eslint": "^9.33.0",
+    "flag-icons": "^7.5.0",
     "gsap": "^3.13.0",
     "jose": "^6.1.0",
     "jsonwebtoken": "^9.0.2",
