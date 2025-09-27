@@ -5,13 +5,15 @@ const password = ref('password123') // Mot de passe de demo
 const error = ref('')
 const loading = ref(false)
 
+const { t } = useI18n()
+
 const handleLogin = async () => {
   try {
     error.value = ''
     loading.value = true
     await authStore.login(email.value, password.value)
   } catch {
-    error.value = authStore.error || 'Erreur de connexion'
+    error.value = authStore.error || t('auth.connectionError')
   } finally {
     loading.value = false
   }
@@ -27,7 +29,7 @@ watchEffect(() => {
 
 <template>
   <div class="w-full max-w-md space-y-6">
-    <div class="text-2xl font-semibold">Welcome back,</div>
+    <div class="text-2xl font-semibold">{{ t('auth.welcomeBack') }}</div>
     <UButton
       block
       size="lg"
@@ -39,18 +41,18 @@ watchEffect(() => {
       <template #leading>
         <UIcon name="uil:github" class="w-5 h-5 text-white" />
       </template>
-      <span class="text-white">Sign in with GitHub</span>
+      <span class="text-white">{{ t('auth.signInWithGithub') }}</span>
     </UButton>
 
     <div class="grid w-full grid-cols-3 items-center text-gray-300 text-sm">
       <span class="col-span-1 w-full h-[2px] bg-bordercolor" />
-      <p class="text-center col-span-1 w-full">Or enter your details</p>
+      <p class="text-center col-span-1 w-full">{{ t('auth.orEnterDetails') }}</p>
       <span class="col-span-1 w-full h-[2px] bg-bordercolor" />
     </div>
 
     <form @submit.prevent="handleLogin">
       <div class="space-y-4 flex flex-col w-full relative">
-        <UFormGroup label="Email">
+        <UFormGroup :label="t('auth.email')">
           <UInput
             v-model="email"
             size="xl"
@@ -64,7 +66,7 @@ watchEffect(() => {
           />
         </UFormGroup>
 
-        <UFormGroup label="Password">
+        <UFormGroup :label="t('auth.password')">
           <UInput
             v-model="password"
             size="xl"
@@ -82,9 +84,9 @@ watchEffect(() => {
       <div class="flex items-center justify-between text-sm mt-5 text-gray-300">
         <label class="flex items-center space-x-2">
           <UCheckbox color="secondary" />
-          <span>Remember me</span>
+          <span>{{ t('auth.rememberMe') }}</span>
         </label>
-        <a href="#" class="hover:underline">Forgot Password?</a>
+        <a href="#" class="hover:underline">{{ t('auth.forgotPassword') }}</a>
       </div>
 
       <UButton
@@ -95,7 +97,7 @@ watchEffect(() => {
         :loading="loading"
         :disabled="loading"
       >
-        {{ loading ? 'Signing in...' : 'Sign in' }}
+        {{ loading ? t('auth.signingIn') : t('auth.signIn') }}
       </UButton>
 
       <p v-if="error" class="text-sm text-red-500 mt-2 text-center">
@@ -104,9 +106,9 @@ watchEffect(() => {
     </form>
 
     <p class="text-sm text-center flex gap-2 text-gray-300">
-      Don't have an account?
+      {{ t('auth.dontHaveAccount') }}
       <NuxtLink to="/signup" class="hover:underline text-blue-300">
-        Register now
+        {{ t('auth.registerNow') }}
       </NuxtLink>
     </p>
   </div>

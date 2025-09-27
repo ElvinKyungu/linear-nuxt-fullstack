@@ -13,9 +13,40 @@ export default defineNuxtConfig({
     '@nuxt/test-utils',
     '@pinia/nuxt',
     '@nuxt/content',
-    '@nuxt/scripts',
     // Pas de modules d'authentification
+    '@nuxt/scripts',
+    '@nuxtjs/i18n',
   ],
+
+  i18n: {
+    locales: [
+      {
+        code: 'en',
+        iso: 'en-US',
+        name: 'English',
+        file: 'en.json',
+        flag: 'US'
+      },
+      {
+        code: 'fr',
+        iso: 'fr-FR',
+        name: 'Français',
+        file: 'fr.json',
+        flag: 'FR'
+      }
+    ],
+    defaultLocale: 'fr',
+    lazy: true,
+    langDir: 'locales/',
+    strategy: 'prefix_except_default',
+    detectBrowserLanguage: {
+      useCookie: true,
+      cookieKey: 'i18n_redirected',
+      redirectOn: 'root',
+      alwaysRedirect: false,
+      fallbackLocale: 'fr'
+    }
+  },
   runtimeConfig: {
     jwtSecret: process.env.JWT_SECRET || 'fallback-secret-key-for-demo',
     public: {
@@ -38,4 +69,7 @@ export default defineNuxtConfig({
       prefix: 'Icons',
     },
   ],
+  devServer: {
+    port: 3000,
+  }
 })

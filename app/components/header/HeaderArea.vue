@@ -128,6 +128,9 @@ const items = computed<DropdownMenuItem[][]>(() => [
         </UInput>
       </div>
 
+      <!-- Sélecteur de langue -->
+      <LanguageSelector />
+
       <!-- Notifications -->
       <UButton variant="ghost" class="text-white hover:bg-white/10">
         <UIcon name="uil:bell" class="w-5 h-5" />

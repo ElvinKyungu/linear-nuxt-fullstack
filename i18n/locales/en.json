@@ -1,0 +1,74 @@
+{
+  "auth": {
+    "welcomeBack": "Welcome back,",
+    "signInWithGithub": "Sign in with GitHub",
+    "orEnterDetails": "Or enter your details",
+    "email": "Email",
+    "password": "Password",
+    "rememberMe": "Remember me",
+    "forgotPassword": "Forgot Password?",
+    "signingIn": "Signing in...",
+    "signIn": "Sign in",
+    "dontHaveAccount": "Don't have an account?",
+    "registerNow": "Register now",
+    "connectionError": "Connection error",
+    "signUp": "Sign up",
+    "createAccount": "Create an account",
+    "alreadyHaveAccount": "Already have an account?",
+    "signInNow": "Sign in now",
+    "createYourAccount": "Create your account",
+    "fillFormToSignup": "Please fill in the form to sign up",
+    "firstName": "First Name",
+    "lastName": "Last Name",
+    "confirmPassword": "Confirm Password",
+    "creatingAccount": "Creating account...",
+    "passwordsDontMatch": "Passwords don't match.",
+    "signupSuccess": "Signup successful! Check your mailbox.",
+    "signInHere": "Sign in here"
+  },
+  "navigation": {
+    "home": "Home",
+    "tasks": "Tasks",
+    "projects": "Projects",
+    "team": "Team",
+    "inbox": "Inbox",
+    "settings": "Settings"
+  },
+  "tasks": {
+    "createTask": "Create task",
+    "title": "Title",
+    "description": "Description",
+    "priority": "Priority",
+    "assignee": "Assignee",
+    "status": "Status",
+    "dueDate": "Due date",
+    "save": "Save",
+    "cancel": "Cancel",
+    "edit": "Edit",
+    "delete": "Delete"
+  },
+  "priority": {
+    "urgent": "Urgent",
+    "high": "High",
+    "medium": "Medium",
+    "low": "Low",
+    "noPriority": "No priority"
+  },
+  "status": {
+    "todo": "To do",
+    "inProgress": "In progress",
+    "done": "Done",
+    "backlog": "Backlog"
+  },
+  "common": {
+    "loading": "Loading...",
+    "error": "Error",
+    "success": "Success",
+    "confirm": "Confirm",
+    "close": "Close",
+    "search": "Search",
+    "filter": "Filter",
+    "sort": "Sort",
+    "language": "Language"
+  }
+}

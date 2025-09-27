@@ -37,7 +37,7 @@ const handleSelect = async (priority: Priority) => {
         class="cursor-pointer p-1 hover:bg-white/10 rounded"
         @click="handleSelect(p)"
       >
-        <div class="flex items-center gap-3">
+        <div class="flex items-center gap-1">
           <UButton variant="ghost" class="cursor-pointer text-white">
             <component :is="p.icon" />
           </UButton>
