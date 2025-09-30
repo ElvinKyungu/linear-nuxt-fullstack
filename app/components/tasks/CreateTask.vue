@@ -12,6 +12,7 @@ const props = defineProps<{
 }>()
 const tasksStore = useTasksStore()
 const componentsStore = useComponentsStore()
+const { t } = useI18n()
 
 const popupRef = ref<HTMLElement | null>(null)
 const priorityTrigger = ref<HTMLElement | null>(null)
@@ -78,30 +79,30 @@ onMounted(() => {
       >
         <UIcon name="uil:times" size="24" />
       </button>
-      <h1 class="text-2xl font-bold mb-4 text-white">Add New Task</h1>
+      <h1 class="text-2xl font-bold mb-4 text-white">{{ t('tasks.addNewTask') }}</h1>
 
       <form class="space-y-4 flex flex-col" @submit.prevent="handleSubmit">
-        <UFormGroup label="Title" class="w-full">
+        <UFormGroup :label="t('tasks.title')" class="w-full">
           <UInput
             v-model="form.title"
             class="u-input border border-bordercolor"
-            placeholder="Task title"
+            :placeholder="t('tasks.taskTitle')"
             size="xl"
             variant="none"
             required
           />
         </UFormGroup>
 
-        <UFormGroup label="Description">
+        <UFormGroup :label="t('tasks.description')">
           <UTextarea
             v-model="form.description"
             class="u-input border border-bordercolor"
-            placeholder="Task description"
+            :placeholder="t('tasks.taskDescription')"
             size="xl"
             variant="none"
           />
         </UFormGroup>
-        <UFormGroup label="actions" class="flex flex-wrap gap-2">
+        <UFormGroup :label="t('tasks.actions')" class="flex flex-wrap gap-2">
           <div class="flex relative">
             <UButton
               ref="statusTrigger"
@@ -109,9 +110,9 @@ onMounted(() => {
               @click="openStatusPopup"
             >
               <IconTaskStatus />
-              <span class="text-[15px] font-medium">In progress</span>
+              <span class="text-[15px] font-medium">{{ t('tasks.inProgress') }}</span>
             </UButton>
-            
+
           </div>
           <div class="flex relative">
             <UButton
@@ -120,9 +121,9 @@ onMounted(() => {
               @click="openPriorityPopup"
             >
               <IconNoPriority />
-              <span class="text-[15px] font-medium">No priority</span>
+              <span class="text-[15px] font-medium">{{ t('tasks.noPriority') }}</span>
             </UButton>
-            
+
           </div>
           <div class="flex relative">
             <UButton
@@ -130,9 +131,9 @@ onMounted(() => {
               @click="openProjectPopup"
             >
               <UIcon name="uil:folder" class="text-lg" />
-              <span class="text-[15px] font-medium">Project</span>
+              <span class="text-[15px] font-medium">{{ t('tasks.project') }}</span>
             </UButton>
-            
+
           </div>
           <div class="flex relative">
             <UButton
@@ -141,13 +142,13 @@ onMounted(() => {
               @click="openAssigneePopup"
             >
               <UIcon name="uil:user" class="text-lg" />
-              <span class="text-[15px] font-medium">Unassigned</span>
+              <span class="text-[15px] font-medium">{{ t('tasks.unassigned') }}</span>
             </UButton>
-            
+
           </div>
         </UFormGroup>
         <div class="flex justify-end">
-          <UButton type="submit" color="secondary">Add Task</UButton>
+          <UButton type="submit" color="secondary">{{ t('tasks.addTask') }}</UButton>
         </div>
       </form>
     </div>

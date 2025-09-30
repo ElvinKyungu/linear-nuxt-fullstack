@@ -45,7 +45,21 @@
     "save": "Sauvegarder",
     "cancel": "Annuler",
     "edit": "Modifier",
-    "delete": "Supprimer"
+    "delete": "Supprimer",
+    "filter": "Filtrer",
+    "display": "Affichage",
+    "loadingTasksAndUsers": "Chargement des tâches et utilisateurs...",
+    "dropTasksHere": "Déposer les tâches ici",
+    "isEmpty": "est vide",
+    "addNewTask": "Ajouter une nouvelle tâche",
+    "taskTitle": "Titre de la tâche",
+    "taskDescription": "Description de la tâche",
+    "actions": "Actions",
+    "inProgress": "En cours",
+    "noPriority": "Aucune priorité",
+    "project": "Projet",
+    "unassigned": "Non assigné",
+    "addTask": "Ajouter une tâche"
   },
   "priority": {
     "urgent": "Urgent",
@@ -58,7 +72,12 @@
     "todo": "À faire",
     "inProgress": "En cours",
     "done": "Terminé",
-    "backlog": "Backlog"
+    "backlog": "Backlog",
+    "paused": "En pause",
+    "completed": "Complété",
+    "technicalReview": "Revue technique",
+    "selectStatus": "Sélectionner le statut",
+    "searchStatus": "Rechercher un statut..."
   },
   "common": {
     "loading": "Chargement...",
@@ -66,10 +85,22 @@
     "success": "Succès",
     "confirm": "Confirmer",
     "close": "Fermer",
-    "search": "Rechercher",
+    "search": "Rechercher...",
     "filter": "Filtrer",
     "sort": "Trier",
     "language": "Langue"
+  },
+  "header": {
+    "profile": "Profil",
+    "logout": "Déconnexion",
+    "team": "Équipe",
+    "inviteUsers": "Inviter des utilisateurs",
+    "email": "Email",
+    "message": "Message",
+    "more": "Plus",
+    "newTeam": "Nouvelle équipe",
+    "github": "GitHub",
+    "api": "API"
   },
   "sidebar": {
     "home": "Accueil",

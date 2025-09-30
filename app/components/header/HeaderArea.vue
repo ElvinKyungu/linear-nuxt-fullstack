@@ -11,13 +11,14 @@ import type { DropdownMenuItem } from '@nuxt/ui'
 
 const authStore = useAuthStore()
 const { user } = storeToRefs(authStore)
+const { t } = useI18n()
 
 const isProfileModalOpen = ref(false)
 
 const handleItemClick = async (item: DropdownMenuItem) => {
-  if (item.label === 'Profile') {
+  if (item.label === t('header.profile')) {
     isProfileModalOpen.value = true
-  } else if (item.label === 'Logout') {
+  } else if (item.label === t('header.logout')) {
     await authStore.logout()
   }
 }
@@ -34,63 +35,63 @@ const items = computed<DropdownMenuItem[][]>(() => [
   ],
   [
     {
-      label: 'Profile',
+      label: t('header.profile'),
       icon: 'i-lucide-user',
-      click: () => handleItemClick({ label: 'Profile' })
+      click: () => handleItemClick({ label: t('header.profile') })
     }
   ],
   [
     {
-      label: 'Team',
+      label: t('header.team'),
       icon: 'i-lucide-users'
     },
     {
-      label: 'Invite users',
+      label: t('header.inviteUsers'),
       icon: 'i-lucide-user-plus',
       children: [
         [
           {
-            label: 'Email',
+            label: t('header.email'),
             icon: 'i-lucide-mail'
           },
           {
-            label: 'Message',
+            label: t('header.message'),
             icon: 'i-lucide-message-square'
           }
         ],
         [
           {
-            label: 'More',
+            label: t('header.more'),
             icon: 'i-lucide-circle-plus'
           }
         ]
       ]
     },
     {
-      label: 'New team',
+      label: t('header.newTeam'),
       icon: 'i-lucide-plus',
       kbds: ['meta', 'n']
     }
   ],
    [
     {
-      label: 'GitHub',
+      label: t('header.github'),
       icon: 'i-simple-icons-github',
       to: 'https://github.com/elvinKyungu/linear-nuxt-fullstack',
       target: '_blank'
     },
     {
-      label: 'API',
+      label: t('header.api'),
       icon: 'i-lucide-cloud',
       disabled: true
     }
   ],
   [
     {
-      label: 'Logout',
+      label: t('header.logout'),
       icon: 'i-lucide-log-out',
       kbds: ['shift', 'meta', 'q'],
-      click: () => handleItemClick({ label: 'Logout' })
+      click: () => handleItemClick({ label: t('header.logout') })
     }
   ],
 ])
@@ -121,7 +122,7 @@ const items = computed<DropdownMenuItem[][]>(() => [
     <div class="flex items-center gap-3">
       <!-- Recherche (optionnelle) -->
       <div class="hidden lg:block">
-        <UInput placeholder="Search..." class="w-64 bg-background input">
+        <UInput :placeholder="t('common.search')" class="w-64 bg-background input">
           <template #leading>
             <UIcon name="uil:search" class="w-4 h-4 text-gray-400" />
           </template>
@@ -170,6 +171,7 @@ const items = computed<DropdownMenuItem[][]>(() => [
 </template>
 
 <style scoped>
-
-
+:deep(.u-input input) {
+  color: #fff !important;
+}
 </style>

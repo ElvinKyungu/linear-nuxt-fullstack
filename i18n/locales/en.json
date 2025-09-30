@@ -45,7 +45,21 @@
     "save": "Save",
     "cancel": "Cancel",
     "edit": "Edit",
-    "delete": "Delete"
+    "delete": "Delete",
+    "filter": "Filter",
+    "display": "Display",
+    "loadingTasksAndUsers": "Loading tasks and users...",
+    "dropTasksHere": "Drop tasks here",
+    "isEmpty": "is empty",
+    "addNewTask": "Add New Task",
+    "taskTitle": "Task title",
+    "taskDescription": "Task description",
+    "actions": "Actions",
+    "inProgress": "In progress",
+    "noPriority": "No priority",
+    "project": "Project",
+    "unassigned": "Unassigned",
+    "addTask": "Add Task"
   },
   "priority": {
     "urgent": "Urgent",
@@ -58,7 +72,12 @@
     "todo": "To do",
     "inProgress": "In progress",
     "done": "Done",
-    "backlog": "Backlog"
+    "backlog": "Backlog",
+    "paused": "Paused",
+    "completed": "Completed",
+    "technicalReview": "Technical Review",
+    "selectStatus": "Select status",
+    "searchStatus": "Search status..."
   },
   "common": {
     "loading": "Loading...",
@@ -66,10 +85,22 @@
     "success": "Success",
     "confirm": "Confirm",
     "close": "Close",
-    "search": "Search",
+    "search": "Search...",
     "filter": "Filter",
     "sort": "Sort",
     "language": "Language"
+  },
+  "header": {
+    "profile": "Profile",
+    "logout": "Logout",
+    "team": "Team",
+    "inviteUsers": "Invite users",
+    "email": "Email",
+    "message": "Message",
+    "more": "More",
+    "newTeam": "New team",
+    "github": "GitHub",
+    "api": "API"
   },
   "sidebar": {
     "home": "Home",
