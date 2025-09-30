@@ -1,0 +1,80 @@
+{
+  "auth": {
+    "welcomeBack": "Bon retour,",
+    "signInWithGithub": "Se connecter avec GitHub",
+    "orEnterDetails": "Ou entrez vos détails",
+    "email": "Email",
+    "password": "Mot de passe",
+    "rememberMe": "Se souvenir de moi",
+    "forgotPassword": "Mot de passe oublié ?",
+    "signingIn": "Connexion...",
+    "signIn": "Se connecter",
+    "dontHaveAccount": "Vous n'avez pas de compte ?",
+    "registerNow": "S'inscrire maintenant",
+    "connectionError": "Erreur de connexion",
+    "signUp": "S'inscrire",
+    "createAccount": "Créer un compte",
+    "alreadyHaveAccount": "Vous avez déjà un compte ?",
+    "signInNow": "Se connecter maintenant",
+    "createYourAccount": "Créez votre compte",
+    "fillFormToSignup": "Veuillez remplir le formulaire pour vous inscrire",
+    "firstName": "Prénom",
+    "lastName": "Nom de famille",
+    "confirmPassword": "Confirmer le mot de passe",
+    "creatingAccount": "Création du compte...",
+    "passwordsDontMatch": "Les mots de passe ne correspondent pas.",
+    "signupSuccess": "Inscription réussie ! Vérifiez votre boîte mail.",
+    "signInHere": "Se connecter ici"
+  },
+  "navigation": {
+    "home": "Accueil",
+    "tasks": "Tâches",
+    "projects": "Projets",
+    "team": "Équipe",
+    "inbox": "Boîte de réception",
+    "settings": "Paramètres"
+  },
+  "common": {
+    "loading": "Chargement...",
+    "error": "Erreur",
+    "success": "Succès",
+    "language": "Langue"
+  },
+  "sidebar": {
+    "home": "Accueil",
+    "dashboard": "Tableau de bord",
+    "pages": "Pages",
+    "landing": "Page d'accueil",
+    "team": "Équipe",
+    "notFound": "Page non trouvée",
+    "table": "Tableau",
+    "images": "Images",
+    "file": "Fichier",
+    "auth": "Authentification",
+    "login": "Connexion",
+    "profile": "Profil",
+    "accessDenied": "Accès refusé",
+    "list": "Liste",
+    "openSourceLayouts": "Layouts open-source par Elvin Code",
+    "layoutsDescription": "Collection de layouts UI magnifiquement conçus et open-source construits avec NuxtUI."
+  },
+  "status": {
+    "todo": "À faire",
+    "inProgress": "En cours",
+    "technicalReview": "Revue technique",
+    "completed": "Terminé",
+    "done": "Terminé",
+    "backlog": "En attente",
+    "paused": "En pause",
+    "canceled": "Annulé",
+    "selectStatus": "Sélectionner le statut",
+    "searchStatus": "Rechercher un statut..."
+  },
+  "tasks": {
+    "filter": "Filtrer",
+    "display": "Affichage",
+    "loadingTasksAndUsers": "Chargement des tâches et utilisateurs...",
+    "dropTasksHere": "Déposez les tâches ici",
+    "isEmpty": "est vide"
+  }
+}

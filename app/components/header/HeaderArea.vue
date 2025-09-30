@@ -1,5 +1,6 @@
 <!-- HeaderArea.vue -->
- <script setup lang="ts">
+<script setup lang="ts">
+import type { DropdownMenuItem } from '@nuxt/ui'
 interface Props {
   pageTitle?: string
 }
@@ -7,17 +8,17 @@ interface Props {
 withDefaults(defineProps<Props>(), {
   pageTitle: 'Dashboard',
 })
-import type { DropdownMenuItem } from '@nuxt/ui'
 
 const authStore = useAuthStore()
 const { user } = storeToRefs(authStore)
+const { t } = useI18n()
 
 const isProfileModalOpen = ref(false)
 
 const handleItemClick = async (item: DropdownMenuItem) => {
-  if (item.label === 'Profile') {
+  if (item.label === t('header.profile')) {
     isProfileModalOpen.value = true
-  } else if (item.label === 'Logout') {
+  } else if (item.label === t('header.logout')) {
     await authStore.logout()
   }
 }
@@ -34,63 +35,63 @@ const items = computed<DropdownMenuItem[][]>(() => [
   ],
   [
     {
-      label: 'Profile',
+      label: t('header.profile'),
       icon: 'i-lucide-user',
-      click: () => handleItemClick({ label: 'Profile' })
+      click: () => handleItemClick({ label: t('header.profile') })
     }
   ],
   [
     {
-      label: 'Team',
+      label: t('header.team'),
       icon: 'i-lucide-users'
     },
     {
-      label: 'Invite users',
+      label: t('header.inviteUsers'),
       icon: 'i-lucide-user-plus',
       children: [
         [
           {
-            label: 'Email',
+            label: t('header.email'),
             icon: 'i-lucide-mail'
           },
           {
-            label: 'Message',
+            label: t('header.message'),
             icon: 'i-lucide-message-square'
           }
         ],
         [
           {
-            label: 'More',
+            label: t('header.more'),
             icon: 'i-lucide-circle-plus'
           }
         ]
       ]
     },
     {
-      label: 'New team',
+      label: t('header.newTeam'),
       icon: 'i-lucide-plus',
       kbds: ['meta', 'n']
     }
   ],
    [
     {
-      label: 'GitHub',
+      label: t('header.github'),
       icon: 'i-simple-icons-github',
       to: 'https://github.com/elvinKyungu/linear-nuxt-fullstack',
       target: '_blank'
     },
     {
-      label: 'API',
+      label: t('header.api'),
       icon: 'i-lucide-cloud',
       disabled: true
     }
   ],
   [
     {
-      label: 'Logout',
+      label: t('header.logout'),
       icon: 'i-lucide-log-out',
       kbds: ['shift', 'meta', 'q'],
-      click: () => handleItemClick({ label: 'Logout' })
+      click: () => handleItemClick({ label: t('header.logout') })
     }
   ],
 ])
@@ -99,12 +100,12 @@ const items = computed<DropdownMenuItem[][]>(() => [
   <div
     class="flex items-center justify-between p-4 bg-primary border-b border-bordercolor"
   >
-    <!-- Section gauche avec toggle sidebar -->
+    <!-- Left section with sidebar toggle -->
     <div class="flex items-center gap-4">
-      <!-- Bouton toggle sidebar (visible uniquement sur desktop) -->
+      <!-- Sidebar toggle button (visible only on desktop) -->
       <slot name="sidebar-toggle" />
 
-      <!-- Titre ou breadcrumb -->
+      <!-- Title or breadcrumb -->
       <div class="flex items-center gap-2">
         <h1 class="text-xl font-semibold text-white">
           {{ pageTitle }}
@@ -112,26 +113,29 @@ const items = computed<DropdownMenuItem[][]>(() => [
       </div>
     </div>
 
-    <!-- Section centrale (optionnelle) -->
+    <!-- Center section (optional) -->
     <div class="hidden md:flex items-center gap-4">
       <slot name="center-content" />
     </div>
 
-    <!-- Section droite -->
+    <!-- Right section -->
     <div class="flex items-center gap-3">
-      <!-- Recherche (optionnelle) -->
+      <!-- Search (optional) -->
       <div class="hidden lg:block">
-        <UInput placeholder="Search..." class="w-64 bg-background input">
+        <UInput :placeholder="t('common.search')" class="w-64 bg-background input">
           <template #leading>
             <UIcon name="uil:search" class="w-4 h-4 text-gray-400" />
           </template>
         </UInput>
       </div>
 
+      <!-- Language selector -->
+      <LanguageSelector />
+
       <!-- Notifications -->
-      <UButton variant="ghost" class="text-white hover:bg-white/10">
+      <!-- <UButton variant="ghost" class="text-white hover:bg-white/10">
         <UIcon name="uil:bell" class="w-5 h-5" />
-      </UButton>
+      </UButton> -->
 
      <UDropdownMenu
       :items="items"
@@ -147,7 +151,7 @@ const items = computed<DropdownMenuItem[][]>(() => [
          itemLeadingIcon: 'shrink-0 text-white',
       }"
       color="primary"
-      class="bg-bordercolor/70 text-white cursor-pointer"
+      class="border border-bordercolor/70 text-white cursor-pointer rounded-full"
     >
       <UButton
         variant="undefined"
@@ -155,38 +159,19 @@ const items = computed<DropdownMenuItem[][]>(() => [
         <UAvatar
           :src="user?.avatarUrl"
           :alt="user ? `${user.name} ${user.lastName}` : 'User'"
-          size="sm"
+          size="xs"
           class="cursor-pointer"
         />
         <span class="text-white font-bold cursor-pointer">{{ user?.name }} {{ user?.lastName }}</span>
         <UIcon name="i-heroicons-chevron-down-20-solid" class="w-4 h-4 ml-1 text-white" />
       </UButton>
     </UDropdownMenu>
-
-    <!-- Modal de modification de profil -->
-    <!-- <UModal v-model="isProfileModalOpen">
-      <UCard>
-        <template #header>
-          <div class="flex items-center justify-between">
-            <h3 class="text-lg font-semibold text-white">Modifier le profil</h3>
-            <UButton
-              color="gray"
-              variant="ghost"
-              icon="i-heroicons-x-mark-20-solid"
-              @click="isProfileModalOpen = false"
-            />
-          </div>
-        </template>
-
-        <ProfileEditForm @close="isProfileModalOpen = false" />
-      </UCard>
-    </UModal> -->
-
     </div>
   </div>
 </template>
 
 <style scoped>
-
-
+:deep(.u-input input) {
+  color: #fff !important;
+}
 </style>

@@ -1,0 +1,80 @@
+{
+  "auth": {
+    "welcomeBack": "Welcome back,",
+    "signInWithGithub": "Sign in with GitHub",
+    "orEnterDetails": "Or enter your details",
+    "email": "Email",
+    "password": "Password",
+    "rememberMe": "Remember me",
+    "forgotPassword": "Forgot Password?",
+    "signingIn": "Signing in...",
+    "signIn": "Sign in",
+    "dontHaveAccount": "Don't have an account?",
+    "registerNow": "Register now",
+    "connectionError": "Connection error",
+    "signUp": "Sign up",
+    "createAccount": "Create an account",
+    "alreadyHaveAccount": "Already have an account?",
+    "signInNow": "Sign in now",
+    "createYourAccount": "Create your account",
+    "fillFormToSignup": "Please fill in the form to sign up",
+    "firstName": "First Name",
+    "lastName": "Last Name",
+    "confirmPassword": "Confirm Password",
+    "creatingAccount": "Creating account...",
+    "passwordsDontMatch": "Passwords don't match.",
+    "signupSuccess": "Signup successful! Check your mailbox.",
+    "signInHere": "Sign in here"
+  },
+  "navigation": {
+    "home": "Home",
+    "tasks": "Tasks",
+    "projects": "Projects",
+    "team": "Team",
+    "inbox": "Inbox",
+    "settings": "Settings"
+  },
+  "common": {
+    "loading": "Loading...",
+    "error": "Error",
+    "success": "Success",
+    "language": "Language"
+  },
+  "sidebar": {
+    "home": "Home",
+    "dashboard": "Dashboard",
+    "pages": "Pages",
+    "landing": "Landing",
+    "team": "Team",
+    "notFound": "Not Found",
+    "table": "Table",
+    "images": "Images",
+    "file": "File",
+    "auth": "Auth",
+    "login": "Login",
+    "profile": "Profile",
+    "accessDenied": "Access Denied",
+    "list": "List",
+    "openSourceLayouts": "Open-source layouts by Elvin Code",
+    "layoutsDescription": "Collection of beautifully crafted open-source layouts UI built with NuxtUI."
+  },
+  "status": {
+    "todo": "Todo",
+    "inProgress": "In Progress",
+    "technicalReview": "Technical Review",
+    "completed": "Completed",
+    "done": "Done",
+    "backlog": "Backlog",
+    "paused": "Paused",
+    "canceled": "Canceled",
+    "selectStatus": "Select Status",
+    "searchStatus": "Search status..."
+  },
+  "tasks": {
+    "filter": "Filter",
+    "display": "Display",
+    "loadingTasksAndUsers": "Loading tasks and users...",
+    "dropTasksHere": "Drop tasks here",
+    "isEmpty": "is empty"
+  }
+}

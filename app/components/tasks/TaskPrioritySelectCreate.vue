@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import type { Priority } from '@/types/priority'
-const props = defineProps<{
-  taskId: string
+
+defineProps<{
   modelValue: string
-  triggerElement?: any
 }>()
 
-const emit = defineEmits(['update:model-value', 'close'])
+const emit = defineEmits(['select'])
+
 const priorityMap: Priority[] = [
   { id: 0, name: 'No priority', icon: resolveComponent('IconsIconNoPriority') },
   { id: 1, name: 'Urgent', icon: resolveComponent('IconsIconUrgent') },
@@ -14,16 +14,14 @@ const priorityMap: Priority[] = [
   { id: 3, name: 'Medium', icon: resolveComponent('IconsIconMedium') },
   { id: 4, name: 'Low', icon: resolveComponent('IconsIconLow') },
 ]
+
 const filter = ref('')
 const filtered = computed(() =>
   priorityMap.filter(p => p.name.toLowerCase().includes(filter.value.toLowerCase()))
 )
 
-const store = useTasksStore()
-
-const handleSelect = async (priority: Priority) => {
-  await store.updateTask(props.taskId, { priority: priority.name })
-  emit('close')
+const handleSelect = (priority: Priority) => {
+  emit('select', priority.name)
 }
 </script>
 

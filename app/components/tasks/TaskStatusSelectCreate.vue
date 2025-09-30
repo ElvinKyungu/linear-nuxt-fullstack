@@ -7,13 +7,11 @@ interface Status {
   color: string
 }
 
-const props = defineProps<{
-  taskId: string
+defineProps<{
   modelValue: string
-  triggerElement?: any
 }>()
 
-const emit = defineEmits(['update:model-value', 'close'])
+const emit = defineEmits(['select'])
 const { t } = useI18n()
 
 const statusMap: Status[] = [
@@ -24,16 +22,14 @@ const statusMap: Status[] = [
   { id: 4, nameKey: 'status.backlog', originalName: 'Backlog', icon: resolveComponent('IconsIconBacklog'), color: '#f97316' },
   { id: 5, nameKey: 'status.paused', originalName: 'Paused', icon: resolveComponent('IconsIconTaskStatus'), color: '#e11d48' },
 ]
+
 const filter = ref('')
 const filtered = computed(() =>
   statusMap.filter(s => t(s.nameKey).toLowerCase().includes(filter.value.toLowerCase()))
 )
 
-const store = useTasksStore()
-
-const handleSelect = async (status: Status) => {
-  await store.updateTask(props.taskId, { status: status.originalName })
-  emit('close')
+const handleSelect = (status: Status) => {
+  emit('select', status.originalName)
 }
 </script>
 

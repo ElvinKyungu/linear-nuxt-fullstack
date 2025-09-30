@@ -3,13 +3,13 @@
 import gsap from 'gsap'
 
 interface MenuItem {
-  label: string
+  labelKey: string
   icon: string
   to: string
 }
 
 interface MenuGroup {
-  label: string
+  labelKey: string
   icon?: string
   isOpen: boolean
   items: MenuItem[]
@@ -17,6 +17,7 @@ interface MenuGroup {
 
 const sidebarRef = ref(null)
 const sidebarStore = useSidebarStore()
+const { t } = useI18n()
 
 // Fermer la sidebar quand on clique à l'extérieur (sur mobile)
 onClickOutside(sidebarRef, () => {
@@ -27,32 +28,32 @@ onClickOutside(sidebarRef, () => {
 
 const menuGroups: ref<MenuGroup[]> = ref([
   {
-    label: 'Home',
+    labelKey: 'sidebar.home',
     isOpen: true,
-    items: [{ label: 'Dashboard', icon: 'uil:home', to: '/' }],
+    items: [{ labelKey: 'sidebar.dashboard', icon: 'uil:home', to: '/' }],
   },
   {
-    label: 'Pages',
+    labelKey: 'sidebar.pages',
     icon: 'uil:briefcase',
     isOpen: true,
     items: [
-      { label: 'Landing', icon: 'uil:globe', to: '/' },
-      { label: 'Team', icon: 'uil:user', to: '/team' },
-      { label: 'Not Found', icon: 'uil:exclamation-circle', to: '/notfound' },
-      { label: 'Table', icon: 'uil:table', to: '/' },
-      { label: 'Images', icon: 'uil:image', to: '/' },
-      { label: 'File', icon: 'uil:file-alt', to: '/' },
+      { labelKey: 'sidebar.landing', icon: 'uil:globe', to: '/' },
+      { labelKey: 'sidebar.team', icon: 'uil:user', to: '/team' },
+      { labelKey: 'sidebar.notFound', icon: 'uil:exclamation-circle', to: '/notfound' },
+      { labelKey: 'sidebar.table', icon: 'uil:table', to: '/' },
+      { labelKey: 'sidebar.images', icon: 'uil:image', to: '/' },
+      { labelKey: 'sidebar.file', icon: 'uil:file-alt', to: '/' },
     ],
   },
   {
-    label: 'Auth',
+    labelKey: 'sidebar.auth',
     icon: 'uil:user',
     isOpen: true,
     items: [
-      { label: 'Login', icon: 'uil:sign-in-alt', to: '/' },
-      { label: 'Profile', icon: 'uil:user', to: '/' },
-      { label: 'Access Denied', icon: 'uil:lock', to: '/' },
-      { label: 'List', icon: 'uil:list-ul', to: '/' },
+      { labelKey: 'sidebar.login', icon: 'uil:sign-in-alt', to: '/' },
+      { labelKey: 'sidebar.profile', icon: 'uil:user', to: '/' },
+      { labelKey: 'sidebar.accessDenied', icon: 'uil:lock', to: '/' },
+      { labelKey: 'sidebar.list', icon: 'uil:list-ul', to: '/' },
     ],
   },
 ])
@@ -142,9 +143,9 @@ const sidebarVisibility = computed(() => {
           <li v-for="(group, i) in menuGroups" :key="i" class="mb-2">
             <button
               class="w-full flex items-center justify-between py-2 px-3 font-semibold uppercase text-gray-300 hover:text-white transition-colors"
-              @click="toggleGroup(group, group.label)"
+              @click="toggleGroup(group, group.labelKey)"
             >
-              <span>{{ group.label }}</span>
+              <span>{{ t(group.labelKey) }}</span>
               <UIcon
                 name="uil:angle-down"
                 class="w-8 h-8 transition-transform duration-200"
@@ -155,7 +156,7 @@ const sidebarVisibility = computed(() => {
             <!-- sous-menu -->
             <ul
               v-if="group.isOpen"
-              :ref="(el) => setSubmenuRef(el, group.label)"
+              :ref="(el) => setSubmenuRef(el, group.labelKey)"
               class="pl-4"
             >
               <li
@@ -169,7 +170,7 @@ const sidebarVisibility = computed(() => {
                   class="flex-1 hover:text-white transition-colors"
                   @click="sidebarStore.isMobileOrTablet && closeSidebar()"
                 >
-                  {{ item.label }}
+                  {{ t(item.labelKey) }}
                 </NuxtLink>
               </li>
             </ul>
@@ -201,11 +202,10 @@ const sidebarVisibility = computed(() => {
         <div
           class="text-balance text-lg font-semibold leading-tight group-hover/sidebar:underline"
         >
-          Open-source layouts by Elvin Code
+          {{ t('sidebar.openSourceLayouts') }}
         </div>
         <div class="text-gray-300">
-          Collection of beautifully crafted open-source layouts UI built with
-          NuxtUI.
+          {{ t('sidebar.layoutsDescription') }}
         </div>
         <a target="_blank" rel="noreferrer" class="absolute inset-0" href="">
           <span class="sr-only">Square by Elvin Code</span>

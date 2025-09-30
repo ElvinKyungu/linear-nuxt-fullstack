@@ -1,5 +1,6 @@
 <script setup lang="ts">
 const auth = useAuthStore()
+const { t } = useI18n()
 
 const name = ref('')
 const lastName = ref('')
@@ -16,7 +17,7 @@ const handleSignup = async () => {
   successMessage.value = null
 
   if (password.value !== confirmPassword.value) {
-    errorMessage.value = 'Les mots de passe ne correspondent pas.'
+    errorMessage.value = t('auth.passwordsDontMatch')
     return
   }
   try {
@@ -28,7 +29,7 @@ const handleSignup = async () => {
     )
 
     if (success) {
-      successMessage.value = 'Inscription réussie ! Vérifiez votre boîte mail.'
+      successMessage.value = t('auth.signupSuccess')
       await navigateTo('/login')
     }
   } catch {
@@ -41,12 +42,12 @@ const handleSignup = async () => {
 
 <template>
   <div class="w-full max-w-md space-y-6">
-    <div class="text-2xl font-semibold text-gray-800">Create your account</div>
-    <p class="text-gray-300">Please fill in the form to sign up</p>
+    <div class="text-2xl font-semibold text-gray-800">{{ t('auth.createYourAccount') }}</div>
+    <p class="text-gray-300">{{ t('auth.fillFormToSignup') }}</p>
 
     <form @submit.prevent="handleSignup">
       <div class="space-y-4 flex flex-col">
-        <UFormGroup label="First Name">
+        <UFormGroup :label="t('auth.firstName')">
           <UInput
             v-model="name"
             size="xl"
@@ -57,7 +58,7 @@ const handleSignup = async () => {
           />
         </UFormGroup>
 
-        <UFormGroup label="Last Name">
+        <UFormGroup :label="t('auth.lastName')">
           <UInput
             v-model="lastName"
             size="xl"
@@ -68,7 +69,7 @@ const handleSignup = async () => {
           />
         </UFormGroup>
 
-        <UFormGroup label="Email">
+        <UFormGroup :label="t('auth.email')">
           <UInput
             v-model="email"
             size="xl"
@@ -79,7 +80,7 @@ const handleSignup = async () => {
           />
         </UFormGroup>
 
-        <UFormGroup label="Password">
+        <UFormGroup :label="t('auth.password')">
           <UInput
             v-model="password"
             type="password"
@@ -91,7 +92,7 @@ const handleSignup = async () => {
           />
         </UFormGroup>
 
-        <UFormGroup label="Confirm Password">
+        <UFormGroup :label="t('auth.confirmPassword')">
           <UInput
             v-model="confirmPassword"
             type="password"
@@ -112,7 +113,7 @@ const handleSignup = async () => {
         :loading="loading"
         :disabled="loading"
       >
-        {{ loading ? 'Creating account in...' : 'Create Account' }}
+        {{ loading ? t('auth.creatingAccount') : t('auth.createAccount') }}
       </UButton>
 
       <p v-if="errorMessage" class="text-sm text-red-500 mt-2 text-center">
@@ -124,9 +125,9 @@ const handleSignup = async () => {
     </form>
 
     <p class="text-sm text-center">
-      Already have an account?
+      {{ t('auth.alreadyHaveAccount') }}
       <NuxtLink to="/login" class="text-blue-500 hover:underline"
-        >Sign in here</NuxtLink
+        >{{ t('auth.signInHere') }}</NuxtLink
       >
     </p>
   </div>
