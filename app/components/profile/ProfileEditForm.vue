@@ -94,7 +94,7 @@
         </div>
       </div>
 
-      <!-- Messages d'erreur général -->
+      <!-- General error messages -->
       <div v-if="authStore.error" class="bg-red-500/10 border border-red-500 rounded-lg p-3">
         <p class="text-red-400 text-sm">{{ authStore.error }}</p>
       </div>
