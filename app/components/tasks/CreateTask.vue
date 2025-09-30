@@ -73,6 +73,30 @@ const statusIcon = computed(() => {
   return map[form.status] || resolveComponent('IconsIconTaskStatus')
 })
 
+const statusColor = computed(() => {
+  const map: Record<string, string> = {
+    'Todo': '#0ea5e9',
+    'In progress': '#facc15',
+    'Technical Review': '#22c55e',
+    'Completed': '#8b5cf6',
+    'Backlog': '#f97316',
+    'Paused': '#e11d48',
+  }
+  return map[form.status] || '#0ea5e9'
+})
+
+const getStatusTranslationKey = computed(() => {
+  const map: Record<string, string> = {
+    'Todo': 'status.todo',
+    'In progress': 'status.inProgress',
+    'Technical Review': 'status.technicalReview',
+    'Completed': 'status.completed',
+    'Backlog': 'status.backlog',
+    'Paused': 'status.paused',
+  }
+  return map[form.status] || 'status.todo'
+})
+
 const handleSubmit = async () => {
   if (!form.title.trim()) return
 
@@ -168,8 +192,12 @@ onMounted(() => {
               class="bg-black text-white border border-bordercolor rounded-full px-3 py-1"
               @click="isOpenStatusPopup = true"
             >
-              <component :is="statusIcon" />
-              <span class="text-[15px] font-medium">{{ t(`status.${selectedStatus.toLowerCase().replace(' ', '')}`) }}</span>
+              <component
+                :is="statusIcon"
+                :stroke-color="statusColor"
+                transform-status="rotate(-90 7 7)"
+              />
+              <span class="text-[15px] font-medium">{{ t(getStatusTranslationKey) }}</span>
             </UButton>
             <template #content>
               <TaskStatusSelectCreate
