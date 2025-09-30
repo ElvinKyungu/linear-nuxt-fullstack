@@ -31,24 +31,24 @@ const displayTriggerElement = ref<HTMLElement | null>(null)
 
 
 const isDragging = ref(false)
-// Nouveau: gérer le délai de drag pour éviter les conflits avec le scroll
-const dragDelay = ref(50) // 150ms de délai avant d'activer le drag
+// Manage drag delay to avoid conflicts with scroll
+const dragDelay = ref(50) // 50ms delay before activating drag
 
 const { tasks: storeTasks, loading: tasksLoading } = storeToRefs(tasksStore)
 const { users: storeUsers } = storeToRefs(usersStore)
 const { components: storeComponents } = storeToRefs(componentsStore)
 
-// Cache local pour les optimistic updates
+// Local cache for optimistic updates
 const optimisticTasks = ref<Task[]>([])
 
-// Utiliser les tâches optimistes si disponibles, sinon le store
+// Use optimistic tasks if available, otherwise use store
 const tasks = computed(() =>
   optimisticTasks.value.length > 0 ? optimisticTasks.value : storeTasks.value
 )
 const users = computed(() => storeUsers.value)
 const components = computed(() => storeComponents.value)
 
-// Synchroniser les tâches optimistes avec le store
+// Synchronize optimistic tasks with store
 watch(
   storeTasks,
   (newTasks: Task[]) => {
@@ -68,7 +68,7 @@ const taskStatuses = computed(() => [
   { key: 'Paused', labelKey: 'status.paused', color: '#e11d48', icon: resolveComponent('IconsIconTaskStatus') },
 ])
 
-// Computed pour les tâches groupées avec les tâches locales
+// Computed for grouped tasks with local tasks
 const groupedTasks = computed(() =>
   taskStatuses.value.map((status) => ({
     ...status,
@@ -76,17 +76,17 @@ const groupedTasks = computed(() =>
   }))
 )
 
-// Fonction de mise à jour optimiste simple
+// Simple optimistic update function
 function updateTaskOptimistically(taskId: string, updates: Partial<Task>) {
   const taskIndex = optimisticTasks.value.findIndex(
     (t: Task) => t.id === taskId
   )
   if (taskIndex !== -1) {
-    // Créer une nouvelle référence pour déclencher la réactivité
+    // Create a new reference to trigger reactivity
     const updatedTask = {
       ...optimisticTasks.value[taskIndex],
       ...updates,
-      // Re-enrichir avec assignee si nécessaire
+      // Re-enrich with assignee if necessary
       assignee: updates.lead_id
         ? users.value.find((u) => u.id === updates.lead_id) || null
         : optimisticTasks.value[taskIndex].assignee,
@@ -100,42 +100,42 @@ function updateTaskOptimistically(taskId: string, updates: Partial<Task>) {
   }
 }
 
-// Fonction de rollback en cas d'erreur
+// Rollback function in case of error
 async function rollbackTask() {
   try {
-    // Recharger les données depuis le serveur
+    // Reload data from server
     await tasksStore.fetchTasks()
-    // Réinitialiser le cache optimiste
+    // Reset optimistic cache
     optimisticTasks.value = [...storeTasks.value]
   } catch (error) {
     console.error('Error during rollback:', error)
   }
 }
 
-// Fonction de synchronisation en arrière-plan avec rollback
+// Background synchronization function with rollback
 async function syncTaskUpdate(taskId: string, updates: Partial<Task>) {
   try {
     await tasksStore.updateTask(taskId, updates)
     console.log('✅ Task synced successfully')
   } catch (error) {
     console.error('❌ Error syncing task:', error)
-    // Rollback optimiste en cas d'erreur
+    // Optimistic rollback in case of error
     await rollbackTask(taskId)
-    // Utilisation d'un toast plus simple
+    // Use a simpler toast
     console.error('Failed to update task')
   }
 }
 
-// Gestion du drag and drop avec mise à jour optimiste
+// Drag and drop handling with optimistic update
 function handleDragChange(evt: DraggableEvent<Task>, targetStatus: string) {
   if (evt.added) {
     const task = evt.added.element as Task
     const oldStatus = task.status
 
-    // Mise à jour optimiste immédiate
+    // Immediate optimistic update
     updateTaskOptimistically(task.id, { status: targetStatus })
 
-    // Synchronisation en arrière-plan
+    // Background synchronization
     syncTaskUpdate(task.id, { status: targetStatus })
 
     console.log(
@@ -144,7 +144,7 @@ function handleDragChange(evt: DraggableEvent<Task>, targetStatus: string) {
   }
 }
 
-// Gestion du début et fin de drag
+// Handle drag start and end
 function handleDragStart() {
   isDragging.value = true
 }
@@ -153,7 +153,7 @@ function handleDragEnd() {
   isDragging.value = false
 }
 
-// Computed pour chaque colonne avec v-model optimisé
+// Computed for each column with optimized v-model
 const todoTasks = computed({
   get: () => tasks.value.filter((task: Task) => task.status === 'Todo'),
   set: (newTasks: Task[]) => {
@@ -233,7 +233,7 @@ const pausedTasks = computed({
   },
 })
 
-// Map pour accéder facilement aux listes
+// Map to easily access lists
 const taskLists = {
   Todo: todoTasks,
   'In progress': inProgressTasks,
@@ -295,7 +295,7 @@ onMounted(async () => {
     </header>
 
     <main class="flex-1 overflow-hidden">
-      <!-- Loading uniquement au premier chargement -->
+      <!-- Loading only on first load -->
       <div
         v-if="tasksLoading && !tasks.length"
         class="text-center text-gray-400 p-4"
@@ -303,9 +303,9 @@ onMounted(async () => {
         {{ t('tasks.loadingTasksAndUsers') }}
       </div>
       <template v-else>
-        <!-- Mode Liste -->
+        <!-- List mode -->
         <div v-if="displayMode === 'list'" class="h-full overflow-y-auto p-4">
-          <!-- Mode liste avec drag and drop optimisé -->
+          <!-- List mode with optimized drag and drop -->
           <div v-for="status in groupedTasks" :key="status.key">
             <div
               class="flex items-center justify-between my-1 py-1 px-5 rounded"
@@ -362,7 +362,7 @@ onMounted(async () => {
           </div>
         </div>
 
-        <!-- Mode Grille -->
+        <!-- Grid mode -->
         <div v-if="displayMode === 'grid'" class="h-full flex flex-col">
           <div class="flex-1 overflow-hidden px-4 py-4">
             <div class="flex gap-4 overflow-x-auto h-full">
@@ -371,7 +371,7 @@ onMounted(async () => {
                 :key="status.key"
                 class="min-w-80 flex-shrink-0 flex flex-col h-full"
               >
-                <!-- En-tête de colonne (hauteur fixe) -->
+                <!-- Column header (fixed height) -->
                 <div class="flex-shrink-0 mb-4">
                   <div
                     class="flex items-center justify-between p-3 rounded-lg"
@@ -396,7 +396,7 @@ onMounted(async () => {
                   </div>
                 </div>
 
-                <!-- Zone des tâches avec drag and drop optimisé -->
+                <!-- Task area with optimized drag and drop -->
                 <div class="flex-1 overflow-y-auto pr-2 relative">
                   <draggable
                     v-model="taskLists[status.key].value"
@@ -429,7 +429,7 @@ onMounted(async () => {
                     </template>
                   </draggable>
 
-                  <!-- Zone de drop vide -->
+                  <!-- Empty drop zone -->
                   <div
                     v-if="taskLists[status.key].value.length === 0"
                     class="border-2 border-dashed border-gray-600 rounded-lg p-8 text-center text-gray-400 min-h-[200px] flex items-center justify-center"

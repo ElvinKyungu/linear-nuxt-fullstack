@@ -100,12 +100,12 @@ const items = computed<DropdownMenuItem[][]>(() => [
   <div
     class="flex items-center justify-between p-4 bg-primary border-b border-bordercolor"
   >
-    <!-- Section gauche avec toggle sidebar -->
+    <!-- Left section with sidebar toggle -->
     <div class="flex items-center gap-4">
-      <!-- Bouton toggle sidebar (visible uniquement sur desktop) -->
+      <!-- Sidebar toggle button (visible only on desktop) -->
       <slot name="sidebar-toggle" />
 
-      <!-- Titre ou breadcrumb -->
+      <!-- Title or breadcrumb -->
       <div class="flex items-center gap-2">
         <h1 class="text-xl font-semibold text-white">
           {{ pageTitle }}
@@ -113,14 +113,14 @@ const items = computed<DropdownMenuItem[][]>(() => [
       </div>
     </div>
 
-    <!-- Section centrale (optionnelle) -->
+    <!-- Center section (optional) -->
     <div class="hidden md:flex items-center gap-4">
       <slot name="center-content" />
     </div>
 
-    <!-- Section droite -->
+    <!-- Right section -->
     <div class="flex items-center gap-3">
-      <!-- Recherche (optionnelle) -->
+      <!-- Search (optional) -->
       <div class="hidden lg:block">
         <UInput :placeholder="t('common.search')" class="w-64 bg-background input">
           <template #leading>
@@ -129,7 +129,7 @@ const items = computed<DropdownMenuItem[][]>(() => [
         </UInput>
       </div>
 
-      <!-- Sélecteur de langue -->
+      <!-- Language selector -->
       <LanguageSelector />
 
       <!-- Notifications -->
