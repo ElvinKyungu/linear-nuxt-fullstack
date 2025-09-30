@@ -80,7 +80,7 @@ const handleSubmit = async () => {
   try {
     await tasksStore.addTask({
       ...form,
-      lead_id: form.leadId,
+      leadId: form.leadId,
       component_id: form.componentId,
       target_date: form.targetDate || new Date().toISOString(),
     })
@@ -175,7 +175,6 @@ onMounted(() => {
               <TaskStatusSelectCreate
                 :model-value="form.status"
                 @select="handleStatusSelect"
-                @close="isOpenStatusPopup = false"
               />
             </template>
           </UPopover>
@@ -194,7 +193,6 @@ onMounted(() => {
               <TaskPrioritySelectCreate
                 :model-value="form.priority"
                 @select="handlePrioritySelect"
-                @close="isOpenPriorityPopup = false"
               />
             </template>
           </UPopover>
@@ -216,7 +214,6 @@ onMounted(() => {
                 :model-value="form.componentId"
                 :components="components"
                 @select="handleComponentSelect"
-                @close="isOpenProjectPopup = false"
               />
             </template>
           </UPopover>
@@ -239,7 +236,6 @@ onMounted(() => {
                 :model-value="form.leadId"
                 :users="users"
                 @select="handleAssigneeSelect"
-                @close="isAssigneePopupOpen = false"
               />
             </template>
           </UPopover>
@@ -268,7 +264,7 @@ onMounted(() => {
 </template>
 
 <style scoped>
-:deep(.u-input input, .u-input textarea, .u-input select) {
+:deep(.u-input input, textarea, .u-input select) {
   color: #fff !important;
 }
 </style>

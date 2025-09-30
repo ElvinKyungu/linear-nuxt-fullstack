@@ -11,7 +11,7 @@ defineProps<{
   modelValue: string
 }>()
 
-const emit = defineEmits(['select', 'close'])
+const emit = defineEmits(['select'])
 const { t } = useI18n()
 
 const statusMap: Status[] = [

@@ -6,7 +6,7 @@ const props = defineProps<{
   modelValue: string | null
 }>()
 
-const emit = defineEmits(['select', 'close'])
+const emit = defineEmits(['select'])
 
 const filter = ref('')
 const filteredUsers = computed(() =>

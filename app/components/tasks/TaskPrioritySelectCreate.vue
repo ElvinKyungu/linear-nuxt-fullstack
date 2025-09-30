@@ -5,7 +5,7 @@ defineProps<{
   modelValue: string
 }>()
 
-const emit = defineEmits(['select', 'close'])
+const emit = defineEmits(['select'])
 
 const priorityMap: Priority[] = [
   { id: 0, name: 'No priority', icon: resolveComponent('IconsIconNoPriority') },
