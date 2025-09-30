@@ -245,6 +245,7 @@ onMounted(() => {
           <UButton
             type="button"
             variant="ghost"
+            class="border border-bordercolor text-white cursor-pointer"
             @click="closePopupAnimation"
           >
             {{ t('tasks.cancel') }}
@@ -254,6 +255,7 @@ onMounted(() => {
             color="secondary"
             :loading="isSubmitting"
             :disabled="!form.title.trim() || isSubmitting"
+            class="border border-bordercolor text-black cursor-pointer bg-white"
           >
             {{ isSubmitting ? t('common.loading') : t('tasks.addTask') }}
           </UButton>
