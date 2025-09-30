@@ -1,5 +1,6 @@
 <!-- HeaderArea.vue -->
- <script setup lang="ts">
+<script setup lang="ts">
+import type { DropdownMenuItem } from '@nuxt/ui'
 interface Props {
   pageTitle?: string
 }
@@ -7,7 +8,6 @@ interface Props {
 withDefaults(defineProps<Props>(), {
   pageTitle: 'Dashboard',
 })
-import type { DropdownMenuItem } from '@nuxt/ui'
 
 const authStore = useAuthStore()
 const { user } = storeToRefs(authStore)

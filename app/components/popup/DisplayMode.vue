@@ -1,10 +1,14 @@
 <script setup lang="ts">
 import { gsap } from 'gsap'
 
-defineProps({
+const props = defineProps({
   triggerElement: {
     type: Object as PropType<{ $el: HTMLElement }>,
     default: null,
+  },
+  modelValue: {
+    type: String as PropType<'list' | 'grid'>,
+    default: 'list',
   },
 })
 
@@ -35,24 +39,39 @@ onClickOutside(popup, () => {
   >
     <div class="grid grid-cols-2 items-center gap-2 w-full justify-between">
       <UButton
-        class="text-gray-400 flex flex-col bg-gray-400/20 justify-center hover:text-white col-span-1"
+        :class="[
+          'text-gray-400 flex flex-col justify-center hover:text-white col-span-1 transition-colors',
+          modelValue === 'grid' ? 'bg-blue-500/30 text-white' : 'bg-gray-400/20'
+        ]"
         variant="ghost"
         @click="
           emit('update:modelValue', 'grid'); emit('close')
         "
       >
-        <UIcon name="uil:grid" class="text-2xl cursor-pointer text-gray-400" />
+        <UIcon
+          name="uil:grid"
+          :class="[
+            'text-2xl cursor-pointer transition-colors',
+            modelValue === 'grid' ? 'text-white' : 'text-gray-400'
+          ]"
+        />
         <span class="text-sm text-white">Grid</span>
       </UButton>
       <UButton
-        class="text-gray-400 flex flex-col justify-center bg-gray-400/20 hover:text-white col-span-1"
+        :class="[
+          'text-gray-400 flex flex-col justify-center hover:text-white col-span-1 transition-colors',
+          modelValue === 'list' ? 'bg-blue-500/30 text-white' : 'bg-gray-400/20'
+        ]"
         @click="
           emit('update:modelValue', 'list'); emit('close')
         "
       >
         <UIcon
           name="uil:list-ul"
-          class="text-2xl cursor-pointer text-gray-400"
+          :class="[
+            'text-2xl cursor-pointer transition-colors',
+            modelValue === 'list' ? 'text-white' : 'text-gray-400'
+          ]"
         />
         <span class="text-sm text-white">List</span>
       </UButton>

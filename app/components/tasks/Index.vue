@@ -287,6 +287,7 @@ onMounted(async () => {
         </UButton>
         <DisplayMode
           v-if="isdisplayModalOpen"
+          v-model="displayMode"
           :trigger-element="displayTriggerElement"
           @close="isdisplayModalOpen = false"
           @update:model-value="(val: 'list' | 'grid') => (displayMode = val)"
