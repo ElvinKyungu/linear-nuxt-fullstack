@@ -70,5 +70,23 @@
     "filter": "Filtrer",
     "sort": "Trier",
     "language": "Langue"
+  },
+  "sidebar": {
+    "home": "Accueil",
+    "dashboard": "Tableau de bord",
+    "pages": "Pages",
+    "landing": "Page d'accueil",
+    "team": "Équipe",
+    "notFound": "Page introuvable",
+    "table": "Tableau",
+    "images": "Images",
+    "file": "Fichier",
+    "auth": "Authentification",
+    "login": "Connexion",
+    "profile": "Profil",
+    "accessDenied": "Accès refusé",
+    "list": "Liste",
+    "openSourceLayouts": "Mises en page Open Source",
+    "layoutsDescription": "Explorez notre collection de mises en page open source"
   }
 }

@@ -70,5 +70,23 @@
     "filter": "Filter",
     "sort": "Sort",
     "language": "Language"
+  },
+  "sidebar": {
+    "home": "Home",
+    "dashboard": "Dashboard",
+    "pages": "Pages",
+    "landing": "Landing",
+    "team": "Team",
+    "notFound": "Not Found",
+    "table": "Table",
+    "images": "Images",
+    "file": "File",
+    "auth": "Authentication",
+    "login": "Login",
+    "profile": "Profile",
+    "accessDenied": "Access Denied",
+    "list": "List",
+    "openSourceLayouts": "Open Source Layouts",
+    "layoutsDescription": "Explore our collection of open source layouts"
   }
 }
