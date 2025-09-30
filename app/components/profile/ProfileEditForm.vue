@@ -99,7 +99,7 @@
         <p class="text-red-400 text-sm">{{ authStore.error }}</p>
       </div>
 
-      <!-- Boutons d'action -->
+      <!-- Action buttons -->
       <div class="flex justify-end gap-3 pt-4">
         <UButton
           color="gray"
