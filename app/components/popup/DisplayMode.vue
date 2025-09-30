@@ -40,10 +40,10 @@ onClickOutside(popup, () => {
     <div class="grid grid-cols-2 items-center gap-2 w-full justify-between">
       <UButton
         :class="[
-          'text-gray-400 flex flex-col justify-center hover:text-white col-span-1 transition-colors',
-          modelValue === 'grid' ? 'bg-blue-500/30 text-white' : 'bg-gray-400/20'
+          'text-gray-400 flex flex-col justify-center hover:text-white cursor-pointer col-span-1 transition-colors',
+          modelValue === 'grid' ? 'bg-gray-400/20 text-white' : ''
         ]"
-        variant="ghost"
+        :variant="undefined"
         @click="
           emit('update:modelValue', 'grid'); emit('close')
         "
@@ -59,8 +59,8 @@ onClickOutside(popup, () => {
       </UButton>
       <UButton
         :class="[
-          'text-gray-400 flex flex-col justify-center hover:text-white col-span-1 transition-colors',
-          modelValue === 'list' ? 'bg-blue-500/30 text-white' : 'bg-gray-400/20'
+          'text-gray-400 flex flex-col justify-center hover:text-white cursor-pointer col-span-1 transition-colors',
+          modelValue === 'list' ? 'bg-gray-400/20 text-white' : ''
         ]"
         @click="
           emit('update:modelValue', 'list'); emit('close')
