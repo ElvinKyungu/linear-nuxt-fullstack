@@ -1,6 +1,14 @@
 // composables/useErrorHandler.ts
 export function useErrorHandler(context = 'Unknown') {
-  const toast = useToast()
+  // Lazy initialization of toast to avoid SSR issues
+  let toast: ReturnType<typeof useToast> | null = null
+
+  const getToast = () => {
+    if (import.meta.client && !toast) {
+      toast = useToast()
+    }
+    return toast
+  }
 
   const handleError = (
     err: unknown,
@@ -19,12 +27,16 @@ export function useErrorHandler(context = 'Unknown') {
     if (!options?.silent) {
       console.error(`[Error:${context}]`, message)
 
-      toast.add({
-        title: `Error in ${context}`,
-        description: message,
-        color: 'red',
-        timeout: 5000,
-      })
+      // Only show toast on client side
+      const toastInstance = getToast()
+      if (toastInstance) {
+        toastInstance.add({
+          title: `Error in ${context}`,
+          description: message,
+          color: 'red',
+          timeout: 5000,
+        })
+      }
     }
 
     if (options?.rethrow) {
