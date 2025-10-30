@@ -12,13 +12,15 @@ const isMobileOrTablet = computed(() => screenSize.value !== 'desktop')
 
 // Fonction pour détecter la taille d'écran
 const updateScreenSize = () => {
-  const width = window.innerWidth
-  if (width < 768) {
-    screenSize.value = 'mobile'
-  } else if (width < 1024) {
-    screenSize.value = 'tablet'
-  } else {
-    screenSize.value = 'desktop'
+  if (import.meta.client) {
+    const width = window.innerWidth
+    if (width < 768) {
+      screenSize.value = 'mobile'
+    } else if (width < 1024) {
+      screenSize.value = 'tablet'
+    } else {
+      screenSize.value = 'desktop'
+    }
   }
 }
 

@@ -1,6 +1,11 @@
 <script setup lang="ts">
 import type { ContextMenuItem } from '@nuxt/ui'
 
+// Disable SSR for this page to avoid hydration issues with stores
+definePageMeta({
+  ssr: false
+})
+
 const items = ref<ContextMenuItem[][]>([
   [
     {
