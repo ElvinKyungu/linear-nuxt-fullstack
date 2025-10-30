@@ -5,6 +5,7 @@ import type { Components } from '@/types/components'
 const props = defineProps<{
   users: User[]
   components: Components[]
+  defaultStatus?: string
 }>()
 
 const tasksStore = useTasksStore()
@@ -19,7 +20,7 @@ const projectTrigger = ref<HTMLElement | null>(null)
 const form = reactive({
   title: '',
   description: '',
-  status: 'In progress',
+  status: props.defaultStatus || 'In progress',
   type: 'Feature',
   priority: 'No priority',
   leadId: null as string | null,

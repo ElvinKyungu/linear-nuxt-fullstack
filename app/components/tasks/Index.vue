@@ -33,6 +33,7 @@ const displayTriggerElement = ref<HTMLElement | null>(null)
 const isDragging = ref(false)
 // Manage drag delay to avoid conflicts with scroll
 const dragDelay = ref(50) // 50ms delay before activating drag
+const selectedStatus = ref<string>('In progress')
 
 const { tasks: storeTasks, loading: tasksLoading } = storeToRefs(tasksStore)
 const { users: storeUsers } = storeToRefs(usersStore)
@@ -324,7 +325,7 @@ onMounted(async () => {
               <UButton
                 variant="ghost"
                 class="hover:bg-white/10 p-2 cursor-pointer rounded-xl mr-2 text-white"
-                @click="showTaskPopup = true"
+                @click="() => { selectedStatus = status.key; showTaskPopup = true }"
               >
                 <UIcon name="uil:plus" class="text-2xl" />
               </UButton>
@@ -390,7 +391,7 @@ onMounted(async () => {
                     <UButton
                       variant="ghost"
                       class="hover:bg-white/10 p-1 cursor-pointer rounded text-white"
-                      @click="showTaskPopup = true"
+                      @click="() => { selectedStatus = status.key; showTaskPopup = true }"
                     >
                       <UIcon name="uil:plus" class="text-lg" />
                     </UButton>
@@ -451,6 +452,7 @@ onMounted(async () => {
       v-if="showTaskPopup"
       :users="users"
       :components="components"
+      :default-status="selectedStatus"
       @close="showTaskPopup = false"
     />
 
